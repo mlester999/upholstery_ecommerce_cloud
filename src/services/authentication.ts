@@ -11,6 +11,7 @@ export const authentication = createApi({
       query: ({ email, password }) => ({
         url: `auth/login`,
         method: 'POST',
+        withCredentials: true,
         body: { email, password },
       }),
     }),
@@ -18,12 +19,14 @@ export const authentication = createApi({
       query: () => ({
         url: `auth/logout`,
         method: 'POST',
+        withCredentials: true,
       }),
     }),
     getUser: builder.query({
       query: () => ({
         url: `auth/user`,
         method: 'GET',
+        withCredentials: true,
       }),
     }),
   }),

@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material';
-import { Navigate } from 'react-router-dom';
+import { Navigate, useNavigate } from 'react-router-dom';
 import {
   useGetUserQuery,
   useLogoutMutation,
@@ -8,6 +8,7 @@ import {
 const Dashboard = () => {
   const { data: user, isLoading, isFetching, isError } = useGetUserQuery();
   const [logout] = useLogoutMutation();
+  const navigate = useNavigate();
 
   if (isLoading || isFetching) {
     return <div>Loading...</div>;
@@ -18,8 +19,12 @@ const Dashboard = () => {
   }
 
   const logoutUser = async () => {
-    const log = await logout();
-    console.log(log);
+    const log = await logout()
+      .unwrap()
+      .then((payload) => navigate(0))
+      .catch((error) => console.log(error));
+
+    return log;
   };
 
   return (
