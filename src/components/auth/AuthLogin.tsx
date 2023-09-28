@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
 import { useState } from 'react';
 import { Formik } from 'formik';
+import { useNavigate } from 'react-router-dom';
 import {
   FormControl,
   FormHelperText,
@@ -14,14 +15,17 @@ import {
   OutlinedInput,
   Typography,
   Box,
-  Button,
 } from '@mui/material';
+import { LoadingButton } from '@mui/lab';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import Colors from '../../constants/Colors';
+import { useLoginMutation } from '../../services/authentication';
 
 const AuthLogin = () => {
+  const [login, { isLoading }] = useLoginMutation();
   const [checked, setChecked] = useState(true);
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
     setShowPassword(!showPassword);
@@ -46,7 +50,12 @@ const AuthLogin = () => {
             .required('Email is required'),
           password: Yup.string().max(255).required('Password is required'),
         })}
-        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {}}
+        onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
+          login({ email: values.email, password: values.password })
+            .unwrap()
+            .then((payload) => navigate('/dashboard'))
+            .catch((error) => setErrors({ email: error.data.message }));
+        }}
       >
         {({
           errors,
@@ -162,7 +171,8 @@ const AuthLogin = () => {
             )}
 
             <Box sx={{ mt: 2 }}>
-              <Button
+              <LoadingButton
+                loading={isLoading}
                 disableElevation
                 disabled={isSubmitting}
                 fullWidth
@@ -172,7 +182,7 @@ const AuthLogin = () => {
                 sx={{ backgroundColor: Colors.primaryColor }}
               >
                 Sign in
-              </Button>
+              </LoadingButton>
             </Box>
           </form>
         )}

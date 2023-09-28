@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import Logo from '../../components/Logo';
 import {
   Divider,
@@ -11,8 +11,19 @@ import {
 } from '@mui/material';
 import Colors from '../../constants/Colors';
 import AuthForgotPassword from '../../components/auth/AuthForgotPassword';
+import { useGetUserQuery } from '../../services/authentication';
 
 const ForgotPassword = () => {
+  const { isLoading, isFetching, isError } = useGetUserQuery();
+
+  if (isLoading || isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isError) {
+    return <Navigate to='/dashboard'></Navigate>;
+  }
+
   return (
     <Box sx={{ bgcolor: Colors.backgroundColor, height: '100vh' }}>
       <Container maxWidth='sm' sx={{ padding: 8 }}>

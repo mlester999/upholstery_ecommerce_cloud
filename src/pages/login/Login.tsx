@@ -10,8 +10,20 @@ import {
 } from '@mui/material';
 import Colors from '../../constants/Colors';
 import AuthLogin from '../../components/auth/AuthLogin';
+import { Navigate } from 'react-router-dom';
+import { useGetUserQuery } from '../../services/authentication';
 
 const Login = () => {
+  const { isLoading, isFetching, isError } = useGetUserQuery();
+
+  if (isLoading || isFetching) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isError) {
+    return <Navigate to='/dashboard'></Navigate>;
+  }
+
   return (
     <Box sx={{ bgcolor: Colors.backgroundColor, height: '100vh' }}>
       <Container maxWidth='sm' sx={{ padding: 8 }}>
