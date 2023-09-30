@@ -27,3 +27,5 @@ export const createShadows = () => {
     '0px 9px 46px rgba(0, 0, 0, 0.08)',
   ];
 };
+
+export type Shadows = ReturnType<typeof createShadows>;

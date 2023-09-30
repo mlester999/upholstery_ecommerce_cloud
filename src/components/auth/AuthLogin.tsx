@@ -53,7 +53,7 @@ const AuthLogin = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           login({ email: values.email, password: values.password })
             .unwrap()
-            .then((payload) => navigate('/dashboard'))
+            .then((payload) => navigate('/portal/dashboard'))
             .catch((error) => setErrors({ email: error.data.message }));
         }}
       >
@@ -71,11 +71,9 @@ const AuthLogin = () => {
               fullWidth
               error={Boolean(touched.email && errors.email)}
             >
-              <InputLabel htmlFor='outlined-adornment-email-login'>
-                Email Address
-              </InputLabel>
+              <InputLabel htmlFor='email-login'>Email Address</InputLabel>
               <OutlinedInput
-                id='outlined-adornment-email-login'
+                id='email-login'
                 type='email'
                 value={values.email}
                 name='email'
@@ -85,10 +83,7 @@ const AuthLogin = () => {
                 inputProps={{}}
               />
               {touched.email && errors.email && (
-                <FormHelperText
-                  error
-                  id='standard-weight-helper-text-email-login'
-                >
+                <FormHelperText error id='text-email-login'>
                   {errors.email}
                 </FormHelperText>
               )}
@@ -99,11 +94,9 @@ const AuthLogin = () => {
               error={Boolean(touched.password && errors.password)}
               sx={{ marginTop: 4, marginBottom: 4 }}
             >
-              <InputLabel htmlFor='outlined-adornment-password-login'>
-                Password
-              </InputLabel>
+              <InputLabel htmlFor='password-login'>Password</InputLabel>
               <OutlinedInput
-                id='outlined-adornment-password-login'
+                id='password-login'
                 type={showPassword ? 'text' : 'password'}
                 value={values.password}
                 name='password'

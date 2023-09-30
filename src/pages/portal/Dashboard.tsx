@@ -1,18 +1,22 @@
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
-import Dashboard from './Dashboard';
-import { OverviewBudget } from '../../sections/overview/overview-budget';
-import { OverviewLatestOrders } from '../../sections/overview/overview-latest-orders';
-import { OverviewLatestProducts } from '../../sections/overview/overview-latest-products';
-import { OverviewTasksProgress } from '../../sections/overview/overview-tasks-progress';
-import { OverviewTotalCustomers } from '../../sections/overview/overview-total-customers';
-import { OverviewTotalProfit } from '../../sections/overview/overview-total-profit';
+import PortalLayout from '../../layouts/PortalLayout';
+import OverviewTotalSellers from '../../components/overview/OverviewTotalSellers';
+import { OverviewLatestOrders } from '../../components/overview/OverviewLatestOrders';
+import { OverviewLatestProducts } from '../../components/overview/OverviewLatestProducts';
+import OverviewTotalProducts from '../../components/overview/OverviewTotalProducts';
+import OverviewTotalCustomers from '../../components/overview/OverviewTotalCustomers';
+import OverviewTotalDeliveries from '../../components/overview/OverviewTotalDeliveries';
+import OverviewTotalDiscountVouchers from '../../components/overview/OverviewTotalDiscountVouchers';
+import OverviewTotalTransactions from '../../components/overview/OverviewTotalTransactions';
+import OverviewTotalReviews from '../../components/overview/OverviewTotalReviews';
+import OverviewTotalLogs from '../../components/overview/OverviewTotalLogs';
 
 const now = new Date();
 
 const Main = () => {
   return (
-    <Dashboard>
+    <PortalLayout>
       <Box
         component='main'
         sx={{
@@ -23,26 +27,31 @@ const Main = () => {
         <Container maxWidth='xl'>
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewBudget
-                difference={12}
-                positive
+              <OverviewTotalSellers sx={{ height: '100%' }} value={58} />
+            </Grid>
+            <Grid xs={12} sm={6} lg={3}>
+              <OverviewTotalCustomers sx={{ height: '100%' }} value={492} />
+            </Grid>
+            <Grid xs={12} sm={6} lg={3}>
+              <OverviewTotalProducts sx={{ height: '100%' }} value={214} />
+            </Grid>
+            <Grid xs={12} sm={6} lg={3}>
+              <OverviewTotalDeliveries sx={{ height: '100%' }} value={53} />
+            </Grid>
+            <Grid xs={12} sm={6} lg={3}>
+              <OverviewTotalDiscountVouchers
                 sx={{ height: '100%' }}
-                value='$24k'
+                value={8}
               />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTotalCustomers
-                difference={16}
-                positive={false}
-                sx={{ height: '100%' }}
-                value='1.6k'
-              />
+              <OverviewTotalTransactions sx={{ height: '100%' }} value={85} />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTasksProgress sx={{ height: '100%' }} value={75.5} />
+              <OverviewTotalReviews sx={{ height: '100%' }} value={13} />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTotalProfit sx={{ height: '100%' }} value='$15k' />
+              <OverviewTotalLogs sx={{ height: '100%' }} value={111} />
             </Grid>
 
             <Grid xs={12} md={6} lg={4}>
@@ -50,31 +59,31 @@ const Main = () => {
                 products={[
                   {
                     id: '5ece2c077e39da27658aa8a9',
-                    image: '/assets/products/product-1.png',
+                    image: '../../assets/logo.jpg',
                     name: 'Healthcare Erbology',
                     updatedAt: subHours(now, 6).getTime(),
                   },
                   {
                     id: '5ece2c0d16f70bff2cf86cd8',
-                    image: '/assets/products/product-2.png',
+                    image: '../../assets/logo.jpg',
                     name: 'Makeup Lancome Rouge',
                     updatedAt: subDays(subHours(now, 8), 2).getTime(),
                   },
                   {
                     id: 'b393ce1b09c1254c3a92c827',
-                    image: '/assets/products/product-5.png',
+                    image: '../../assets/logo.jpg',
                     name: 'Skincare Soja CO',
                     updatedAt: subDays(subHours(now, 1), 1).getTime(),
                   },
                   {
                     id: 'a6ede15670da63f49f752c89',
-                    image: '/assets/products/product-6.png',
+                    image: '../../assets/logo.jpg',
                     name: 'Makeup Lipstick',
                     updatedAt: subDays(subHours(now, 3), 3).getTime(),
                   },
                   {
                     id: 'bcad5524fe3a2f8f8620ceda',
-                    image: '/assets/products/product-7.png',
+                    image: '../../assets/logo.jpg',
                     name: 'Healthcare Ritual',
                     updatedAt: subDays(subHours(now, 5), 6).getTime(),
                   },
@@ -152,7 +161,7 @@ const Main = () => {
           </Grid>
         </Container>
       </Box>
-    </Dashboard>
+    </PortalLayout>
   );
 };
 

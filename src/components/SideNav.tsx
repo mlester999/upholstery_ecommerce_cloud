@@ -1,6 +1,4 @@
 import PropTypes from 'prop-types';
-import ArrowTopRightOnSquareIcon from '@heroicons/react/24/solid/ArrowTopRightOnSquareIcon';
-import ChevronUpDownIcon from '@heroicons/react/24/solid/ChevronUpDownIcon';
 import {
   Box,
   Button,
@@ -12,7 +10,7 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import Scrollbar from './ScrollBar';
-import { items } from '../config/IconConfig';
+import { items } from '../config/AdminTabsConfig';
 import SideNavItem from './SideNavItem';
 import { Link, useLocation } from 'react-router-dom';
 import TransparentLogo from './TransparentLogo';
@@ -44,7 +42,7 @@ const SideNav = (props) => {
         <Box display='flex' alignItems='center' gap={2} sx={{ p: 3 }}>
           <Box
             component={Link}
-            to='/dashboard'
+            to='/portal/dashboard'
             sx={{
               display: 'inline-flex',
               height: 80,
@@ -54,14 +52,12 @@ const SideNav = (props) => {
             <TransparentLogo />
           </Box>
           <Box>
-            <div>
-              <Typography color='inherit' variant='subtitle1'>
-                CCLDO
-              </Typography>
-              <Typography color='neutral.400' variant='body2'>
-                Admin Dashboard
-              </Typography>
-            </div>
+            <Typography color='inherit' variant='subtitle1'>
+              CCLDO
+            </Typography>
+            <Typography color='neutral.400' variant='body2'>
+              Admin Portal
+            </Typography>
           </Box>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -94,7 +90,7 @@ const SideNav = (props) => {
                   // external={item.external}
                   icon={item.icon}
                   key={item.title}
-                  path='/dashboard'
+                  path={item.path}
                   title={item.title}
                 />
               );

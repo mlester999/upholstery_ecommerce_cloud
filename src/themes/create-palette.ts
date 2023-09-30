@@ -31,3 +31,5 @@ export function createPalette() {
     warning,
   };
 }
+
+export type Palette = ReturnType<typeof createPalette>;

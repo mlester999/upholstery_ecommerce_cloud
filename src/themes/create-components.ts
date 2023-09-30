@@ -2,17 +2,19 @@ import {
   createTheme,
   filledInputClasses,
   inputLabelClasses,
-  outlinedInputClasses,
   paperClasses,
   tableCellClasses,
 } from '@mui/material';
+import { Palette } from './create-palette';
 
 // Used only to create transitions
 const muiTheme = createTheme();
 
-export function createComponents(config) {
-  const { palette } = config;
+interface CreateComponentsProps {
+  palette: Palette;
+}
 
+export function createComponents({ palette }: CreateComponentsProps) {
   return {
     MuiAvatar: {
       styleOverrides: {
@@ -191,34 +193,13 @@ export function createComponents(config) {
     },
     MuiOutlinedInput: {
       styleOverrides: {
-        root: {
-          '&:hover': {
-            backgroundColor: palette.action.hover,
-            [`& .${outlinedInputClasses.notchedOutline}`]: {
-              borderColor: palette.neutral[200],
-            },
-          },
-          [`&.${outlinedInputClasses.focused}`]: {
-            backgroundColor: 'transparent',
-            [`& .${outlinedInputClasses.notchedOutline}`]: {
-              borderColor: palette.primary.main,
-              boxShadow: `${palette.primary.main} 0 0 0 2px`,
-            },
-          },
-          [`&.${filledInputClasses.error}`]: {
-            [`& .${outlinedInputClasses.notchedOutline}`]: {
-              borderColor: palette.error.main,
-              boxShadow: `${palette.error.main} 0 0 0 2px`,
-            },
-          },
-        },
         input: {
           fontSize: 14,
           fontWeight: 500,
           lineHeight: '24px',
         },
         notchedOutline: {
-          borderColor: palette.neutral[200],
+          borderColor: palette.neutral[400],
           transition: muiTheme.transitions.create([
             'border-color',
             'box-shadow',

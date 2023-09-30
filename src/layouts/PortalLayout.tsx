@@ -1,12 +1,9 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button, Typography } from '@mui/material';
 import { Navigate, useNavigate } from 'react-router-dom';
-import SideNav from '../../components/SideNav';
-import TopNav from '../../components/TopNav';
-import {
-  useGetUserQuery,
-  useLogoutMutation,
-} from '../../services/authentication';
+import SideNav from '../components/SideNav';
+import TopNav from '../components/TopNav';
+import { useGetUserQuery, useLogoutMutation } from '../services/authentication';
 import { styled } from '@mui/material/styles';
 
 const SIDE_NAV_WIDTH = 280;
@@ -27,11 +24,9 @@ const LayoutContainer = styled('div')({
   width: '100%',
 });
 
-const Dashboard = ({ children }) => {
-  const { data: user, isLoading, isFetching, isError } = useGetUserQuery();
-  const [logout] = useLogoutMutation();
-  const navigate = useNavigate();
-  const [openNav, setOpenNav] = useState(true);
+const PortalLayout = ({ children }) => {
+  const { isLoading, isFetching, isError } = useGetUserQuery();
+  const [openNav, setOpenNav] = useState(false);
 
   const handlePathnameChange = useCallback(() => {
     if (openNav) {
@@ -51,18 +46,6 @@ const Dashboard = ({ children }) => {
     return <Navigate to='/login'></Navigate>;
   }
 
-  const logoutUser = async () => {
-    const log = await logout()
-      .unwrap()
-      .then((payload) => {
-        navigate('/login');
-        navigate(0);
-      })
-      .catch((error) => console.log(error));
-
-    return log;
-  };
-
   return (
     <>
       <TopNav onNavOpen={() => setOpenNav(true)} />
@@ -75,4 +58,4 @@ const Dashboard = ({ children }) => {
   );
 };
 
-export default Dashboard;
+export default PortalLayout;

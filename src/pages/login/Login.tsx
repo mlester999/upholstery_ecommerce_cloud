@@ -21,7 +21,7 @@ const Login = () => {
   }
 
   if (!isError) {
-    return <Navigate to='/dashboard'></Navigate>;
+    return <Navigate to='/portal/dashboard'></Navigate>;
   }
 
   return (

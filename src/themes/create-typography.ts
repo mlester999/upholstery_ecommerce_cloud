@@ -75,3 +75,5 @@ export const createTypography = () => {
     },
   };
 };
+
+export type Typography = ReturnType<typeof createTypography>;
