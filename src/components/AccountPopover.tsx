@@ -1,6 +1,4 @@
-import { useCallback } from 'react';
-import { useRouter } from 'next/navigation';
-import PropTypes from 'prop-types';
+import React, { useCallback } from 'react';
 import {
   Box,
   Divider,
@@ -12,23 +10,32 @@ import {
 import { useGetUserQuery, useLogoutMutation } from '../services/authentication';
 import { useNavigate } from 'react-router-dom';
 
-const AccountPopover = (props) => {
-  const { anchorEl, onClose, open } = props;
+interface AccountPopoverProps {
+  anchorEl: HTMLDivElement | null;
+  onClose: () => void;
+  open: boolean;
+}
+
+const AccountPopover: React.FC<AccountPopoverProps> = ({
+  anchorEl,
+  onClose,
+  open,
+}) => {
   const { data: user } = useGetUserQuery();
   const [logout] = useLogoutMutation();
   const navigate = useNavigate();
 
-  const handleSignOut = async () => {
+  const handleSignOut = useCallback(async () => {
     const log = await logout()
       .unwrap()
-      .then((payload) => {
+      .then(() => {
         navigate('/login');
         navigate(0);
       })
       .catch((error) => console.log(error));
 
     return log;
-  };
+  }, [navigate, logout]);
 
   return (
     <Popover
@@ -49,7 +56,7 @@ const AccountPopover = (props) => {
       >
         <Typography variant='overline'>Account</Typography>
         <Typography color='text.secondary' variant='body2'>
-          {user.first_name} {user.last_name}
+          {user?.first_name} {user?.last_name}
         </Typography>
       </Box>
       <Divider />
@@ -63,12 +70,6 @@ const AccountPopover = (props) => {
       </MenuList>
     </Popover>
   );
-};
-
-AccountPopover.propTypes = {
-  anchorEl: PropTypes.any,
-  onClose: PropTypes.func,
-  open: PropTypes.bool.isRequired,
 };
 
 export default AccountPopover;

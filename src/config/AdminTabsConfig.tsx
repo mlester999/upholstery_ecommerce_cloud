@@ -18,6 +18,8 @@ export const items = [
         <ChartBarIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Sellers',
@@ -27,6 +29,8 @@ export const items = [
         <UsersIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Customers',
@@ -36,6 +40,8 @@ export const items = [
         <UserGroupIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Products',
@@ -45,6 +51,8 @@ export const items = [
         <ShoppingBagIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Deliveries',
@@ -54,6 +62,8 @@ export const items = [
         <TruckIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Discount Vouchers',
@@ -63,6 +73,8 @@ export const items = [
         <ReceiptPercentIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Transactions',
@@ -72,6 +84,8 @@ export const items = [
         <CurrencyDollarIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Reviews',
@@ -81,6 +95,8 @@ export const items = [
         <StarIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
   {
     title: 'Logs',
@@ -90,5 +106,7 @@ export const items = [
         <DocumentTextIcon />
       </SvgIcon>
     ),
+    disabled: false,
+    external: false,
   },
 ];

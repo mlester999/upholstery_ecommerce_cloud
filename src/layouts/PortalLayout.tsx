@@ -5,8 +5,7 @@ import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
 import { useGetUserQuery, useLogoutMutation } from '../services/authentication';
 import { styled } from '@mui/material/styles';
-
-const SIDE_NAV_WIDTH = 280;
+import { SIDE_NAV_WIDTH } from '../constants/BoxModel';
 
 const LayoutRoot = styled('div')(({ theme }) => ({
   display: 'flex',

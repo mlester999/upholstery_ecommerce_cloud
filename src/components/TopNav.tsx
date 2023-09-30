@@ -1,6 +1,6 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 import BellIcon from '@heroicons/react/24/solid/BellIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
+import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
 import {
   Avatar,
   Badge,
@@ -11,16 +11,17 @@ import {
   Tooltip,
   useMediaQuery,
 } from '@mui/material';
-import { alpha } from '@mui/material/styles';
+import { alpha, Theme } from '@mui/material/styles';
 import { usePopover } from '../hooks/usePopover';
 import AccountPopover from './AccountPopover';
+import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '../constants/BoxModel';
 
-const SIDE_NAV_WIDTH = 280;
-const TOP_NAV_HEIGHT = 64;
+interface TopNavProps {
+  onNavOpen: () => void;
+}
 
-const TopNav = (props) => {
-  const { onNavOpen } = props;
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+const TopNav: React.FC<TopNavProps> = ({ onNavOpen }) => {
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
   const accountPopover = usePopover();
 
   return (
@@ -52,15 +53,16 @@ const TopNav = (props) => {
             px: 2,
           }}
         >
-          <Stack alignItems='center' direction='row' spacing={2}></Stack>
           <Stack alignItems='center' direction='row' spacing={2}>
-            <Tooltip title='Contacts'>
-              <IconButton>
+            {!lgUp && (
+              <IconButton onClick={onNavOpen}>
                 <SvgIcon fontSize='small'>
-                  <UsersIcon />
+                  <Bars3Icon />
                 </SvgIcon>
               </IconButton>
-            </Tooltip>
+            )}
+          </Stack>
+          <Stack alignItems='center' direction='row' spacing={2}>
             <Tooltip title='Notifications'>
               <IconButton>
                 <Badge badgeContent={4} color='success' variant='dot'>
@@ -89,10 +91,6 @@ const TopNav = (props) => {
       />
     </>
   );
-};
-
-TopNav.propTypes = {
-  onNavOpen: PropTypes.func,
 };
 
 export default TopNav;

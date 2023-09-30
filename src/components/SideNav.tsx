@@ -1,11 +1,9 @@
-import PropTypes from 'prop-types';
+import React from 'react';
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   Stack,
-  SvgIcon,
   Typography,
   useMediaQuery,
 } from '@mui/material';
@@ -14,11 +12,16 @@ import { items } from '../config/AdminTabsConfig';
 import SideNavItem from './SideNavItem';
 import { Link, useLocation } from 'react-router-dom';
 import TransparentLogo from './TransparentLogo';
+import { Theme } from '@mui/material/styles';
 
-const SideNav = (props) => {
-  const { open, onClose } = props;
+interface SideNavProps {
+  open: boolean;
+  onClose: () => void;
+}
+
+const SideNav: React.FC<SideNavProps> = ({ open, onClose }) => {
   const location = useLocation();
-  const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
   const content = (
     <Scrollbar
@@ -86,8 +89,8 @@ const SideNav = (props) => {
               return (
                 <SideNavItem
                   active={active}
-                  //   disabled={item.disabled}
-                  // external={item.external}
+                  disabled={item.disabled}
+                  external={item.external}
                   icon={item.icon}
                   key={item.title}
                   path={item.path}
@@ -139,11 +142,6 @@ const SideNav = (props) => {
       {content}
     </Drawer>
   );
-};
-
-SideNav.propTypes = {
-  onClose: PropTypes.func,
-  open: PropTypes.bool,
 };
 
 export default SideNav;
