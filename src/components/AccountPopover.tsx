@@ -8,7 +8,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useGetUserQuery, useLogoutMutation } from '../services/authentication';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 interface AccountPopoverProps {
   anchorEl: HTMLDivElement | null;
@@ -61,6 +61,13 @@ const AccountPopover: React.FC<AccountPopoverProps> = ({
       </Box>
       <Divider />
       <MenuList disablePadding dense>
+        <MenuItem
+          component={Link}
+          to='/portal/account-details'
+          sx={{ paddingY: '8px', paddingX: '16px' }}
+        >
+          Account Details
+        </MenuItem>
         <MenuItem
           onClick={handleSignOut}
           sx={{ color: 'red', paddingY: '8px', paddingX: '16px' }}

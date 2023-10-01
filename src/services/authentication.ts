@@ -8,6 +8,24 @@ interface LoginArgs {
   password: string;
 }
 
+interface GetUser {
+  id: number;
+  first_name: string;
+  middle_name: string;
+  last_name: string;
+  gender: string;
+  contact_number: string;
+  user: User;
+}
+
+interface UpdateUser {
+  first_name?: string;
+  middle_name?: string;
+  last_name?: string;
+  gender?: string;
+  contact_number?: string;
+}
+
 export const authentication = createApi({
   reducerPath: 'authentication',
   baseQuery: fetchBaseQuery({
@@ -17,7 +35,7 @@ export const authentication = createApi({
   endpoints: (builder) => ({
     login: builder.mutation<Login, LoginArgs>({
       query: ({ email, password }) => ({
-        url: `auth/login`,
+        url: `auth/admin/login`,
         method: 'POST',
         withCredentials: true,
         body: { email, password },
@@ -30,15 +48,27 @@ export const authentication = createApi({
         withCredentials: true,
       }),
     }),
-    getUser: builder.query<User, void>({
+    getUser: builder.query<GetUser, void>({
       query: () => ({
         url: `auth/user`,
         method: 'GET',
         withCredentials: true,
       }),
     }),
+    updateUser: builder.mutation<UpdateUser, UpdateUser>({
+      query: (details) => ({
+        url: `auth/user`,
+        method: 'POST',
+        withCredentials: true,
+        body: { details },
+      }),
+    }),
   }),
 });
 
-export const { useLoginMutation, useLogoutMutation, useGetUserQuery } =
-  authentication;
+export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useGetUserQuery,
+  useUpdateUserMutation,
+} = authentication;

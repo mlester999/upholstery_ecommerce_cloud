@@ -1,9 +1,8 @@
 export interface User {
   id: number;
-  first_name: string;
-  middle_name?: string;
-  last_name: string;
   email: string;
-  age: number;
-  gender: string;
+  user_type: number;
+  is_active: number;
+  created_at: string;
+  updated_at: string;
 }

@@ -5,6 +5,7 @@ import Login from './pages/login/Login';
 import Dashboard from './pages/portal/Dashboard';
 import Sellers from './pages/portal/Sellers';
 import Customers from './pages/portal/Customers';
+import AccountDetails from './pages/portal/AccountDetails';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path='/portal/dashboard' element={<Dashboard />} />
         <Route path='/portal/sellers' element={<Sellers />} />
         <Route path='/portal/customers' element={<Customers />} />
+        <Route path='/portal/account-details' element={<AccountDetails />} />
         <Route path='/' element={<Navigate to='/login' replace />} />
       </Routes>
     </BrowserRouter>
