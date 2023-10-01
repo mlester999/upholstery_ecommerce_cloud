@@ -45,7 +45,7 @@ export const items = [
   },
   {
     title: 'Products',
-    path: '/login',
+    path: '/portal/products',
     icon: (
       <SvgIcon fontSize='small'>
         <ShoppingBagIcon />
@@ -56,7 +56,7 @@ export const items = [
   },
   {
     title: 'Deliveries',
-    path: '/login',
+    path: '/portal/deliveries',
     icon: (
       <SvgIcon fontSize='small'>
         <TruckIcon />

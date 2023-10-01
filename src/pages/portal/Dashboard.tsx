@@ -102,7 +102,7 @@ const Main = () => {
                       name: 'Ekaterina Tankova',
                     },
                     createdAt: 1555016400000,
-                    status: 'pending',
+                    status: 'processing',
                   },
                   {
                     id: '9eaa1c7dd4433f413c308ce2',
@@ -122,7 +122,7 @@ const Main = () => {
                       name: 'Alexa Richardson',
                     },
                     createdAt: 1554930000000,
-                    status: 'refunded',
+                    status: 'shipped',
                   },
                   {
                     id: '1f4e1bd0a87cea23cdb83d18',
@@ -132,7 +132,7 @@ const Main = () => {
                       name: 'Anje Keizer',
                     },
                     createdAt: 1554757200000,
-                    status: 'pending',
+                    status: 'delivered',
                   },
                   {
                     id: '9f974f239d29ede969367103',
@@ -152,7 +152,7 @@ const Main = () => {
                       name: 'Adam Denisov',
                     },
                     createdAt: 1554670800000,
-                    status: 'delivered',
+                    status: 'processing',
                   },
                 ]}
                 sx={{ height: '100%' }}
