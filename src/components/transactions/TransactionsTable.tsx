@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
-import { DELIVERY_STATUS } from '../../constants/Enums';
+import { STATUS } from '../../constants/Enums';
 import SeverityPill from '../SeverityPill';
 
-const DeliveriesTable = (props) => {
+const TransactionsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -37,36 +37,28 @@ const DeliveriesTable = (props) => {
                 <TableCell>Order ID</TableCell>
                 <TableCell>Customer Name</TableCell>
                 <TableCell>Product Name</TableCell>
-                <TableCell>Price</TableCell>
                 <TableCell>Seller Name</TableCell>
                 <TableCell>Order Date</TableCell>
-                <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((delivery) => {
-                const isSelected = selected.includes(delivery.id);
-                const createdAt = format(delivery.createdAt, 'dd/MM/yyyy');
+              {items.map((transaction) => {
+                const isSelected = selected.includes(transaction.id);
+                const createdAt = format(transaction.createdAt, 'dd/MM/yyyy');
 
                 return (
-                  <TableRow hover key={delivery.id} selected={isSelected}>
+                  <TableRow hover key={transaction.id} selected={isSelected}>
                     <TableCell>
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {delivery.order_id}
+                          {transaction.transaction_id}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{delivery.customer}</TableCell>
-                    <TableCell>{delivery.product}</TableCell>
-                    <TableCell>₱{delivery.price}</TableCell>
-                    <TableCell>{delivery.seller}</TableCell>
+                    <TableCell>{transaction.customer}</TableCell>
+                    <TableCell>{transaction.product}</TableCell>
+                    <TableCell>{transaction.seller}</TableCell>
                     <TableCell>{createdAt}</TableCell>
-                    <TableCell>
-                      <SeverityPill color={DELIVERY_STATUS[delivery.status]}>
-                        {delivery.status}
-                      </SeverityPill>
-                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -87,7 +79,7 @@ const DeliveriesTable = (props) => {
   );
 };
 
-DeliveriesTable.propTypes = {
+TransactionsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -96,4 +88,4 @@ DeliveriesTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default DeliveriesTable;
+export default TransactionsTable;

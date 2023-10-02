@@ -2,29 +2,29 @@ import { useCallback, useMemo, useState } from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {
   Box,
-  Button,
   Container,
   Stack,
-  SvgIcon,
   Typography,
+  Button,
+  SvgIcon,
 } from '@mui/material';
-import SellersTable from '../../components/sellers/SellersTable';
-import SellersSearch from '../../components/sellers/SellersSearch';
+import DiscountVouchersTable from '../../components/discount-vouchers/DiscountVouchersTable';
+import DiscountVouchersSearch from '../../components/discount-vouchers/DiscountVouchersSearch';
 import { applyPagination } from '../../utils/applyPagination';
 import PortalLayout from '../../layouts/PortalLayout';
+import { discountVouchersData } from '../../utils/mockedDiscountVouchersData';
 import Colors from '../../constants/Colors';
-import { sellersData } from '../../utils/mockedSellersData';
 
-const useSellers = (page, rowsPerPage) => {
+const useDiscountVouchers = (page, rowsPerPage) => {
   return useMemo(() => {
-    return applyPagination(sellersData, page, rowsPerPage);
+    return applyPagination(discountVouchersData, page, rowsPerPage);
   }, [page, rowsPerPage]);
 };
 
-const Sellers = () => {
+const DiscountVouchers = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const sellers = useSellers(page, rowsPerPage);
+  const discountVouchers = useDiscountVouchers(page, rowsPerPage);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -47,7 +47,7 @@ const Sellers = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Sellers</Typography>
+                <Typography variant='h4'>Discount Vouchers</Typography>
               </Stack>
 
               <Button
@@ -61,13 +61,13 @@ const Sellers = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Seller
+                Add New Discount Voucher
               </Button>
             </Stack>
-            <SellersSearch />
-            <SellersTable
-              count={sellersData.length}
-              items={sellers}
+            <DiscountVouchersSearch />
+            <DiscountVouchersTable
+              count={discountVouchersData.length}
+              items={discountVouchers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -80,4 +80,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default DiscountVouchers;

@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
-import { DELIVERY_STATUS } from '../../constants/Enums';
+import { RETURN_REFUND_STATUS } from '../../constants/Enums';
 import SeverityPill from '../SeverityPill';
 
-const DeliveriesTable = (props) => {
+const ReturnsAndRefundsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -34,37 +34,31 @@ const DeliveriesTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Order ID</TableCell>
                 <TableCell>Customer Name</TableCell>
                 <TableCell>Product Name</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>Comments</TableCell>
                 <TableCell>Seller Name</TableCell>
                 <TableCell>Order Date</TableCell>
                 <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((delivery) => {
-                const isSelected = selected.includes(delivery.id);
-                const createdAt = format(delivery.createdAt, 'dd/MM/yyyy');
+              {items.map((returnRefund) => {
+                const isSelected = selected.includes(returnRefund.id);
+                const createdAt = format(returnRefund.createdAt, 'dd/MM/yyyy');
 
                 return (
-                  <TableRow hover key={delivery.id} selected={isSelected}>
-                    <TableCell>
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
-                          {delivery.order_id}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell>{delivery.customer}</TableCell>
-                    <TableCell>{delivery.product}</TableCell>
-                    <TableCell>₱{delivery.price}</TableCell>
-                    <TableCell>{delivery.seller}</TableCell>
+                  <TableRow hover key={returnRefund.id} selected={isSelected}>
+                    <TableCell>{returnRefund.customer}</TableCell>
+                    <TableCell>{returnRefund.product}</TableCell>
+                    <TableCell>{returnRefund.comments}</TableCell>
+                    <TableCell>{returnRefund.seller}</TableCell>
                     <TableCell>{createdAt}</TableCell>
                     <TableCell>
-                      <SeverityPill color={DELIVERY_STATUS[delivery.status]}>
-                        {delivery.status}
+                      <SeverityPill
+                        color={RETURN_REFUND_STATUS[returnRefund.status]}
+                      >
+                        {returnRefund.status}
                       </SeverityPill>
                     </TableCell>
                   </TableRow>
@@ -87,7 +81,7 @@ const DeliveriesTable = (props) => {
   );
 };
 
-DeliveriesTable.propTypes = {
+ReturnsAndRefundsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -96,4 +90,4 @@ DeliveriesTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default DeliveriesTable;
+export default ReturnsAndRefundsTable;

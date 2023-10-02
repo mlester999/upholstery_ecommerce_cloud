@@ -13,26 +13,22 @@ import {
   FormHelperText,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-import {
-  useGetUserQuery,
-  useUpdateUserMutation,
-} from '../../services/authentication';
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
+import { DatePicker } from '@mui/x-date-pickers';
 
-const AccountProfileDetails = () => {
-  const { data: user } = useGetUserQuery();
-  const [updateUser, { isLoading }] = useUpdateUserMutation();
+const AddNewCustomerFields = () => {
   const navigate = useNavigate();
 
   const initialValues = {
-    firstName: user?.first_name,
-    middleName: user?.middle_name,
-    lastName: user?.last_name,
-    email: user?.user.email,
-    contactNumber: user?.contact_number,
-    gender: user?.gender,
+    firstName: '',
+    middleName: '',
+    lastName: '',
+    email: '',
+    contactNumber: '',
+    gender: '',
+    birthDate: null,
   };
 
   function findChangedProperties(
@@ -70,25 +66,19 @@ const AccountProfileDetails = () => {
           email: Yup.string()
             .email('Must be a valid email')
             .max(255)
-            .required('Email is required'),
+            .required('Email Address is required'),
           contactNumber: Yup.string()
             .matches(/^(09\d{9})?$/, 'Invalid Contact Number')
-            .required('Contact number is required'),
+            .required('Contact Number is required'),
           gender: Yup.string()
             .oneOf(['Male', 'Female'], 'Invalid gender')
             .required('Gender is required'),
+          birthDate: Yup.date()
+            .required('Birth Date is required')
+            .max(new Date(), 'Birth Date cannot be in the future'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          const updatedValues = findChangedProperties(
-            initialValues,
-            values,
-            user?.id,
-            user?.user.id
-          );
-          updateUser(updatedValues)
-            .unwrap()
-            .then((payload) => navigate(0))
-            .catch((error) => console.log(error));
+          console.log(values);
         }}
       >
         {({
@@ -96,6 +86,7 @@ const AccountProfileDetails = () => {
           handleBlur,
           handleChange,
           handleSubmit,
+          setFieldValue,
           isSubmitting,
           touched,
           values,
@@ -103,8 +94,8 @@ const AccountProfileDetails = () => {
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='These information can be edited.'
-                title='My Profile'
+                subheader='Please fill in the input fields to add a customer.'
+                title='Customer Information'
               />
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
@@ -180,6 +171,66 @@ const AccountProfileDetails = () => {
                     <Grid xs={12} md={6}>
                       <FormControl
                         fullWidth
+                        error={Boolean(touched.gender && errors.gender)}
+                      >
+                        <TextField
+                          fullWidth
+                          error={Boolean(touched.gender && errors.gender)}
+                          label='Select Gender'
+                          name='gender'
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          required
+                          select
+                          SelectProps={{ native: true }}
+                          value={values.gender}
+                        >
+                          <option value='' disabled hidden></option>
+                          <option value='Male'>Male</option>
+                          <option value='Female'>Female</option>
+                        </TextField>
+                        {touched.gender && errors.gender && (
+                          <FormHelperText error id='text-gender'>
+                            {errors.gender}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12} md={6}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(touched.birthDate && errors.birthDate)}
+                      >
+                        <DatePicker
+                          disableFuture
+                          label='Select a Birth Date'
+                          name='birthDate'
+                          onBlur={handleBlur}
+                          onChange={(value) =>
+                            setFieldValue('birthDate', value, true)
+                          }
+                          required
+                          value={values.birthDate}
+                          slotProps={{
+                            textField: {
+                              error: Boolean(
+                                touched.birthDate && errors.birthDate
+                              ),
+                            },
+                          }}
+                        />
+                        {touched.birthDate && errors.birthDate && (
+                          <FormHelperText error id='text-birth-date'>
+                            {errors.birthDate}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12} md={6}>
+                      <FormControl
+                        fullWidth
                         error={Boolean(touched.email && errors.email)}
                       >
                         <TextField
@@ -226,41 +277,12 @@ const AccountProfileDetails = () => {
                         )}
                       </FormControl>
                     </Grid>
-
-                    <Grid xs={12} md={12}>
-                      <FormControl
-                        fullWidth
-                        error={Boolean(touched.gender && errors.gender)}
-                      >
-                        <TextField
-                          fullWidth
-                          error={Boolean(touched.gender && errors.gender)}
-                          label='Select Gender'
-                          name='gender'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.gender}
-                        >
-                          <option value='Male'>Male</option>
-                          <option value='Female'>Female</option>
-                        </TextField>
-                        {touched.gender && errors.gender && (
-                          <FormHelperText error id='text-gender'>
-                            {errors.gender}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </Grid>
                   </Grid>
                 </Box>
               </CardContent>
               <Divider />
               <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <LoadingButton
-                  loading={isLoading}
                   disableElevation
                   disabled={isSubmitting}
                   type='submit'
@@ -278,4 +300,4 @@ const AccountProfileDetails = () => {
   );
 };
 
-export default AccountProfileDetails;
+export default AddNewCustomerFields;

@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
-import { DELIVERY_STATUS } from '../../constants/Enums';
+import { STATUS } from '../../constants/Enums';
 import SeverityPill from '../SeverityPill';
 
-const DeliveriesTable = (props) => {
+const DiscountVouchersTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -34,39 +34,46 @@ const DeliveriesTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Order ID</TableCell>
-                <TableCell>Customer Name</TableCell>
-                <TableCell>Product Name</TableCell>
-                <TableCell>Price</TableCell>
-                <TableCell>Seller Name</TableCell>
-                <TableCell>Order Date</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Voucher ID</TableCell>
+                <TableCell>Voucher Name</TableCell>
+                <TableCell>Description</TableCell>
+                <TableCell>Price Discount</TableCell>
+                <TableCell>Mode</TableCell>
+                <TableCell>Shipping Discount</TableCell>
+                <TableCell>Mode</TableCell>
+                <TableCell>Created At</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((delivery) => {
-                const isSelected = selected.includes(delivery.id);
-                const createdAt = format(delivery.createdAt, 'dd/MM/yyyy');
+              {items.map((discountVoucher) => {
+                const isSelected = selected.includes(discountVoucher.id);
+                const createdAt = format(
+                  discountVoucher.createdAt,
+                  'dd/MM/yyyy'
+                );
 
                 return (
-                  <TableRow hover key={delivery.id} selected={isSelected}>
+                  <TableRow
+                    hover
+                    key={discountVoucher.id}
+                    selected={isSelected}
+                  >
                     <TableCell>
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {delivery.order_id}
+                          {discountVoucher.voucher_id}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{delivery.customer}</TableCell>
-                    <TableCell>{delivery.product}</TableCell>
-                    <TableCell>₱{delivery.price}</TableCell>
-                    <TableCell>{delivery.seller}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                    <TableCell>{discountVoucher.name}</TableCell>
+                    <TableCell>{discountVoucher.description}</TableCell>
+                    <TableCell>{discountVoucher.price_discount}</TableCell>
+                    <TableCell>{discountVoucher.price_discount_mode}</TableCell>
+                    <TableCell>{discountVoucher.shipping_discount}</TableCell>
                     <TableCell>
-                      <SeverityPill color={DELIVERY_STATUS[delivery.status]}>
-                        {delivery.status}
-                      </SeverityPill>
+                      {discountVoucher.shipping_discount_mode}
                     </TableCell>
+                    <TableCell>{createdAt}</TableCell>
                   </TableRow>
                 );
               })}
@@ -87,7 +94,7 @@ const DeliveriesTable = (props) => {
   );
 };
 
-DeliveriesTable.propTypes = {
+DiscountVouchersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -96,4 +103,4 @@ DeliveriesTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default DeliveriesTable;
+export default DiscountVouchersTable;

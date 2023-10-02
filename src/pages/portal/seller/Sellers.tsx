@@ -8,23 +8,24 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import CustomersTable from '../../components/customers/CustomersTable';
-import CustomersSearch from '../../components/customers/CustomersSearch';
-import { applyPagination } from '../../utils/applyPagination';
-import PortalLayout from '../../layouts/PortalLayout';
-import Colors from '../../constants/Colors';
-import { customersData } from '../../utils/mockedCustomersData';
+import SellersTable from '../../../components/sellers/SellersTable';
+import SellersSearch from '../../../components/sellers/SellersSearch';
+import { applyPagination } from '../../../utils/applyPagination';
+import PortalLayout from '../../../layouts/PortalLayout';
+import Colors from '../../../constants/Colors';
+import { sellersData } from '../../../utils/mockedSellersData';
+import { Link } from 'react-router-dom';
 
-const useCustomers = (page, rowsPerPage) => {
+const useSellers = (page, rowsPerPage) => {
   return useMemo(() => {
-    return applyPagination(customersData, page, rowsPerPage);
+    return applyPagination(sellersData, page, rowsPerPage);
   }, [page, rowsPerPage]);
 };
 
-const Customers = () => {
+const Sellers = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
+  const sellers = useSellers(page, rowsPerPage);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -47,10 +48,12 @@ const Customers = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Customers</Typography>
+                <Typography variant='h4'>Sellers</Typography>
               </Stack>
 
               <Button
+                component={Link}
+                to='/portal/sellers/add'
                 startIcon={
                   <SvgIcon fontSize='small'>
                     <PlusIcon />
@@ -61,13 +64,13 @@ const Customers = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Customer
+                Add New Seller
               </Button>
             </Stack>
-            <CustomersSearch />
-            <CustomersTable
-              count={customersData.length}
-              items={customers}
+            <SellersSearch />
+            <SellersTable
+              count={sellersData.length}
+              items={sellers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -80,4 +83,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default Sellers;

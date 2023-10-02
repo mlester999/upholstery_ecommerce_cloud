@@ -13,10 +13,10 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
-import { DELIVERY_STATUS } from '../../constants/Enums';
+import { STATUS } from '../../constants/Enums';
 import SeverityPill from '../SeverityPill';
 
-const DeliveriesTable = (props) => {
+const ReviewsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -34,39 +34,35 @@ const DeliveriesTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Order ID</TableCell>
+                <TableCell>Review ID</TableCell>
                 <TableCell>Customer Name</TableCell>
+                <TableCell>Comments</TableCell>
                 <TableCell>Product Name</TableCell>
-                <TableCell>Price</TableCell>
+                <TableCell>Ratings</TableCell>
                 <TableCell>Seller Name</TableCell>
-                <TableCell>Order Date</TableCell>
-                <TableCell>Status</TableCell>
+                <TableCell>Created At</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((delivery) => {
-                const isSelected = selected.includes(delivery.id);
-                const createdAt = format(delivery.createdAt, 'dd/MM/yyyy');
+              {items.map((review) => {
+                const isSelected = selected.includes(review.id);
+                const createdAt = format(review.createdAt, 'dd/MM/yyyy');
 
                 return (
-                  <TableRow hover key={delivery.id} selected={isSelected}>
+                  <TableRow hover key={review.id} selected={isSelected}>
                     <TableCell>
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {delivery.order_id}
+                          {review.review_id}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{delivery.customer}</TableCell>
-                    <TableCell>{delivery.product}</TableCell>
-                    <TableCell>₱{delivery.price}</TableCell>
-                    <TableCell>{delivery.seller}</TableCell>
+                    <TableCell>{review.customer}</TableCell>
+                    <TableCell>{review.comments}</TableCell>
+                    <TableCell>{review.product}</TableCell>
+                    <TableCell>{review.ratings}</TableCell>
+                    <TableCell>{review.seller}</TableCell>
                     <TableCell>{createdAt}</TableCell>
-                    <TableCell>
-                      <SeverityPill color={DELIVERY_STATUS[delivery.status]}>
-                        {delivery.status}
-                      </SeverityPill>
-                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -87,7 +83,7 @@ const DeliveriesTable = (props) => {
   );
 };
 
-DeliveriesTable.propTypes = {
+ReviewsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -96,4 +92,4 @@ DeliveriesTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default DeliveriesTable;
+export default ReviewsTable;

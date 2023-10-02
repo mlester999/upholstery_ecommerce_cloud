@@ -17,7 +17,7 @@ import {
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
 import SeverityPill from '../SeverityPill';
-import { STATUS } from '../../constants/Enums';
+import { DELIVERY_STATUS } from '../../constants/Enums';
 
 export const OverviewLatestOrders = (props) => {
   const { orders = [], sx } = props;
@@ -46,7 +46,7 @@ export const OverviewLatestOrders = (props) => {
                     <TableCell>{order.customer.name}</TableCell>
                     <TableCell>{createdAt}</TableCell>
                     <TableCell>
-                      <SeverityPill color={STATUS[order.status]}>
+                      <SeverityPill color={DELIVERY_STATUS[order.status]}>
                         {order.status}
                       </SeverityPill>
                     </TableCell>

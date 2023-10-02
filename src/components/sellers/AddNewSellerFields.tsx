@@ -21,7 +21,7 @@ import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
 
-const AccountProfileDetails = () => {
+const AddNewSellerFields = () => {
   const { data: user } = useGetUserQuery();
   const [updateUser, { isLoading }] = useUpdateUserMutation();
   const navigate = useNavigate();
@@ -103,8 +103,8 @@ const AccountProfileDetails = () => {
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='These information can be edited.'
-                title='My Profile'
+                subheader='Please fill in the input fields to add a seller.'
+                title='Seller Information'
               />
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
@@ -278,4 +278,4 @@ const AccountProfileDetails = () => {
   );
 };
 
-export default AccountProfileDetails;
+export default AddNewSellerFields;

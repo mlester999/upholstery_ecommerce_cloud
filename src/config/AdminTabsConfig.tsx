@@ -5,6 +5,7 @@ import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
 import TruckIcon from '@heroicons/react/24/solid/TruckIcon';
 import UserGroupIcon from '@heroicons/react/24/solid/UserGroupIcon';
 import StarIcon from '@heroicons/react/24/solid/StarIcon';
+import ReceiptRefundIcon from '@heroicons/react/24/solid/ReceiptRefundIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import DocumentTextIcon from '@heroicons/react/24/solid/DocumentTextIcon';
 import { SvgIcon } from '@mui/material';
@@ -67,7 +68,7 @@ export const items = [
   },
   {
     title: 'Discount Vouchers',
-    path: '/login',
+    path: '/portal/discount-vouchers',
     icon: (
       <SvgIcon fontSize='small'>
         <ReceiptPercentIcon />
@@ -78,7 +79,7 @@ export const items = [
   },
   {
     title: 'Transactions',
-    path: '/login',
+    path: '/portal/transactions',
     icon: (
       <SvgIcon fontSize='small'>
         <CurrencyDollarIcon />
@@ -89,7 +90,7 @@ export const items = [
   },
   {
     title: 'Reviews',
-    path: '/login',
+    path: '/portal/reviews',
     icon: (
       <SvgIcon fontSize='small'>
         <StarIcon />
@@ -99,8 +100,19 @@ export const items = [
     external: false,
   },
   {
+    title: 'Returns / Refunds',
+    path: '/portal/returns-and-refunds',
+    icon: (
+      <SvgIcon fontSize='small'>
+        <ReceiptRefundIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
     title: 'Logs',
-    path: '/login',
+    path: '/portal/logs',
     icon: (
       <SvgIcon fontSize='small'>
         <DocumentTextIcon />
