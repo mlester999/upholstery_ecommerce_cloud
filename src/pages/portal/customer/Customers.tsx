@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {
   Box,
@@ -13,19 +13,20 @@ import CustomersSearch from '../../../components/customers/CustomersSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
-import { customersData } from '../../../utils/mockedCustomersData';
 import { Link } from 'react-router-dom';
+import { useGetCustomersQuery } from '../../../services/crud-customer';
 
-const useCustomers = (page, rowsPerPage) => {
+const useCustomers = (page, rowsPerPage, customersData) => {
   return useMemo(() => {
     return applyPagination(customersData, page, rowsPerPage);
-  }, [page, rowsPerPage]);
+  }, [page, rowsPerPage, customersData]);
 };
 
 const Customers = () => {
+  const { data: customersData } = useGetCustomersQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const customers = useCustomers(page, rowsPerPage);
+  const customers = useCustomers(page, rowsPerPage, customersData);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -69,8 +70,8 @@ const Customers = () => {
             </Stack>
             <CustomersSearch />
             <CustomersTable
-              count={customersData.length}
-              items={customers}
+              count={customersData?.length}
+              items={customers?.sort((a, b) => b.id - a.id)}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

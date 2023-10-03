@@ -15,6 +15,7 @@ import ReturnsAndRefunds from './pages/portal/ReturnsAndRefunds';
 import Logs from './pages/portal/Logs';
 import AddNewSeller from './pages/portal/seller/AddNewSeller';
 import AddNewCustomer from './pages/portal/customer/AddNewCustomer';
+import ViewCustomer from './pages/portal/customer/ViewCustomer';
 
 function App() {
   return (
@@ -25,8 +26,11 @@ function App() {
         <Route path='/portal/dashboard' element={<Dashboard />} />
         <Route path='/portal/sellers' element={<Sellers />} />
         <Route path='/portal/sellers/add' element={<AddNewSeller />} />
-        <Route path='/portal/customers' element={<Customers />} />
-        <Route path='/portal/customers/add' element={<AddNewCustomer />} />
+        <Route path='/portal/customers'>
+          <Route index element={<Customers />} />
+          <Route path='view/:customerId' element={<ViewCustomer />} />
+          <Route path='add' element={<AddNewCustomer />} />
+        </Route>
         <Route path='/portal/products' element={<Products />} />
         <Route path='/portal/deliveries' element={<Deliveries />} />
         <Route

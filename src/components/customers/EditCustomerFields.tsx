@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -11,6 +12,7 @@ import {
   TextField,
   FormControl,
   FormHelperText,
+  Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -21,10 +23,10 @@ import { useSelectRegion } from '../../hooks/useSelectRegion';
 import { useSelectProvince } from '../../hooks/useSelectProvince';
 import { useSelectCity } from '../../hooks/useSelectCity';
 import { useSelectBarangay } from '../../hooks/useSelectBarangay';
-import { useCreateCustomerMutation } from '../../services/crud-customer';
 
-const AddNewCustomerFields = () => {
-  const [createCustomer, { isLoading }] = useCreateCustomerMutation();
+const EditCustomerFields = (props) => {
+  const { customer } = props;
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const regions = useSelectRegion();
   const [provinces, setRegionCode] = useSelectProvince();
@@ -32,44 +34,50 @@ const AddNewCustomerFields = () => {
   const [barangays, setCityCode] = useSelectBarangay();
 
   const initialValues = {
-    first_name: '',
-    middle_name: '',
-    last_name: '',
-    email: '',
-    contact_number: '',
-    gender: '',
-    birth_date: null,
-    region: '',
-    province: '',
-    city: '',
-    barangay: '',
-    zip_code: '',
-    street_address: '',
+    first_name: customer?.first_name,
+    middle_name: customer?.middle_name,
+    last_name: customer?.last_name,
+    email: customer?.user.email,
+    contact_number: customer?.contact_number,
+    gender: customer?.gender,
+    birth_date: '',
+    region: customer?.region,
+    province: customer?.province,
+    city: customer?.city,
+    barangay: customer?.barangay,
+    zip_code: customer?.zip_code,
+    street_address: customer?.street_address,
   };
 
-  function findChangedProperties(
-    oldObj,
-    newObj,
-    id: number | undefined,
-    userId: number | undefined
-  ) {
-    const changedProperties = {};
+  const selectedRegion = regions?.find(
+    (el) => el.region_name === initialValues.region
+  );
+  const selectedProvince = provinces?.find(
+    (el) => el.province_name === initialValues.province
+  );
+  const selectedCity = cities?.find(
+    (el) => el.city_name === initialValues.city
+  );
 
-    // Iterate through the keys of newObj
-    for (const key in newObj) {
-      if (Object.prototype.hasOwnProperty.call(newObj, key)) {
-        // Check if the key exists in oldObj and the values are different
-        if (oldObj[key] !== newObj[key]) {
-          changedProperties[key] = newObj[key];
-        }
-      }
+  useEffect(() => {
+    if (regions) {
+      setRegionCode(selectedRegion?.region_code);
     }
 
-    changedProperties.id = id;
-    changedProperties.user_id = userId;
+    if (provinces) {
+      setProvinceCode(selectedProvince?.province_code);
+    }
 
-    return changedProperties;
-  }
+    if (cities) {
+      setCityCode(selectedCity?.city_code);
+    }
+
+    if (regions && provinces && cities && barangays) {
+      setIsLoading(false);
+    }
+  }, [regions, provinces, cities, barangays]);
+
+  if (isLoading) return <Typography>Loading...</Typography>;
 
   return (
     <>
@@ -100,10 +108,7 @@ const AddNewCustomerFields = () => {
           street_address: Yup.string().required('Street Address is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          createCustomer(values)
-            .unwrap()
-            .then((payload) => navigate('/portal/customers'))
-            .catch((error) => setErrors({ email: error.data.message }));
+          console.log(values);
         }}
       >
         {({
@@ -119,8 +124,8 @@ const AddNewCustomerFields = () => {
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='Please fill in the input fields to add a customer.'
-                title='Customer Information'
+                subheader='Please fill in the input fields to edit the customer information.'
+                title='Update Customer Information'
               />
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
@@ -359,7 +364,6 @@ const AddNewCustomerFields = () => {
                         error={Boolean(touched.province && errors.province)}
                       >
                         <TextField
-                          disabled={Boolean(provinces?.length === 0)}
                           fullWidth
                           error={Boolean(touched.province && errors.province)}
                           label='Select Province'
@@ -542,7 +546,7 @@ const AddNewCustomerFields = () => {
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}
                 >
-                  Save details
+                  Update details
                 </LoadingButton>
               </CardActions>
             </Card>
@@ -553,4 +557,4 @@ const AddNewCustomerFields = () => {
   );
 };
 
-export default AddNewCustomerFields;
+export default EditCustomerFields;

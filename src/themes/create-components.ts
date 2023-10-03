@@ -249,7 +249,7 @@ export function createComponents({ palette }: CreateComponentsProps) {
       styleOverrides: {
         root: {
           borderBottomColor: palette.divider,
-          padding: '15px 16px',
+          padding: '24px 16px',
         },
       },
     },

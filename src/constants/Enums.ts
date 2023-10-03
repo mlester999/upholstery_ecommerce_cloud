@@ -10,3 +10,8 @@ export const RETURN_REFUND_STATUS = {
   refunded: 'success',
   rejected: 'error',
 };
+
+export const ACTIVE_STATUS = {
+  0: 'error',
+  1: 'success',
+};

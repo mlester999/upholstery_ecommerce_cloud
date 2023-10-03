@@ -13,6 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
+import { ACTIVE_STATUS } from '../../constants/Enums';
+import SeverityPill from '../SeverityPill';
+import { useNavigate } from 'react-router-dom';
 
 const CustomersTable = (props) => {
   const {
@@ -25,6 +28,8 @@ const CustomersTable = (props) => {
     selected = [],
   } = props;
 
+  const navigate = useNavigate();
+
   return (
     <Card>
       <Scrollbar>
@@ -32,34 +37,253 @@ const CustomersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Signed Up</TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  First Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Middle Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Last Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Email Address
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Gender
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Birth Date
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Contact Number
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Region
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Province
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  City
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Barangay
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Zip Code
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Street Address
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Account Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Created At
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((customer) => {
+              {items?.map((customer) => {
                 const isSelected = selected.includes(customer.id);
-                const createdAt = format(customer.createdAt, 'dd/MM/yyyy');
+
+                const createdDate = new Date(customer.created_at);
+                const createdAt = format(createdDate, 'yyyy-MM-dd');
 
                 return (
-                  <TableRow hover key={customer.id} selected={isSelected}>
-                    <TableCell>
+                  <TableRow
+                    onClick={() =>
+                      navigate(`/portal/customers/view/${customer.id}`)
+                    }
+                    hover
+                    sx={{ cursor: 'pointer' }}
+                    key={customer.id}
+                    selected={isSelected}
+                  >
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {customer.name}
+                          {customer.first_name}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{customer.email}</TableCell>
-                    <TableCell>
-                      {customer.address.city}, {customer.address.state},{' '}
-                      {customer.address.country}
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        {customer.middle_name ? (
+                          <Typography variant='subtitle2'>
+                            {customer.middle_name}
+                          </Typography>
+                        ) : (
+                          <Typography variant='subtitle3' color='gray'>
+                            N/A
+                          </Typography>
+                        )}
+                      </Stack>
                     </TableCell>
-                    <TableCell>{customer.phone}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        <Typography variant='subtitle2'>
+                          {customer.last_name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.user.email}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.gender}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.birth_date}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.contact_number}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.region}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.province}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.city}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.barangay}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.zip_code}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {customer.street_address}
+                    </TableCell>
+                    <TableCell>
+                      <SeverityPill
+                        color={ACTIVE_STATUS[customer.user.is_active]}
+                      >
+                        {customer.user.is_active ? 'Activated' : 'Deactivated'}
+                      </SeverityPill>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {createdAt}
+                    </TableCell>
                   </TableRow>
                 );
               })}
