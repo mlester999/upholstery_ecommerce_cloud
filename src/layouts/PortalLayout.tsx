@@ -1,9 +1,9 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { Button, Typography } from '@mui/material';
-import { Navigate, useNavigate } from 'react-router-dom';
+import React, { useState, useCallback } from 'react';
+import { Box } from '@mui/material';
+import { Navigate } from 'react-router-dom';
 import SideNav from '../components/SideNav';
 import TopNav from '../components/TopNav';
-import { useGetUserQuery, useLogoutMutation } from '../services/authentication';
+import { useGetUserQuery } from '../services/authentication';
 import { styled } from '@mui/material/styles';
 import { SIDE_NAV_WIDTH } from '../constants/BoxModel';
 
@@ -38,7 +38,7 @@ const PortalLayout = ({ children }) => {
   // }, []);
 
   if (isLoading || isFetching) {
-    return <div>Loading...</div>;
+    return <Box sx={{ height: '100vh', backgroundColor: '#fff' }}></Box>;
   }
 
   if (isError) {

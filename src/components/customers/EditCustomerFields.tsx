@@ -12,7 +12,6 @@ import {
   TextField,
   FormControl,
   FormHelperText,
-  Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -23,9 +22,14 @@ import { useSelectRegion } from '../../hooks/useSelectRegion';
 import { useSelectProvince } from '../../hooks/useSelectProvince';
 import { useSelectCity } from '../../hooks/useSelectCity';
 import { useSelectBarangay } from '../../hooks/useSelectBarangay';
+import SkeletonEditCustomerFields from './SkeletonEditCustomerFields';
+import dayjs from 'dayjs';
+import { useUpdateCustomerMutation } from '../../services/crud-customer';
 
 const EditCustomerFields = (props) => {
   const { customer } = props;
+  const [updateCustomer, { isLoading: updateLoading }] =
+    useUpdateCustomerMutation();
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const regions = useSelectRegion();
@@ -40,7 +44,7 @@ const EditCustomerFields = (props) => {
     email: customer?.user.email,
     contact_number: customer?.contact_number,
     gender: customer?.gender,
-    birth_date: '',
+    birth_date: dayjs(customer?.birth_date),
     region: customer?.region,
     province: customer?.province,
     city: customer?.city,
@@ -59,25 +63,57 @@ const EditCustomerFields = (props) => {
     (el) => el.city_name === initialValues.city
   );
 
+  function findChangedProperties(
+    oldObj,
+    newObj,
+    id: number | undefined,
+    userId: number | undefined
+  ) {
+    const changedProperties = {};
+
+    // Iterate through the keys of newObj
+    for (const key in newObj) {
+      if (Object.prototype.hasOwnProperty.call(newObj, key)) {
+        // Check if the key exists in oldObj and the values are different
+        if (oldObj[key] !== newObj[key]) {
+          changedProperties[key] = newObj[key];
+        }
+      }
+    }
+
+    changedProperties.id = id;
+    changedProperties.user_id = userId;
+
+    return changedProperties;
+  }
+
   useEffect(() => {
-    if (regions) {
+    if (regions?.length > 0) {
       setRegionCode(selectedRegion?.region_code);
     }
+  }, [regions]);
 
-    if (provinces) {
+  useEffect(() => {
+    if (provinces?.length > 0) {
       setProvinceCode(selectedProvince?.province_code);
     }
+  }, [provinces]);
 
-    if (cities) {
+  useEffect(() => {
+    if (cities?.length > 0) {
       setCityCode(selectedCity?.city_code);
     }
+  }, [cities]);
 
-    if (regions && provinces && cities && barangays) {
+  useEffect(() => {
+    if (barangays?.length > 0) {
       setIsLoading(false);
     }
-  }, [regions, provinces, cities, barangays]);
+  }, [barangays]);
 
-  if (isLoading) return <Typography>Loading...</Typography>;
+  if (isLoading) {
+    return <SkeletonEditCustomerFields />;
+  }
 
   return (
     <>
@@ -108,7 +144,17 @@ const EditCustomerFields = (props) => {
           street_address: Yup.string().required('Street Address is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          console.log(values);
+          const updatedValues = findChangedProperties(
+            initialValues,
+            values,
+            customer?.id,
+            customer?.user.id
+          );
+
+          updateCustomer(updatedValues)
+            .unwrap()
+            .then((payload) => navigate('/portal/customers'))
+            .catch((error) => console.log(error));
         }}
       >
         {({
@@ -120,11 +166,12 @@ const EditCustomerFields = (props) => {
           isSubmitting,
           touched,
           values,
+          dirty,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='Please fill in the input fields to edit the customer information.'
+                subheader='Please update the input fields to edit the customer information.'
                 title='Update Customer Information'
               />
               <CardContent sx={{ pt: 0 }}>
@@ -364,6 +411,10 @@ const EditCustomerFields = (props) => {
                         error={Boolean(touched.province && errors.province)}
                       >
                         <TextField
+                          disabled={
+                            Boolean(provinces?.length === 0) ||
+                            Boolean(!values.region)
+                          }
                           fullWidth
                           error={Boolean(touched.province && errors.province)}
                           label='Select Province'
@@ -540,8 +591,9 @@ const EditCustomerFields = (props) => {
               <Divider />
               <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <LoadingButton
+                  loading={updateLoading}
                   disableElevation
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty}
                   type='submit'
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}

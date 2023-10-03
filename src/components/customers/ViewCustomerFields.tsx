@@ -14,12 +14,21 @@ import {
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { DatePicker } from '@mui/x-date-pickers';
+import {
+  useActivateCustomerMutation,
+  useDeactivateCustomerMutation,
+} from '../../services/crud-customer';
 
 const ViewCustomerFields = (props) => {
   const { customer } = props;
   const navigate = useNavigate();
+  const { customerId } = useParams();
+  const [activateCustomer, { isLoading: activateLoading }] =
+    useActivateCustomerMutation();
+  const [deactivateCustomer, { isLoading: deactivateLoading }] =
+    useDeactivateCustomerMutation();
 
   return (
     <Card>
@@ -277,8 +286,15 @@ const ViewCustomerFields = (props) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        {customer.user.is_active ? (
+        {customer?.user.is_active ? (
           <LoadingButton
+            onClick={() =>
+              deactivateCustomer(customerId)
+                .unwrap()
+                .then((payload) => navigate('/portal/customers'))
+                .catch((error) => console.log(error))
+            }
+            loading={deactivateLoading}
             disableElevation
             variant='contained'
             sx={{
@@ -290,6 +306,13 @@ const ViewCustomerFields = (props) => {
           </LoadingButton>
         ) : (
           <LoadingButton
+            onClick={() =>
+              activateCustomer(customerId)
+                .unwrap()
+                .then((payload) => navigate('/portal/customers'))
+                .catch((error) => console.log(error))
+            }
+            loading={activateLoading}
             disableElevation
             variant='contained'
             sx={{
