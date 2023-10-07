@@ -1,4 +1,5 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import Cookies from 'js-cookie';
 import { Box } from '@mui/material';
 import { Navigate } from 'react-router-dom';
 import SideNav from '../components/SideNav';
@@ -26,6 +27,10 @@ const LayoutContainer = styled('div')({
 const PortalLayout = ({ children }) => {
   const { isLoading, isFetching, isError } = useGetUserQuery();
   const [openNav, setOpenNav] = useState(false);
+
+  useEffect(() => {
+    console.log(Cookies.get('is_authenticated'));
+  }, []);
 
   const handlePathnameChange = useCallback(() => {
     if (openNav) {
