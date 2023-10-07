@@ -145,6 +145,21 @@ const CustomersTable = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
+              {items.length === 0 && (
+                <TableRow>
+                  <TableCell
+                    colspan='12'
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Typography variant='subtitle2'>
+                      No Customers Found...
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
               {items?.map((customer) => {
                 const isSelected = selected.includes(customer.id);
 

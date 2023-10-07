@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import Colors from '../../constants/Colors';
 
-const SkeletonEditCustomerFields = () => {
+const SkeletonEditSellerFields = () => {
   return (
     <Card sx={{ borderRadius: 2 }}>
       <Grid container bgcolor='#fff' sx={{ padding: 3 }}>
@@ -193,4 +193,4 @@ const SkeletonEditCustomerFields = () => {
   );
 };
 
-export default SkeletonEditCustomerFields;
+export default SkeletonEditSellerFields;

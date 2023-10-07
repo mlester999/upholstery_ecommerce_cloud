@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -21,11 +22,16 @@ import { useSelectRegion } from '../../hooks/useSelectRegion';
 import { useSelectProvince } from '../../hooks/useSelectProvince';
 import { useSelectCity } from '../../hooks/useSelectCity';
 import { useSelectBarangay } from '../../hooks/useSelectBarangay';
-import { useCreateSellerMutation } from '../../services/crud-seller';
+import SkeletonEditSellerFields from './SkeletonEditSellerFields';
+import dayjs from 'dayjs';
+import { useUpdateSellerMutation } from '../../services/crud-seller';
 import { toast } from 'react-toastify';
 
-const AddNewSellerFields = () => {
-  const [createSeller, { isLoading }] = useCreateSellerMutation();
+const EditSellerFields = (props) => {
+  const { seller } = props;
+  const [updateSeller, { isLoading: updateLoading }] =
+    useUpdateSellerMutation();
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const regions = useSelectRegion();
   const [provinces, setRegionCode] = useSelectProvince();
@@ -33,20 +39,82 @@ const AddNewSellerFields = () => {
   const [barangays, setCityCode] = useSelectBarangay();
 
   const initialValues = {
-    first_name: '',
-    middle_name: '',
-    last_name: '',
-    email: '',
-    contact_number: '',
-    gender: '',
-    birth_date: null,
-    region: '',
-    province: '',
-    city: '',
-    barangay: '',
-    zip_code: '',
-    street_address: '',
+    first_name: seller?.first_name,
+    middle_name: seller?.middle_name,
+    last_name: seller?.last_name,
+    email: seller?.user.email,
+    contact_number: seller?.contact_number,
+    gender: seller?.gender,
+    birth_date: dayjs(seller?.birth_date),
+    region: seller?.region,
+    province: seller?.province,
+    city: seller?.city,
+    barangay: seller?.barangay,
+    zip_code: seller?.zip_code,
+    street_address: seller?.street_address,
   };
+
+  const selectedRegion = regions?.find(
+    (el) => el.region_name === initialValues.region
+  );
+  const selectedProvince = provinces?.find(
+    (el) => el.province_name === initialValues.province
+  );
+  const selectedCity = cities?.find(
+    (el) => el.city_name === initialValues.city
+  );
+
+  function findChangedProperties(
+    oldObj,
+    newObj,
+    id: number | undefined,
+    userId: number | undefined
+  ) {
+    const changedProperties = {};
+
+    // Iterate through the keys of newObj
+    for (const key in newObj) {
+      if (Object.prototype.hasOwnProperty.call(newObj, key)) {
+        // Check if the key exists in oldObj and the values are different
+        if (oldObj[key] !== newObj[key]) {
+          changedProperties[key] = newObj[key];
+        }
+      }
+    }
+
+    changedProperties.id = id;
+    changedProperties.user_id = userId;
+
+    return changedProperties;
+  }
+
+  useEffect(() => {
+    if (regions?.length > 0) {
+      setRegionCode(selectedRegion?.region_code);
+    }
+  }, [regions]);
+
+  useEffect(() => {
+    if (provinces?.length > 0) {
+      setProvinceCode(selectedProvince?.province_code);
+    }
+  }, [provinces]);
+
+  useEffect(() => {
+    if (cities?.length > 0) {
+      setCityCode(selectedCity?.city_code);
+    }
+  }, [cities]);
+
+  useEffect(() => {
+    if (barangays?.length > 0) {
+      setIsLoading(false);
+    }
+  }, [barangays]);
+
+  if (isLoading) {
+    return <SkeletonEditSellerFields />;
+  }
 
   return (
     <>
@@ -77,12 +145,19 @@ const AddNewSellerFields = () => {
           street_address: Yup.string().required('Street Address is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          createSeller(values)
+          const updatedValues = findChangedProperties(
+            initialValues,
+            values,
+            seller?.id,
+            seller?.user.id
+          );
+
+          updateSeller(updatedValues)
             .unwrap()
             .then((payload) => {
               navigate('/portal/sellers');
 
-              toast.success('Added Seller Successfully!', {
+              toast.success('Updated Seller Successfully!', {
                 position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -91,7 +166,7 @@ const AddNewSellerFields = () => {
                 theme: 'light',
               });
             })
-            .catch((error) => setErrors({ email: error.data.message }));
+            .catch((error) => console.log(error));
         }}
       >
         {({
@@ -103,12 +178,13 @@ const AddNewSellerFields = () => {
           isSubmitting,
           touched,
           values,
+          dirty,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='Please fill in the input fields to add a seller.'
-                title='Seller Information'
+                subheader='Please update the input fields to edit the seller information.'
+                title='Update Seller Information'
               />
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
@@ -347,7 +423,10 @@ const AddNewSellerFields = () => {
                         error={Boolean(touched.province && errors.province)}
                       >
                         <TextField
-                          disabled={Boolean(provinces?.length === 0)}
+                          disabled={
+                            Boolean(provinces?.length === 0) ||
+                            Boolean(!values.region)
+                          }
                           fullWidth
                           error={Boolean(touched.province && errors.province)}
                           label='Select Province'
@@ -524,13 +603,14 @@ const AddNewSellerFields = () => {
               <Divider />
               <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <LoadingButton
+                  loading={updateLoading}
                   disableElevation
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty}
                   type='submit'
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}
                 >
-                  Save details
+                  Update details
                 </LoadingButton>
               </CardActions>
             </Card>
@@ -541,4 +621,4 @@ const AddNewSellerFields = () => {
   );
 };
 
-export default AddNewSellerFields;
+export default EditSellerFields;

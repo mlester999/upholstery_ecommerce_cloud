@@ -6,18 +6,14 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
-import EditCustomerFields from '../../../components/customers/EditCustomerFields';
-import ViewCustomerFields from '../../../components/customers/ViewCustomerFields';
+import EditSellerFields from '../../../components/sellers/EditSellerFields';
+import ViewSellerFields from '../../../components/sellers/ViewSellerFields';
 import PortalLayout from '../../../layouts/PortalLayout';
-import { useGetCustomerQuery } from '../../../services/crud-customer';
+import { useGetSellerQuery } from '../../../services/crud-seller';
 
-const ViewCustomer = () => {
-  const { customerId } = useParams();
-  const {
-    data: customer,
-    isLoading,
-    isFetching,
-  } = useGetCustomerQuery(customerId);
+const ViewSeller = () => {
+  const { sellerId } = useParams();
+  const { data: seller, isLoading, isFetching } = useGetSellerQuery(sellerId);
 
   if (isLoading || isFetching) {
     return <div></div>;
@@ -35,15 +31,15 @@ const ViewCustomer = () => {
         <Container maxWidth='lg'>
           <Stack spacing={3}>
             <div>
-              <Typography variant='h4'>Customer Details</Typography>
+              <Typography variant='h4'>Seller Details</Typography>
             </div>
             <div>
               <Grid container spacing={3}>
                 <Grid xs={12} lg={6}>
-                  <ViewCustomerFields customer={customer} />
+                  <ViewSellerFields seller={seller} />
                 </Grid>
                 <Grid xs={12} lg={6}>
-                  <EditCustomerFields customer={customer} />
+                  <EditSellerFields seller={seller} />
                 </Grid>
               </Grid>
             </div>
@@ -54,4 +50,4 @@ const ViewCustomer = () => {
   );
 };
 
-export default ViewCustomer;
+export default ViewSeller;

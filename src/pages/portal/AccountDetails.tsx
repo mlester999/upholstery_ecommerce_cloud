@@ -5,7 +5,7 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-import AccountProfile from '../../components/account-details/AccountProfile';
+import AccountProfileChangePass from '../../components/account-details/AccountProfileChangePass';
 import AccountProfileDetails from '../../components/account-details/AccountProfileDetails';
 import PortalLayout from '../../layouts/PortalLayout';
 
@@ -25,11 +25,11 @@ const AccountDetails = () => (
           </div>
           <div>
             <Grid container spacing={3}>
-              <Grid xs={12} md={6} lg={4}>
-                <AccountProfile />
-              </Grid>
-              <Grid xs={12} md={6} lg={8}>
+              <Grid xs={12} md={6} lg={7}>
                 <AccountProfileDetails />
+              </Grid>
+              <Grid xs={12} md={6} lg={5}>
+                <AccountProfileChangePass />
               </Grid>
             </Grid>
           </div>

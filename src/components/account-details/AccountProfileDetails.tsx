@@ -20,6 +20,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 const AccountProfileDetails = () => {
   const { data: user } = useGetUserQuery();
@@ -87,7 +88,16 @@ const AccountProfileDetails = () => {
           );
           updateUser(updatedValues)
             .unwrap()
-            .then((payload) => navigate(0))
+            .then((payload) => {
+              toast.success('Updated Profile Successfully!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                progress: undefined,
+                theme: 'light',
+              });
+            })
             .catch((error) => console.log(error));
         }}
       >
@@ -99,6 +109,8 @@ const AccountProfileDetails = () => {
           isSubmitting,
           touched,
           values,
+          dirty,
+          isValid,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Card>
@@ -262,7 +274,7 @@ const AccountProfileDetails = () => {
                 <LoadingButton
                   loading={isLoading}
                   disableElevation
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty || !isValid}
                   type='submit'
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}

@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import {
   Box,
@@ -13,19 +13,21 @@ import SellersSearch from '../../../components/sellers/SellersSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
-import { sellersData } from '../../../utils/mockedSellersData';
 import { Link } from 'react-router-dom';
+import { useGetSellersQuery } from '../../../services/crud-seller';
 
-const useSellers = (page, rowsPerPage) => {
+const useSellers = (page, rowsPerPage, customersData) => {
   return useMemo(() => {
-    return applyPagination(sellersData, page, rowsPerPage);
-  }, [page, rowsPerPage]);
+    return applyPagination(customersData, page, rowsPerPage);
+  }, [page, rowsPerPage, customersData]);
 };
 
 const Sellers = () => {
+  const { data: sellersData } = useGetSellersQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const sellers = useSellers(page, rowsPerPage);
+  const [searchQuery, setSearchQuery] = useState('');
+  const sellers = useSellers(page, rowsPerPage, sellersData);
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -34,6 +36,35 @@ const Sellers = () => {
   const handleRowsPerPageChange = useCallback((event) => {
     setRowsPerPage(event.target.value);
   }, []);
+
+  const handleSearchChange = useCallback((event) => {
+    setSearchQuery(event.target.value);
+  }, []);
+
+  const filterSellers = (data, query) => {
+    return data.filter((item) => {
+      // Convert the item properties to lowercase strings and check if any of them contains the query
+      for (const key in item) {
+        if (
+          item[key] &&
+          item[key].toString().toLowerCase().includes(query.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+      return false;
+    });
+  };
+
+  const filteredSellers = useMemo(() => {
+    if (searchQuery.trim() === '') {
+      // If the search query is empty, return all customers
+      return sellers?.sort((a, b) => b.id - a.id);
+    } else {
+      // Filter customers based on the search query
+      return filterSellers(sellers, searchQuery);
+    }
+  }, [sellers, searchQuery]);
 
   return (
     <PortalLayout>
@@ -67,10 +98,13 @@ const Sellers = () => {
                 Add New Seller
               </Button>
             </Stack>
-            <SellersSearch />
+            <SellersSearch
+              onChange={handleSearchChange}
+              searchQuery={searchQuery}
+            />
             <SellersTable
-              count={sellersData.length}
-              items={sellers}
+              count={filteredSellers?.length}
+              items={filteredSellers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

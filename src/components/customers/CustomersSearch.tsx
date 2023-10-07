@@ -1,9 +1,19 @@
+import React from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
 
-const CustomersSearch = () => (
+interface CustomersSearchProps {
+  onChange: () => void;
+  searchQuery: string;
+}
+
+const CustomersSearch: React.FC<CustomersSearchProps> = ({
+  onChange,
+  searchQuery,
+}) => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
+      onChange={onChange}
       defaultValue=''
       fullWidth
       placeholder='Search a customer...'
@@ -15,6 +25,7 @@ const CustomersSearch = () => (
         </InputAdornment>
       }
       sx={{ maxWidth: 500 }}
+      value={searchQuery}
     />
   </Card>
 );

@@ -26,6 +26,12 @@ interface UpdateUser {
   contact_number?: string;
 }
 
+interface UpdatePass {
+  current_password?: string;
+  new_password?: string;
+  confirm_new_password?: string;
+}
+
 export const authentication = createApi({
   reducerPath: 'authentication',
   baseQuery: fetchBaseQuery({
@@ -63,6 +69,14 @@ export const authentication = createApi({
         body: { details },
       }),
     }),
+    updatePass: builder.mutation<UpdatePass, UpdatePass>({
+      query: (details) => ({
+        url: `auth/password`,
+        method: 'POST',
+        withCredentials: true,
+        body: { details },
+      }),
+    }),
   }),
 });
 
@@ -71,4 +85,5 @@ export const {
   useLogoutMutation,
   useGetUserQuery,
   useUpdateUserMutation,
+  useUpdatePassMutation,
 } = authentication;

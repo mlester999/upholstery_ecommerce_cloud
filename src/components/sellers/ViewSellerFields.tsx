@@ -12,25 +12,25 @@ import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  useActivateCustomerMutation,
-  useDeactivateCustomerMutation,
-} from '../../services/crud-customer';
+  useActivateSellerMutation,
+  useDeactivateSellerMutation,
+} from '../../services/crud-seller';
 import { toast } from 'react-toastify';
 
-const ViewCustomerFields = (props) => {
-  const { customer } = props;
+const ViewSellerFields = (props) => {
+  const { seller } = props;
   const navigate = useNavigate();
-  const { customerId } = useParams();
-  const [activateCustomer, { isLoading: activateLoading }] =
-    useActivateCustomerMutation();
-  const [deactivateCustomer, { isLoading: deactivateLoading }] =
-    useDeactivateCustomerMutation();
+  const { sellerId } = useParams();
+  const [activateSeller, { isLoading: activateLoading }] =
+    useActivateSellerMutation();
+  const [deactivateSeller, { isLoading: deactivateLoading }] =
+    useDeactivateSellerMutation();
 
   return (
     <Card>
       <CardHeader
-        subheader='These are the information of the customer that you are viewing.'
-        title='Customer Information'
+        subheader='These are the information of the seller that you are viewing.'
+        title='Seller Information'
       />
       <CardContent sx={{ pt: 0 }}>
         <Box
@@ -48,7 +48,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.first_name}
+            {seller?.first_name}
           </Typography>
         </Box>
 
@@ -67,7 +67,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.middle_name || 'N/A'}
+            {seller?.middle_name || 'N/A'}
           </Typography>
         </Box>
 
@@ -86,7 +86,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.last_name}
+            {seller?.last_name}
           </Typography>
         </Box>
 
@@ -105,7 +105,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.gender}
+            {seller?.gender}
           </Typography>
         </Box>
 
@@ -124,7 +124,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.birth_date}
+            {seller?.birth_date}
           </Typography>
         </Box>
 
@@ -143,7 +143,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.user?.email}
+            {seller?.user?.email}
           </Typography>
         </Box>
 
@@ -162,7 +162,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.contact_number}
+            {seller?.contact_number}
           </Typography>
         </Box>
 
@@ -181,7 +181,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.region}
+            {seller?.region}
           </Typography>
         </Box>
 
@@ -200,7 +200,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.province}
+            {seller?.province}
           </Typography>
         </Box>
 
@@ -219,7 +219,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.city}
+            {seller?.city}
           </Typography>
         </Box>
 
@@ -238,7 +238,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.barangay}
+            {seller?.barangay}
           </Typography>
         </Box>
 
@@ -257,7 +257,7 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.zip_code}
+            {seller?.zip_code}
           </Typography>
         </Box>
 
@@ -276,21 +276,21 @@ const ViewCustomerFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {customer?.street_address}
+            {seller?.street_address}
           </Typography>
         </Box>
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        {customer?.user.is_active ? (
+        {seller?.user.is_active ? (
           <LoadingButton
             onClick={() =>
-              deactivateCustomer(customerId)
+              deactivateSeller(sellerId)
                 .unwrap()
                 .then((payload) => {
-                  navigate('/portal/customers');
+                  navigate('/portal/sellers');
 
-                  toast.success('Deactivated Customer Successfully!', {
+                  toast.success('Deactivated Seller Successfully!', {
                     position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -314,12 +314,12 @@ const ViewCustomerFields = (props) => {
         ) : (
           <LoadingButton
             onClick={() =>
-              activateCustomer(customerId)
+              activateSeller(sellerId)
                 .unwrap()
                 .then((payload) => {
-                  navigate('/portal/customers');
+                  navigate('/portal/sellers');
 
-                  toast.success('Activated Customer Successfully!', {
+                  toast.success('Activated Seller Successfully!', {
                     position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -346,4 +346,4 @@ const ViewCustomerFields = (props) => {
   );
 };
 
-export default ViewCustomerFields;
+export default ViewSellerFields;

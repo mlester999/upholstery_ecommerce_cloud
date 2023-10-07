@@ -26,6 +26,7 @@ const Customers = () => {
   const { data: customersData } = useGetCustomersQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [searchQuery, setSearchQuery] = useState('');
   const customers = useCustomers(page, rowsPerPage, customersData);
 
   const handlePageChange = useCallback((event, value) => {
@@ -35,6 +36,35 @@ const Customers = () => {
   const handleRowsPerPageChange = useCallback((event) => {
     setRowsPerPage(event.target.value);
   }, []);
+
+  const handleSearchChange = useCallback((event) => {
+    setSearchQuery(event.target.value);
+  }, []);
+
+  const filterCustomers = (data, query) => {
+    return data.filter((item) => {
+      // Convert the item properties to lowercase strings and check if any of them contains the query
+      for (const key in item) {
+        if (
+          item[key] &&
+          item[key].toString().toLowerCase().includes(query.toLowerCase())
+        ) {
+          return true;
+        }
+      }
+      return false;
+    });
+  };
+
+  const filteredCustomers = useMemo(() => {
+    if (searchQuery.trim() === '') {
+      // If the search query is empty, return all customers
+      return customers?.sort((a, b) => b.id - a.id);
+    } else {
+      // Filter customers based on the search query
+      return filterCustomers(customers, searchQuery);
+    }
+  }, [customers, searchQuery]);
 
   return (
     <PortalLayout>
@@ -68,10 +98,13 @@ const Customers = () => {
                 Add New Customer
               </Button>
             </Stack>
-            <CustomersSearch />
+            <CustomersSearch
+              onChange={handleSearchChange}
+              searchQuery={searchQuery}
+            />
             <CustomersTable
-              count={customersData?.length}
-              items={customers?.sort((a, b) => b.id - a.id)}
+              count={filteredCustomers?.length}
+              items={filteredCustomers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

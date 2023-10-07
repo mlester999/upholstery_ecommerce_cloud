@@ -13,6 +13,9 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
+import { ACTIVE_STATUS } from '../../constants/Enums';
+import SeverityPill from '../SeverityPill';
+import { useNavigate } from 'react-router-dom';
 
 const SellersTable = (props) => {
   const {
@@ -25,6 +28,8 @@ const SellersTable = (props) => {
     selected = [],
   } = props;
 
+  const navigate = useNavigate();
+
   return (
     <Card>
       <Scrollbar>
@@ -32,34 +37,268 @@ const SellersTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Location</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell>Signed Up</TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  First Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Middle Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Last Name
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Email Address
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Gender
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Birth Date
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Contact Number
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Region
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Province
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  City
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Barangay
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Zip Code
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Street Address
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Account Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Created At
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((seller) => {
+              {items.length === 0 && (
+                <TableRow>
+                  <TableCell
+                    colSpan='12'
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Typography variant='subtitle2'>
+                      No Sellers Found...
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+              {items?.map((seller) => {
                 const isSelected = selected.includes(seller.id);
-                const createdAt = format(seller.createdAt, 'dd/MM/yyyy');
+
+                const createdDate = new Date(seller.created_at);
+                const createdAt = format(createdDate, 'yyyy-MM-dd');
 
                 return (
-                  <TableRow hover key={seller.id} selected={isSelected}>
-                    <TableCell>
+                  <TableRow
+                    onClick={() =>
+                      navigate(`/portal/sellers/view/${seller.id}`)
+                    }
+                    hover
+                    sx={{ cursor: 'pointer' }}
+                    key={seller.id}
+                    selected={isSelected}
+                  >
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {seller.name}
+                          {seller.first_name}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{seller.email}</TableCell>
-                    <TableCell>
-                      {seller.address.city}, {seller.address.state},{' '}
-                      {seller.address.country}
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        {seller.middle_name ? (
+                          <Typography variant='subtitle2'>
+                            {seller.middle_name}
+                          </Typography>
+                        ) : (
+                          <Typography variant='subtitle3' color='gray'>
+                            N/A
+                          </Typography>
+                        )}
+                      </Stack>
                     </TableCell>
-                    <TableCell>{seller.phone}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        <Typography variant='subtitle2'>
+                          {seller.last_name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.user.email}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.gender}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.birth_date}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.contact_number}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.region}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.province}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.city}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.barangay}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.zip_code}
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {seller.street_address}
+                    </TableCell>
+                    <TableCell>
+                      <SeverityPill
+                        color={ACTIVE_STATUS[seller.user.is_active]}
+                      >
+                        {seller.user.is_active ? 'Activated' : 'Deactivated'}
+                      </SeverityPill>
+                    </TableCell>
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      {createdAt}
+                    </TableCell>
                   </TableRow>
                 );
               })}

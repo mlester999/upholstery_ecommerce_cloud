@@ -22,6 +22,7 @@ import { useSelectProvince } from '../../hooks/useSelectProvince';
 import { useSelectCity } from '../../hooks/useSelectCity';
 import { useSelectBarangay } from '../../hooks/useSelectBarangay';
 import { useCreateCustomerMutation } from '../../services/crud-customer';
+import { toast } from 'react-toastify';
 
 const AddNewCustomerFields = () => {
   const [createCustomer, { isLoading }] = useCreateCustomerMutation();
@@ -102,7 +103,18 @@ const AddNewCustomerFields = () => {
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           createCustomer(values)
             .unwrap()
-            .then((payload) => navigate('/portal/customers'))
+            .then((payload) => {
+              navigate('/portal/customers');
+
+              toast.success('Added Customer Successfully!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                progress: undefined,
+                theme: 'light',
+              });
+            })
             .catch((error) => setErrors({ email: error.data.message }));
         }}
       >
@@ -236,9 +248,9 @@ const AddNewCustomerFields = () => {
                           label='Select a Birth Date'
                           name='birth_date'
                           onBlur={handleBlur}
-                          onChange={(value) =>
-                            setFieldValue('birth_date', value, true)
-                          }
+                          onChange={(value) => {
+                            setFieldValue('birth_date', value, true);
+                          }}
                           required
                           value={values.birth_date}
                           slotProps={{

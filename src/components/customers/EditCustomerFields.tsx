@@ -25,6 +25,7 @@ import { useSelectBarangay } from '../../hooks/useSelectBarangay';
 import SkeletonEditCustomerFields from './SkeletonEditCustomerFields';
 import dayjs from 'dayjs';
 import { useUpdateCustomerMutation } from '../../services/crud-customer';
+import { toast } from 'react-toastify';
 
 const EditCustomerFields = (props) => {
   const { customer } = props;
@@ -153,7 +154,18 @@ const EditCustomerFields = (props) => {
 
           updateCustomer(updatedValues)
             .unwrap()
-            .then((payload) => navigate('/portal/customers'))
+            .then((payload) => {
+              navigate('/portal/customers');
+
+              toast.success('Updated Customer Successfully!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                progress: undefined,
+                theme: 'light',
+              });
+            })
             .catch((error) => console.log(error));
         }}
       >
@@ -288,9 +300,9 @@ const EditCustomerFields = (props) => {
                           label='Select a Birth Date'
                           name='birth_date'
                           onBlur={handleBlur}
-                          onChange={(value) =>
-                            setFieldValue('birth_date', value, true)
-                          }
+                          onChange={(value) => {
+                            setFieldValue('birth_date', value, true);
+                          }}
                           required
                           value={values.birth_date}
                           slotProps={{
