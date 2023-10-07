@@ -17,6 +17,8 @@ import { useGetUserQuery } from '../../services/authentication';
 const Login = () => {
   const { isLoading, isFetching, isError } = useGetUserQuery();
 
+  console.log(isError);
+
   if (isLoading || isFetching) {
     return (
       <Box sx={{ bgcolor: Colors.backgroundColor, height: '100vh' }}>

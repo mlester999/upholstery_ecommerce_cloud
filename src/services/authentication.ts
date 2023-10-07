@@ -38,6 +38,7 @@ export const authentication = createApi({
     baseUrl: 'http://localhost:4000/',
     credentials: 'include',
   }),
+  tagTypes: ['Authentication'],
   endpoints: (builder) => ({
     login: builder.mutation<Login, LoginArgs>({
       query: ({ email, password }) => ({
@@ -46,6 +47,7 @@ export const authentication = createApi({
         withCredentials: true,
         body: { email, password },
       }),
+      invalidatesTags: ['Authentication'],
     }),
     logout: builder.mutation<Logout, void>({
       query: () => ({
@@ -53,6 +55,7 @@ export const authentication = createApi({
         method: 'POST',
         withCredentials: true,
       }),
+      invalidatesTags: ['Authentication'],
     }),
     getUser: builder.query<GetUser, void>({
       query: () => ({
@@ -60,6 +63,7 @@ export const authentication = createApi({
         method: 'GET',
         withCredentials: true,
       }),
+      providesTags: ['Authentication'],
     }),
     updateUser: builder.mutation<UpdateUser, UpdateUser>({
       query: (details) => ({
@@ -68,6 +72,7 @@ export const authentication = createApi({
         withCredentials: true,
         body: { details },
       }),
+      invalidatesTags: ['Authentication'],
     }),
     updatePass: builder.mutation<UpdatePass, UpdatePass>({
       query: (details) => ({
@@ -76,6 +81,7 @@ export const authentication = createApi({
         withCredentials: true,
         body: { details },
       }),
+      invalidatesTags: ['Authentication'],
     }),
   }),
 });

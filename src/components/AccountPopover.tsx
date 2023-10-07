@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import cookies from 'js-cookies';
 import {
   Box,
   Divider,
@@ -29,8 +30,9 @@ const AccountPopover: React.FC<AccountPopoverProps> = ({
     const log = await logout()
       .unwrap()
       .then(() => {
-        navigate('/login');
-        navigate(0);
+        if (!cookies.getItem('user_token')) {
+          navigate('/login', { replace: true });
+        }
       })
       .catch((error) => console.log(error));
 

@@ -1,5 +1,6 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
+import cookies from 'js-cookies';
 import {
   Box,
   Button,
@@ -52,22 +53,21 @@ const AccountProfileChangePass = () => {
           updatePass(values)
             .unwrap()
             .then((payload) => {
-              logout();
+              if (!cookies.getItem('user_token')) {
+                navigate('/login', { replace: true });
 
-              navigate('/login');
-              navigate(0);
-
-              toast.success(
-                'Updated Password Successfully. Please log in again with your new credentials.',
-                {
-                  position: 'top-right',
-                  autoClose: 5000,
-                  hideProgressBar: false,
-                  closeOnClick: true,
-                  progress: undefined,
-                  theme: 'light',
-                }
-              );
+                toast.success(
+                  'Updated Password Successfully. Please log in again with your new credentials.',
+                  {
+                    position: 'top-right',
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    progress: undefined,
+                    theme: 'light',
+                  }
+                );
+              }
             })
             .catch((error) =>
               setErrors({ current_password: error.data?.message })
