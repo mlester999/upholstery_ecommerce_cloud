@@ -1,9 +1,8 @@
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import cookies from 'js-cookies';
+import Cookies from 'js-cookie';
 import {
   Box,
-  Button,
   Card,
   CardActions,
   CardContent,
@@ -14,10 +13,7 @@ import {
   FormHelperText,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-import {
-  useLogoutMutation,
-  useUpdatePassMutation,
-} from '../../services/authentication';
+import { useUpdatePassMutation } from '../../services/authentication';
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
@@ -25,7 +21,6 @@ import { toast } from 'react-toastify';
 
 const AccountProfileChangePass = () => {
   const [updatePass, { isLoading }] = useUpdatePassMutation();
-  const [logout] = useLogoutMutation();
   const navigate = useNavigate();
 
   const initialValues = {
@@ -53,21 +48,21 @@ const AccountProfileChangePass = () => {
           updatePass(values)
             .unwrap()
             .then((payload) => {
-              if (!cookies.getItem('user_token')) {
-                navigate('/login', { replace: true });
+              Cookies.remove('is_authenticated');
 
-                toast.success(
-                  'Updated Password Successfully. Please log in again with your new credentials.',
-                  {
-                    position: 'top-right',
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    progress: undefined,
-                    theme: 'light',
-                  }
-                );
-              }
+              navigate('/login', { replace: true });
+
+              toast.success(
+                'Updated Password Successfully. Please log in again with your new credentials.',
+                {
+                  position: 'top-right',
+                  autoClose: 5000,
+                  hideProgressBar: false,
+                  closeOnClick: true,
+                  progress: undefined,
+                  theme: 'light',
+                }
+              );
             })
             .catch((error) =>
               setErrors({ current_password: error.data?.message })
@@ -193,7 +188,7 @@ const AccountProfileChangePass = () => {
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}
                 >
-                  Save details
+                  Reset Password
                 </LoadingButton>
               </CardActions>
             </Card>

@@ -55,7 +55,11 @@ const AuthLogin = () => {
           await login({ email: values.email, password: values.password })
             .unwrap()
             .then((payload) => {
-              Cookies.set('is_authenticated', true);
+              const inThreeHours = new Date(
+                new Date().getTime() + 3 * 60 * 60 * 1000
+              );
+
+              Cookies.set('is_authenticated', true, { expires: inThreeHours });
               navigate('/portal/dashboard');
             })
             .catch((error) => setErrors({ email: error.data.message }));

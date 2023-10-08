@@ -8,6 +8,7 @@ import StarIcon from '@heroicons/react/24/solid/StarIcon';
 import ReceiptRefundIcon from '@heroicons/react/24/solid/ReceiptRefundIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import DocumentTextIcon from '@heroicons/react/24/solid/DocumentTextIcon';
+import RectangleStackIcon from '@heroicons/react/24/solid/RectangleStackIcon';
 import { SvgIcon } from '@mui/material';
 
 export const items = [
@@ -39,6 +40,17 @@ export const items = [
     icon: (
       <SvgIcon fontSize='small'>
         <UserGroupIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: 'Categories',
+    path: '/portal/categories',
+    icon: (
+      <SvgIcon fontSize='small'>
+        <RectangleStackIcon />
       </SvgIcon>
     ),
     disabled: false,

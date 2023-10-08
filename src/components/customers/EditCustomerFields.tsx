@@ -179,6 +179,7 @@ const EditCustomerFields = (props) => {
           touched,
           values,
           dirty,
+          isValid,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Card>
@@ -605,7 +606,7 @@ const EditCustomerFields = (props) => {
                 <LoadingButton
                   loading={updateLoading}
                   disableElevation
-                  disabled={isSubmitting || !dirty}
+                  disabled={isSubmitting || !dirty || !isValid}
                   type='submit'
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}

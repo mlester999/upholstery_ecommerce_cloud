@@ -17,7 +17,7 @@ import { ACTIVE_STATUS } from '../../constants/Enums';
 import SeverityPill from '../SeverityPill';
 import { useNavigate } from 'react-router-dom';
 
-const ProductsTable = (props) => {
+const CategoriesTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -42,8 +42,9 @@ const ProductsTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Product Name
+                  Title
                 </TableCell>
+
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
@@ -51,33 +52,13 @@ const ProductsTable = (props) => {
                 >
                   Description
                 </TableCell>
+
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Price
-                </TableCell>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Category
-                </TableCell>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Seller's Name
-                </TableCell>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Account Status
+                  Category Status
                 </TableCell>
                 <TableCell
                   sx={{
@@ -92,32 +73,32 @@ const ProductsTable = (props) => {
               {items.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colspan='12'
+                    colspan='4'
                     sx={{
                       whiteSpace: 'nowrap',
                       textAlign: 'center',
                     }}
                   >
                     <Typography variant='subtitle2'>
-                      No Products Found...
+                      No Categories Found...
                     </Typography>
                   </TableCell>
                 </TableRow>
               )}
-              {items?.map((product) => {
-                const isSelected = selected.includes(product.id);
+              {items?.map((category) => {
+                const isSelected = selected.includes(category.id);
 
-                const createdDate = new Date(product.created_at);
+                const createdDate = new Date(category.created_at);
                 const createdAt = format(createdDate, 'yyyy-MM-dd');
 
                 return (
                   <TableRow
                     onClick={() =>
-                      navigate(`/portal/products/view/${product.id}`)
+                      navigate(`/portal/categories/view/${category.id}`)
                     }
                     hover
                     sx={{ cursor: 'pointer' }}
-                    key={product.id}
+                    key={category.id}
                     selected={isSelected}
                   >
                     <TableCell
@@ -127,10 +108,11 @@ const ProductsTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {product.name}
+                          {category.title}
                         </Typography>
                       </Stack>
                     </TableCell>
+
                     <TableCell
                       sx={{
                         whiteSpace: 'nowrap',
@@ -138,40 +120,14 @@ const ProductsTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {product.description}
+                          {category.description}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
-                          {product.price}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {product.category.title}
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {product.seller.first_name} {product.seller.last_name}
-                    </TableCell>
+
                     <TableCell>
-                      <SeverityPill
-                        color={ACTIVE_STATUS[product.user.is_active]}
-                      >
-                        {product.is_active ? 'Activated' : 'Deactivated'}
+                      <SeverityPill color={ACTIVE_STATUS[category.is_active]}>
+                        {category.is_active ? 'Activated' : 'Deactivated'}
                       </SeverityPill>
                     </TableCell>
                     <TableCell
@@ -201,7 +157,7 @@ const ProductsTable = (props) => {
   );
 };
 
-ProductsTable.propTypes = {
+CategoriesTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -210,4 +166,4 @@ ProductsTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default ProductsTable;
+export default CategoriesTable;
