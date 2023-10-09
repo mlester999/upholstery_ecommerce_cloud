@@ -7,7 +7,8 @@ interface CreateProduct {
   price: number;
   category_id: string;
   seller_id: string;
-  file_name: string;
+  image_name: string;
+  image_file: string;
 }
 
 interface UpdateProduct {
@@ -17,7 +18,8 @@ interface UpdateProduct {
   price?: number;
   category_id?: string;
   seller_id?: string;
-  file_name?: string;
+  image_name?: string;
+  image_file?: string;
 }
 
 export const crudProduct = createApi({
@@ -45,12 +47,23 @@ export const crudProduct = createApi({
       providesTags: ['Products'],
     }),
     createProduct: builder.mutation<CreateProduct, CreateProduct>({
-      query: (details) => ({
-        url: `product/add`,
-        method: 'POST',
-        withCredentials: true,
-        body: { details },
-      }),
+      query: (details) => {
+        const formData = new FormData();
+        formData.append(
+          'image_file',
+          details.image_file,
+          details.image_file.name
+        );
+        formData.append('details', JSON.stringify(details));
+
+        return {
+          url: `product/add`,
+          method: 'POST',
+          withCredentials: true,
+          body: formData,
+          formData: true,
+        };
+      },
       invalidatesTags: ['Products'],
     }),
     updateProduct: builder.mutation<UpdateProduct, UpdateProduct>({

@@ -4,7 +4,8 @@ export interface Product {
   price: number;
   category_id: string;
   seller_id: string;
-  file_name: string;
+  image_name: string;
+  image_file: string;
   is_active: number;
   created_at: string;
   updated_at: string;

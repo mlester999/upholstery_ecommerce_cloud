@@ -30,6 +30,13 @@ const ProductsTable = (props) => {
 
   const navigate = useNavigate();
 
+  function limitString(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str; // If the string is already shorter than the limit, return it as is
+    }
+    return str.substring(0, maxLength) + '...'; // Truncate and add "..."
+  }
+
   return (
     <Card>
       <Scrollbar>
@@ -138,7 +145,7 @@ const ProductsTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {product.description}
+                          {limitString(product.description, 30)}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -168,9 +175,7 @@ const ProductsTable = (props) => {
                       {product.seller.first_name} {product.seller.last_name}
                     </TableCell>
                     <TableCell>
-                      <SeverityPill
-                        color={ACTIVE_STATUS[product.user.is_active]}
-                      >
+                      <SeverityPill color={ACTIVE_STATUS[product.is_active]}>
                         {product.is_active ? 'Activated' : 'Deactivated'}
                       </SeverityPill>
                     </TableCell>

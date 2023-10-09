@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
@@ -11,16 +12,18 @@ import {
   FormControl,
   FormHelperText,
   Unstable_Grid2 as Grid,
+  Typography,
+  Button,
+  SvgIcon,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
-import { DatePicker } from '@mui/x-date-pickers';
-import dayjs from 'dayjs';
 import { toast } from 'react-toastify';
 import { useUpdateProductMutation } from '../../services/crud-product';
 import { useGetCategoriesQuery } from '../../services/crud-category';
 import { useGetSellersQuery } from '../../services/crud-seller';
+import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 
 const EditProductFields = (props) => {
   const { product } = props;
@@ -28,6 +31,8 @@ const EditProductFields = (props) => {
     useUpdateProductMutation();
   const { data: categoriesData } = useGetCategoriesQuery();
   const { data: sellersData } = useGetSellersQuery();
+  const [imagePreview, setImagePreview] = useState(product?.image_file);
+  const [imageFileName, setImageFileName] = useState(product?.image_name);
   const navigate = useNavigate();
 
   const initialValues = {
@@ -114,7 +119,7 @@ const EditProductFields = (props) => {
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
                   <Grid container spacing={3}>
-                    <Grid xs={12} md={4}>
+                    <Grid xs={12}>
                       <FormControl
                         fullWidth
                         error={Boolean(touched.name && errors.name)}
@@ -137,7 +142,7 @@ const EditProductFields = (props) => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={4}>
+                    <Grid xs={12}>
                       <FormControl
                         fullWidth
                         error={Boolean(
@@ -190,7 +195,7 @@ const EditProductFields = (props) => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={6}>
+                    <Grid xs={12} md={4}>
                       <FormControl
                         fullWidth
                         error={Boolean(
@@ -228,7 +233,7 @@ const EditProductFields = (props) => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={6}>
+                    <Grid xs={12} md={4}>
                       <FormControl
                         fullWidth
                         error={Boolean(touched.seller_id && errors.seller_id)}
@@ -262,24 +267,76 @@ const EditProductFields = (props) => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={4}>
+                    <Grid xs={12}>
                       <FormControl
                         fullWidth
                         error={Boolean(touched.image_file && errors.image_file)}
                       >
-                        <TextField
-                          fullWidth
-                          error={Boolean(
-                            touched.image_file && errors.image_file
+                        <Box
+                          display='flex'
+                          textAlign='center'
+                          alignItems='center'
+                          justifyContent='center'
+                          flexDirection='column'
+                          gap={2}
+                          sx={{
+                            marginY: '16px',
+                          }}
+                        >
+                          <Box
+                            component='img'
+                            sx={{
+                              height: 300,
+                              width: 300,
+                            }}
+                            alt='Product Image'
+                            src={imagePreview}
+                          />
+
+                          {imageFileName && (
+                            <Typography
+                              fontWeight={500}
+                              color='text.primary'
+                              variant='body1'
+                            >
+                              File Name: {imageFileName}
+                            </Typography>
                           )}
-                          label='Image File'
-                          name='image_file'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          value={values.image_file}
-                          type='file'
-                        />
+                        </Box>
+
+                        <Button
+                          variant='contained'
+                          component='label'
+                          sx={{ backgroundColor: Colors.primaryColor }}
+                        >
+                          <SvgIcon fontSize='small' sx={{ marginX: '4px' }}>
+                            <CloudArrowUpIcon />
+                          </SvgIcon>
+                          Upload Product Image
+                          <input
+                            name='avatar'
+                            accept='image/*'
+                            id='contained-button-file'
+                            type='file'
+                            hidden
+                            onChange={(e) => {
+                              const fileReader = new FileReader();
+                              fileReader.onload = () => {
+                                if (fileReader.readyState === 2) {
+                                  setImagePreview(fileReader.result);
+                                  setFieldValue(
+                                    'image_file',
+                                    e.target.files[0]
+                                  );
+                                  setImageFileName(e.target.files[0].name);
+
+                                  console.log(values.image_file);
+                                }
+                              };
+                              fileReader.readAsDataURL(e.target.files[0]);
+                            }}
+                          />
+                        </Button>
                         {touched.image_file && errors.image_file && (
                           <FormHelperText error id='text-product-image-file'>
                             {errors.image_file}

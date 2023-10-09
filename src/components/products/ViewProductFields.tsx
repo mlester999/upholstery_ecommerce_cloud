@@ -35,7 +35,7 @@ const ViewProductFields = (props) => {
       <CardContent sx={{ pt: 0 }}>
         <Box
           sx={{
-            paddingY: '5.5px',
+            paddingY: '10px',
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
@@ -54,8 +54,7 @@ const ViewProductFields = (props) => {
 
         <Box
           sx={{
-            paddingY: '5.5px',
-            alignItems: 'center',
+            paddingY: '10px',
             display: 'flex',
             flexDirection: 'row',
             height: 'max',
@@ -73,7 +72,7 @@ const ViewProductFields = (props) => {
 
         <Box
           sx={{
-            paddingY: '5.5px',
+            paddingY: '10px',
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
@@ -92,7 +91,7 @@ const ViewProductFields = (props) => {
 
         <Box
           sx={{
-            paddingY: '5.5px',
+            paddingY: '10px',
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
@@ -111,7 +110,7 @@ const ViewProductFields = (props) => {
 
         <Box
           sx={{
-            paddingY: '5.5px',
+            paddingY: '10px',
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
@@ -130,7 +129,7 @@ const ViewProductFields = (props) => {
 
         <Box
           sx={{
-            paddingY: '5.5px',
+            paddingY: '10px',
             alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
