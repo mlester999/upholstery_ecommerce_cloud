@@ -67,12 +67,23 @@ export const crudProduct = createApi({
       invalidatesTags: ['Products'],
     }),
     updateProduct: builder.mutation<UpdateProduct, UpdateProduct>({
-      query: (details) => ({
-        url: `product/update/${details?.id}`,
-        method: 'PATCH',
-        withCredentials: true,
-        body: { details },
-      }),
+      query: (details) => {
+        const formData = new FormData();
+        formData.append(
+          'image_file',
+          details.image_file,
+          details.image_file.name
+        );
+        formData.append('details', JSON.stringify(details));
+
+        return {
+          url: `product/update/${details?.id}`,
+          method: 'PATCH',
+          withCredentials: true,
+          body: formData,
+          formData: true,
+        };
+      },
       invalidatesTags: ['Products'],
     }),
     deactivateProduct: builder.mutation<number, UpdateProduct>({
