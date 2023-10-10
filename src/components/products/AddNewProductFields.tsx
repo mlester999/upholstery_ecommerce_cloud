@@ -25,7 +25,7 @@ import { useGetSellersQuery } from '../../services/crud-seller';
 import { useCreateProductMutation } from '../../services/crud-product';
 import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 
-const AddNewProductFields = () => {
+const AddNewOrderFields = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const { data: categoriesData } = useGetCategoriesQuery();
   const { data: sellersData } = useGetSellersQuery();
@@ -341,4 +341,4 @@ const AddNewProductFields = () => {
   );
 };
 
-export default AddNewProductFields;
+export default AddNewOrderFields;

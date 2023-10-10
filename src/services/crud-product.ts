@@ -69,11 +69,14 @@ export const crudProduct = createApi({
     updateProduct: builder.mutation<UpdateProduct, UpdateProduct>({
       query: (details) => {
         const formData = new FormData();
-        formData.append(
-          'image_file',
-          details.image_file,
-          details.image_file.name
-        );
+
+        if (details?.image_file) {
+          formData.append(
+            'image_file',
+            details.image_file,
+            details.image_file.name
+          );
+        }
         formData.append('details', JSON.stringify(details));
 
         return {

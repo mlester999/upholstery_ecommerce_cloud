@@ -68,8 +68,8 @@ export const items = [
     external: false,
   },
   {
-    title: 'Deliveries',
-    path: '/portal/deliveries',
+    title: 'Orders',
+    path: '/portal/orders',
     icon: (
       <SvgIcon fontSize='small'>
         <TruckIcon />

@@ -1,6 +1,8 @@
 export const DELIVERY_STATUS = {
-  processing: 'error',
-  shipped: 'info',
+  processing: 'warning',
+  packed: 'warning',
+  shipped: 'primary',
+  delivery: 'info',
   delivered: 'success',
 };
 

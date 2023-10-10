@@ -13,24 +13,26 @@ import Colors from '../../constants/Colors';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import {
-  useActivateProductMutation,
-  useDeactivateProductMutation,
-} from '../../services/crud-product';
+  useActivateOrderMutation,
+  useDeactivateOrderMutation,
+} from '../../services/crud-order';
+import SeverityPill from '../SeverityPill';
+import { DELIVERY_STATUS } from '../../constants/Enums';
 
-const ViewProductFields = (props) => {
-  const { product } = props;
+const ViewOrderFields = (props) => {
+  const { order } = props;
   const navigate = useNavigate();
-  const { productId } = useParams();
-  const [activateProduct, { isLoading: activateLoading }] =
-    useActivateProductMutation();
-  const [deactivateProduct, { isLoading: deactivateLoading }] =
-    useDeactivateProductMutation();
+  const { orderId } = useParams();
+  const [activateOrder, { isLoading: activateLoading }] =
+    useActivateOrderMutation();
+  const [deactivateOrder, { isLoading: deactivateLoading }] =
+    useDeactivateOrderMutation();
 
   return (
     <Card>
       <CardHeader
-        subheader='These are the information of the product that you are viewing.'
-        title='Product Information'
+        subheader='These are the information of the order that you are viewing.'
+        title='Order Information'
       />
       <CardContent sx={{ pt: 0 }}>
         <Box
@@ -44,17 +46,18 @@ const ViewProductFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Product Name:
+            Order ID:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {product?.name}
+            {order?.order_id}
           </Typography>
         </Box>
 
         <Box
           sx={{
             paddingY: '10px',
+            alignItems: 'center',
             display: 'flex',
             flexDirection: 'row',
             height: 'max',
@@ -62,11 +65,30 @@ const ViewProductFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Description:
+            Customer's Name:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {product?.description}
+            {order?.customer?.first_name} {order?.customer?.last_name}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingY: '10px',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            height: 'max',
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color='text.primary' variant='body1'>
+            Product's Name:
+          </Typography>
+
+          <Typography color='text.secondary' variant='body1'>
+            {order?.product?.name}
           </Typography>
         </Box>
 
@@ -85,26 +107,7 @@ const ViewProductFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            ₱{product?.price}
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            paddingY: '10px',
-            alignItems: 'center',
-            display: 'flex',
-            flexDirection: 'row',
-            height: 'max',
-            gap: 1,
-          }}
-        >
-          <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Category:
-          </Typography>
-
-          <Typography color='text.secondary' variant='body1'>
-            {product?.category.title}
+            ₱{order?.product?.price}
           </Typography>
         </Box>
 
@@ -123,7 +126,7 @@ const ViewProductFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {product?.seller?.first_name} {product?.seller?.last_name}
+            {order?.seller?.first_name} {order?.seller?.last_name}
           </Typography>
         </Box>
 
@@ -138,25 +141,51 @@ const ViewProductFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Image File:
+            Delivery Status:
           </Typography>
 
-          <Typography color='text.secondary' variant='body1'>
-            {product?.image_file}
-          </Typography>
+          {order.status === 'Processing' && (
+            <SeverityPill color={DELIVERY_STATUS.processing}>
+              {order.status}
+            </SeverityPill>
+          )}
+
+          {order.status === 'Packed' && (
+            <SeverityPill color={DELIVERY_STATUS.packed}>
+              {order.status}
+            </SeverityPill>
+          )}
+
+          {order.status === 'Shipped' && (
+            <SeverityPill color={DELIVERY_STATUS.shipped}>
+              {order.status}
+            </SeverityPill>
+          )}
+
+          {order.status === 'Out For Delivery' && (
+            <SeverityPill color={DELIVERY_STATUS.delivery}>
+              {order.status}
+            </SeverityPill>
+          )}
+
+          {order.status === 'Delivered' && (
+            <SeverityPill color={DELIVERY_STATUS.delivered}>
+              {order.status}
+            </SeverityPill>
+          )}
         </Box>
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        {product?.is_active ? (
+        {order?.is_active ? (
           <LoadingButton
             onClick={() =>
-              deactivateProduct(productId)
+              deactivateOrder(orderId)
                 .unwrap()
                 .then((payload) => {
-                  navigate('/portal/products');
+                  navigate('/portal/orders');
 
-                  toast.success('Deactivated Product Successfully!', {
+                  toast.success('Deactivated Order Successfully!', {
                     position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -180,12 +209,12 @@ const ViewProductFields = (props) => {
         ) : (
           <LoadingButton
             onClick={() =>
-              activateProduct(productId)
+              activateOrder(orderId)
                 .unwrap()
                 .then((payload) => {
-                  navigate('/portal/products');
+                  navigate('/portal/orders');
 
-                  toast.success('Activated Product Successfully!', {
+                  toast.success('Activated Order Successfully!', {
                     position: 'top-right',
                     autoClose: 5000,
                     hideProgressBar: false,
@@ -212,4 +241,4 @@ const ViewProductFields = (props) => {
   );
 };
 
-export default ViewProductFields;
+export default ViewOrderFields;

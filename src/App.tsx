@@ -7,7 +7,6 @@ import Sellers from './pages/portal/seller/Sellers';
 import Customers from './pages/portal/customer/Customers';
 import AccountDetails from './pages/portal/AccountDetails';
 import Products from './pages/portal/product/Products';
-import Deliveries from './pages/portal/Deliveries';
 import DiscountVouchers from './pages/portal/DiscountVouchers';
 import Transactions from './pages/portal/Transactions';
 import Reviews from './pages/portal/Reviews';
@@ -22,6 +21,9 @@ import ViewCategory from './pages/portal/category/ViewCategory';
 import AddNewCategory from './pages/portal/category/AddNewCategory';
 import ViewProduct from './pages/portal/product/ViewProduct';
 import AddNewProduct from './pages/portal/product/AddNewProduct';
+import Orders from './pages/portal/order/Orders';
+import ViewOrder from './pages/portal/order/ViewOrder';
+import AddNewOrder from './pages/portal/order/AddNewOrder';
 
 function App() {
   return (
@@ -50,7 +52,11 @@ function App() {
           <Route path='view/:productId' element={<ViewProduct />} />
           <Route path='add' element={<AddNewProduct />} />
         </Route>
-        <Route path='/portal/deliveries' element={<Deliveries />} />
+        <Route path='/portal/orders'>
+          <Route index element={<Orders />} />
+          <Route path='view/:orderId' element={<ViewOrder />} />
+          <Route path='add' element={<AddNewOrder />} />
+        </Route>
         <Route
           path='/portal/discount-vouchers'
           element={<DiscountVouchers />}
