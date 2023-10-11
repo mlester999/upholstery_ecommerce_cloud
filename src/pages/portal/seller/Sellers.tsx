@@ -16,10 +16,42 @@ import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
 import { useGetSellersQuery } from '../../../services/crud-seller';
 
-const useSellers = (page, rowsPerPage, customersData) => {
+const useSellers = (page, rowsPerPage, sellersInfo, query) => {
+  const dataReady = sellersInfo && sellersInfo.length > 0;
+
   return useMemo(() => {
-    return applyPagination(customersData, page, rowsPerPage);
-  }, [page, rowsPerPage, customersData]);
+    if (dataReady) {
+      if (query.trim() === '') {
+        const sellers = applyPagination(sellersInfo, page, rowsPerPage);
+
+        const sellersLength = sellersInfo.length;
+
+        return { sellers, sellersLength };
+      } else {
+        const latestSellers = sellersInfo.filter((item) => {
+          // Convert the item properties to lowercase strings and check if any of them contains the query
+          for (const key in item) {
+            if (
+              item[key] &&
+              item[key].toString().toLowerCase().includes(query.toLowerCase())
+            ) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        const sellersLength = latestSellers.length;
+
+        const sellers = applyPagination(latestSellers, page, rowsPerPage);
+
+        return { sellers, sellersLength };
+      }
+    } else {
+      // Handle loading state or return an empty array
+      return { sellers: [], sellersLength: null }; // You can return an empty array or a loading state placeholder
+    }
+  }, [page, rowsPerPage, sellersInfo, dataReady, query]);
 };
 
 const Sellers = () => {
@@ -27,7 +59,12 @@ const Sellers = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const sellers = useSellers(page, rowsPerPage, sellersData);
+  const { sellers, sellersLength } = useSellers(
+    page,
+    rowsPerPage,
+    sellersData,
+    searchQuery
+  );
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -40,31 +77,6 @@ const Sellers = () => {
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
   }, []);
-
-  const filterSellers = (data, query) => {
-    return data.filter((item) => {
-      // Convert the item properties to lowercase strings and check if any of them contains the query
-      for (const key in item) {
-        if (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(query.toLowerCase())
-        ) {
-          return true;
-        }
-      }
-      return false;
-    });
-  };
-
-  const filteredSellers = useMemo(() => {
-    if (searchQuery.trim() === '') {
-      // If the search query is empty, return all customers
-      return sellers?.sort((a, b) => b.id - a.id);
-    } else {
-      // Filter customers based on the search query
-      return filterSellers(sellers, searchQuery);
-    }
-  }, [sellers, searchQuery]);
 
   return (
     <PortalLayout>
@@ -103,8 +115,8 @@ const Sellers = () => {
               searchQuery={searchQuery}
             />
             <SellersTable
-              count={filteredSellers?.length}
-              items={filteredSellers}
+              count={sellersLength}
+              items={sellers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

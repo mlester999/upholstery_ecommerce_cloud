@@ -61,7 +61,7 @@ function App() {
           path='/portal/discount-vouchers'
           element={<DiscountVouchers />}
         />
-        <Route path='/portal/transactions' element={<Transactions />} />
+        {/* <Route path='/portal/transactions' element={<Transactions />} /> */}
         <Route path='/portal/reviews' element={<Reviews />} />
         <Route
           path='/portal/returns-and-refunds'

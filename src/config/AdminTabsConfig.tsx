@@ -89,17 +89,17 @@ export const items = [
     disabled: false,
     external: false,
   },
-  {
-    title: 'Transactions',
-    path: '/portal/transactions',
-    icon: (
-      <SvgIcon fontSize='small'>
-        <CurrencyDollarIcon />
-      </SvgIcon>
-    ),
-    disabled: false,
-    external: false,
-  },
+  // {
+  //   title: 'Transactions',
+  //   path: '/portal/transactions',
+  //   icon: (
+  //     <SvgIcon fontSize='small'>
+  //       <CurrencyDollarIcon />
+  //     </SvgIcon>
+  //   ),
+  //   disabled: false,
+  //   external: false,
+  // },
   {
     title: 'Reviews',
     path: '/portal/reviews',

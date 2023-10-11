@@ -16,10 +16,56 @@ import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
 import { useGetOrdersQuery } from '../../../services/crud-order';
 
-const useOrders = (page, rowsPerPage, ordersData) => {
+const useOrders = (page, rowsPerPage, ordersInfo, query) => {
+  const dataReady = ordersInfo && ordersInfo.length > 0;
+
   return useMemo(() => {
-    return applyPagination(ordersData, page, rowsPerPage);
-  }, [page, rowsPerPage, ordersData]);
+    if (dataReady) {
+      if (query.trim() === '') {
+        const orders = applyPagination(ordersInfo, page, rowsPerPage);
+
+        const ordersLength = ordersInfo.length;
+
+        return { orders, ordersLength };
+      } else {
+        const latestOrders = ordersInfo.filter((item) => {
+          // Convert the item properties to lowercase strings and check if any of them contains the query
+          for (const key in item) {
+            if (typeof item[key] === 'object') {
+              for (const objectKey in item[key]) {
+                if (
+                  item[key][objectKey] &&
+                  item[key][objectKey]
+                    .toString()
+                    .toLowerCase()
+                    .includes(query.toLowerCase())
+                ) {
+                  return true;
+                }
+              }
+            } else {
+              if (
+                item[key] &&
+                item[key].toString().toLowerCase().includes(query.toLowerCase())
+              ) {
+                return true;
+              }
+            }
+          }
+          return false;
+        });
+
+        const ordersLength = latestOrders.length;
+
+        const orders = applyPagination(latestOrders, page, rowsPerPage);
+
+        return { orders, ordersLength };
+      }
+    } else {
+      // Handle loading state or return an empty array
+      return { orders: [], ordersLength: null }; // You can return an empty array or a loading state placeholder
+    }
+  }, [page, rowsPerPage, ordersInfo, dataReady, query]);
 };
 
 const Orders = () => {
@@ -27,7 +73,12 @@ const Orders = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const orders = useOrders(page, rowsPerPage, ordersData);
+  const { orders, ordersLength } = useOrders(
+    page,
+    rowsPerPage,
+    ordersData,
+    searchQuery
+  );
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -40,31 +91,6 @@ const Orders = () => {
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
   }, []);
-
-  const filterOrders = (data, query) => {
-    return data.filter((item) => {
-      // Convert the item properties to lowercase strings and check if any of them contains the query
-      for (const key in item) {
-        if (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(query.toLowerCase())
-        ) {
-          return true;
-        }
-      }
-      return false;
-    });
-  };
-
-  const filteredOrders = useMemo(() => {
-    if (searchQuery.trim() === '') {
-      // If the search query is empty, return all customers
-      return orders?.sort((a, b) => b.id - a.id);
-    } else {
-      // Filter customers based on the search query
-      return filterOrders(orders, searchQuery);
-    }
-  }, [orders, searchQuery]);
 
   return (
     <PortalLayout>
@@ -103,8 +129,8 @@ const Orders = () => {
               searchQuery={searchQuery}
             />
             <OrdersTable
-              count={filteredOrders?.length}
-              items={filteredOrders}
+              count={ordersLength}
+              items={orders}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

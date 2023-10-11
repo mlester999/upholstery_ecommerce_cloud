@@ -49,6 +49,13 @@ const ProductsTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
+                  Product Image
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   Product Name
                 </TableCell>
                 <TableCell
@@ -84,7 +91,7 @@ const ProductsTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Account Status
+                  Product Status
                 </TableCell>
                 <TableCell
                   sx={{
@@ -127,6 +134,28 @@ const ProductsTable = (props) => {
                     key={product.id}
                     selected={isSelected}
                   >
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack
+                        alignItems='center'
+                        justifyContent='center'
+                        direction='row'
+                        spacing={2}
+                      >
+                        <Box
+                          component='img'
+                          src={product?.image_file}
+                          sx={{
+                            borderRadius: 1,
+                            height: 48,
+                            width: 48,
+                          }}
+                        />
+                      </Stack>
+                    </TableCell>
                     <TableCell
                       sx={{
                         whiteSpace: 'nowrap',

@@ -16,10 +16,42 @@ import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
 import { useGetProductsQuery } from '../../../services/crud-product';
 
-const useProducts = (page, rowsPerPage, productsData) => {
+const useProducts = (page, rowsPerPage, productsInfo, query) => {
+  const dataReady = productsInfo && productsInfo.length > 0;
+
   return useMemo(() => {
-    return applyPagination(productsData, page, rowsPerPage);
-  }, [page, rowsPerPage, productsData]);
+    if (dataReady) {
+      if (query.trim() === '') {
+        const products = applyPagination(productsInfo, page, rowsPerPage);
+
+        const productsLength = productsInfo.length;
+
+        return { products, productsLength };
+      } else {
+        const latestProducts = productsInfo.filter((item) => {
+          // Convert the item properties to lowercase strings and check if any of them contains the query
+          for (const key in item) {
+            if (
+              item[key] &&
+              item[key].toString().toLowerCase().includes(query.toLowerCase())
+            ) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        const productsLength = latestProducts.length;
+
+        const products = applyPagination(latestProducts, page, rowsPerPage);
+
+        return { products, productsLength };
+      }
+    } else {
+      // Handle loading state or return an empty array
+      return { products: [], productsLength: null }; // You can return an empty array or a loading state placeholder
+    }
+  }, [page, rowsPerPage, productsInfo, dataReady, query]);
 };
 
 const Products = () => {
@@ -27,7 +59,12 @@ const Products = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const products = useProducts(page, rowsPerPage, productsData);
+  const { products, productsLength } = useProducts(
+    page,
+    rowsPerPage,
+    productsData,
+    searchQuery
+  );
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -40,31 +77,6 @@ const Products = () => {
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
   }, []);
-
-  const filterProducts = (data, query) => {
-    return data.filter((item) => {
-      // Convert the item properties to lowercase strings and check if any of them contains the query
-      for (const key in item) {
-        if (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(query.toLowerCase())
-        ) {
-          return true;
-        }
-      }
-      return false;
-    });
-  };
-
-  const filteredProducts = useMemo(() => {
-    if (searchQuery.trim() === '') {
-      // If the search query is empty, return all customers
-      return products?.sort((a, b) => b.id - a.id);
-    } else {
-      // Filter customers based on the search query
-      return filterProducts(products, searchQuery);
-    }
-  }, [products, searchQuery]);
 
   return (
     <PortalLayout>
@@ -103,8 +115,8 @@ const Products = () => {
               searchQuery={searchQuery}
             />
             <ProductsTable
-              count={filteredProducts?.length}
-              items={filteredProducts}
+              count={productsLength}
+              items={products}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

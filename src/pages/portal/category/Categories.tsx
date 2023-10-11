@@ -16,10 +16,42 @@ import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
 import { useGetCategoriesQuery } from '../../../services/crud-category';
 
-const useCategories = (page, rowsPerPage, categoriesData) => {
+const useCategories = (page, rowsPerPage, categoriesInfo, query) => {
+  const dataReady = categoriesInfo && categoriesInfo.length > 0;
+
   return useMemo(() => {
-    return applyPagination(categoriesData, page, rowsPerPage);
-  }, [page, rowsPerPage, categoriesData]);
+    if (dataReady) {
+      if (query.trim() === '') {
+        const categories = applyPagination(categoriesInfo, page, rowsPerPage);
+
+        const categoriesLength = categoriesInfo.length;
+
+        return { categories, categoriesLength };
+      } else {
+        const latestCategories = categoriesInfo.filter((item) => {
+          // Convert the item properties to lowercase strings and check if any of them contains the query
+          for (const key in item) {
+            if (
+              item[key] &&
+              item[key].toString().toLowerCase().includes(query.toLowerCase())
+            ) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        const categoriesLength = latestCategories.length;
+
+        const categories = applyPagination(latestCategories, page, rowsPerPage);
+
+        return { categories, categoriesLength };
+      }
+    } else {
+      // Handle loading state or return an empty array
+      return { categories: [], categoriesLength: null }; // You can return an empty array or a loading state placeholder
+    }
+  }, [page, rowsPerPage, categoriesInfo, dataReady, query]);
 };
 
 const Categories = () => {
@@ -27,7 +59,12 @@ const Categories = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const categories = useCategories(page, rowsPerPage, categoriesData);
+  const { categories, categoriesLength } = useCategories(
+    page,
+    rowsPerPage,
+    categoriesData,
+    searchQuery
+  );
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -40,31 +77,6 @@ const Categories = () => {
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
   }, []);
-
-  const filterCategories = (data, query) => {
-    return data.filter((item) => {
-      // Convert the item properties to lowercase strings and check if any of them contains the query
-      for (const key in item) {
-        if (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(query.toLowerCase())
-        ) {
-          return true;
-        }
-      }
-      return false;
-    });
-  };
-
-  const filteredCategories = useMemo(() => {
-    if (searchQuery.trim() === '') {
-      // If the search query is empty, return all customers
-      return categories?.sort((a, b) => b.id - a.id);
-    } else {
-      // Filter customers based on the search query
-      return filterCategories(categories, searchQuery);
-    }
-  }, [categories, searchQuery]);
 
   return (
     <PortalLayout>
@@ -103,8 +115,8 @@ const Categories = () => {
               searchQuery={searchQuery}
             />
             <CategoriesTable
-              count={filteredCategories?.length}
-              items={filteredCategories}
+              count={categoriesLength}
+              items={categories}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
