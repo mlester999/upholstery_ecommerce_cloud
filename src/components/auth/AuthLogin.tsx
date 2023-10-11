@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+import Cookies from 'js-cookie';
 import { useState } from 'react';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
@@ -51,9 +52,16 @@ const AuthLogin = () => {
           password: Yup.string().max(255).required('Password is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          login({ email: values.email, password: values.password })
+          await login({ email: values.email, password: values.password })
             .unwrap()
-            .then((payload) => navigate('/portal/dashboard'))
+            .then((payload) => {
+              const inThreeHours = new Date(
+                new Date().getTime() + 3 * 60 * 60 * 1000
+              );
+
+              Cookies.set('is_authenticated', true, { expires: inThreeHours });
+              navigate('/portal/dashboard');
+            })
             .catch((error) => setErrors({ email: error.data.message }));
         }}
       >

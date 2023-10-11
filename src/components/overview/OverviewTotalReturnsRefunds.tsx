@@ -1,5 +1,5 @@
 import React from 'react';
-import TruckIcon from '@heroicons/react/24/solid/TruckIcon';
+import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
 import {
   Avatar,
   Card,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 
-interface OverviewTotalDeliveriesProps {
+interface OverviewTotalReturnsRefundsProps {
   sx: {
     height: string;
     // Add any other properties from the `sx` object here if needed
@@ -17,10 +17,9 @@ interface OverviewTotalDeliveriesProps {
   value: number;
 }
 
-const OverviewTotalDeliveries: React.FC<OverviewTotalDeliveriesProps> = ({
-  sx,
-  value,
-}) => {
+const OverviewTotalReturnsRefunds: React.FC<
+  OverviewTotalReturnsRefundsProps
+> = ({ sx, value }) => {
   return (
     <Card sx={sx}>
       <CardContent>
@@ -32,7 +31,7 @@ const OverviewTotalDeliveries: React.FC<OverviewTotalDeliveriesProps> = ({
         >
           <Stack spacing={1}>
             <Typography color='text.secondary' variant='overline'>
-              Total Deliveries
+              Total Returns / Refunds
             </Typography>
             <Typography variant='h4'>{value}</Typography>
           </Stack>
@@ -44,7 +43,7 @@ const OverviewTotalDeliveries: React.FC<OverviewTotalDeliveriesProps> = ({
             }}
           >
             <SvgIcon>
-              <TruckIcon />
+              <CurrencyDollarIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -53,4 +52,4 @@ const OverviewTotalDeliveries: React.FC<OverviewTotalDeliveriesProps> = ({
   );
 };
 
-export default OverviewTotalDeliveries;
+export default OverviewTotalReturnsRefunds;

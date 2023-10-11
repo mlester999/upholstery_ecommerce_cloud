@@ -8,6 +8,7 @@ import StarIcon from '@heroicons/react/24/solid/StarIcon';
 import ReceiptRefundIcon from '@heroicons/react/24/solid/ReceiptRefundIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
 import DocumentTextIcon from '@heroicons/react/24/solid/DocumentTextIcon';
+import RectangleStackIcon from '@heroicons/react/24/solid/RectangleStackIcon';
 import { SvgIcon } from '@mui/material';
 
 export const items = [
@@ -45,6 +46,17 @@ export const items = [
     external: false,
   },
   {
+    title: 'Categories',
+    path: '/portal/categories',
+    icon: (
+      <SvgIcon fontSize='small'>
+        <RectangleStackIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
     title: 'Products',
     path: '/portal/products',
     icon: (
@@ -56,8 +68,8 @@ export const items = [
     external: false,
   },
   {
-    title: 'Deliveries',
-    path: '/portal/deliveries',
+    title: 'Orders',
+    path: '/portal/orders',
     icon: (
       <SvgIcon fontSize='small'>
         <TruckIcon />
@@ -77,17 +89,17 @@ export const items = [
     disabled: false,
     external: false,
   },
-  {
-    title: 'Transactions',
-    path: '/portal/transactions',
-    icon: (
-      <SvgIcon fontSize='small'>
-        <CurrencyDollarIcon />
-      </SvgIcon>
-    ),
-    disabled: false,
-    external: false,
-  },
+  // {
+  //   title: 'Transactions',
+  //   path: '/portal/transactions',
+  //   icon: (
+  //     <SvgIcon fontSize='small'>
+  //       <CurrencyDollarIcon />
+  //     </SvgIcon>
+  //   ),
+  //   disabled: false,
+  //   external: false,
+  // },
   {
     title: 'Reviews',
     path: '/portal/reviews',

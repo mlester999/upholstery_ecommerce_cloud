@@ -48,30 +48,6 @@ const AddNewCustomerFields = () => {
     street_address: '',
   };
 
-  function findChangedProperties(
-    oldObj,
-    newObj,
-    id: number | undefined,
-    userId: number | undefined
-  ) {
-    const changedProperties = {};
-
-    // Iterate through the keys of newObj
-    for (const key in newObj) {
-      if (Object.prototype.hasOwnProperty.call(newObj, key)) {
-        // Check if the key exists in oldObj and the values are different
-        if (oldObj[key] !== newObj[key]) {
-          changedProperties[key] = newObj[key];
-        }
-      }
-    }
-
-    changedProperties.id = id;
-    changedProperties.user_id = userId;
-
-    return changedProperties;
-  }
-
   return (
     <>
       <Formik
@@ -115,7 +91,7 @@ const AddNewCustomerFields = () => {
                 theme: 'light',
               });
             })
-            .catch((error) => setErrors({ email: error.data.message }));
+            .catch((error) => setErrors({ email: error.data?.message }));
         }}
       >
         {({
@@ -127,6 +103,8 @@ const AddNewCustomerFields = () => {
           isSubmitting,
           touched,
           values,
+          dirty,
+          isValid,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Card>
@@ -548,8 +526,9 @@ const AddNewCustomerFields = () => {
               <Divider />
               <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <LoadingButton
+                  loading={isLoading}
                   disableElevation
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty || !isValid}
                   type='submit'
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}

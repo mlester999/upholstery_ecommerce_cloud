@@ -103,6 +103,8 @@ const AddNewSellerFields = () => {
           isSubmitting,
           touched,
           values,
+          dirty,
+          isValid,
         }) => (
           <form noValidate onSubmit={handleSubmit}>
             <Card>
@@ -524,8 +526,9 @@ const AddNewSellerFields = () => {
               <Divider />
               <CardActions sx={{ justifyContent: 'flex-end' }}>
                 <LoadingButton
+                  loading={isLoading}
                   disableElevation
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || !dirty || !isValid}
                   type='submit'
                   variant='contained'
                   sx={{ backgroundColor: Colors.primaryColor }}

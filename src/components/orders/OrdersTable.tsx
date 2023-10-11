@@ -13,11 +13,11 @@ import {
   Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
-import { ACTIVE_STATUS } from '../../constants/Enums';
+import { ACTIVE_STATUS, DELIVERY_STATUS } from '../../constants/Enums';
 import SeverityPill from '../SeverityPill';
 import { useNavigate } from 'react-router-dom';
 
-const ProductsTable = (props) => {
+const OrdersTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -49,21 +49,21 @@ const ProductsTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Product Image
+                  Order ID
                 </TableCell>
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Product Name
+                  Customer's Name
                 </TableCell>
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Description
+                  Product's Name
                 </TableCell>
                 <TableCell
                   sx={{
@@ -72,13 +72,7 @@ const ProductsTable = (props) => {
                 >
                   Price
                 </TableCell>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Category
-                </TableCell>
+
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
@@ -91,7 +85,14 @@ const ProductsTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Product Status
+                  Delivery Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
+                  Active Status
                 </TableCell>
                 <TableCell
                   sx={{
@@ -113,25 +114,23 @@ const ProductsTable = (props) => {
                     }}
                   >
                     <Typography variant='subtitle2'>
-                      No Products Found...
+                      No Orders Found...
                     </Typography>
                   </TableCell>
                 </TableRow>
               )}
-              {items?.map((product) => {
-                const isSelected = selected.includes(product.id);
+              {items?.map((order) => {
+                const isSelected = selected.includes(order.id);
 
-                const createdDate = new Date(product.created_at);
+                const createdDate = new Date(order.created_at);
                 const createdAt = format(createdDate, 'yyyy-MM-dd');
 
                 return (
                   <TableRow
-                    onClick={() =>
-                      navigate(`/portal/products/view/${product.id}`)
-                    }
+                    onClick={() => navigate(`/portal/orders/view/${order.id}`)}
                     hover
                     sx={{ cursor: 'pointer' }}
-                    key={product.id}
+                    key={order.id}
                     selected={isSelected}
                   >
                     <TableCell
@@ -139,31 +138,9 @@ const ProductsTable = (props) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      <Stack
-                        alignItems='center'
-                        justifyContent='center'
-                        direction='row'
-                        spacing={2}
-                      >
-                        <Box
-                          component='img'
-                          src={product?.image_file}
-                          sx={{
-                            borderRadius: 1,
-                            height: 48,
-                            width: 48,
-                          }}
-                        />
-                      </Stack>
-                    </TableCell>
-                    <TableCell
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {product.name}
+                          {order.order_id}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -174,7 +151,7 @@ const ProductsTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {limitString(product.description, 30)}
+                          {order.customer.first_name} {order.customer.last_name}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -185,7 +162,7 @@ const ProductsTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          ₱{product.price}
+                          {limitString(order.product.name, 50)}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -194,18 +171,53 @@ const ProductsTable = (props) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {product.category.title}
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        <Typography variant='subtitle2'>
+                          ₱{order.product.price}
+                        </Typography>
+                      </Stack>
                     </TableCell>
                     <TableCell
                       sx={{
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {product.seller.first_name} {product.seller.last_name}
+                      {order.seller.first_name} {order.seller.last_name}
                     </TableCell>
                     <TableCell>
-                      <SeverityPill color={ACTIVE_STATUS[product.is_active]}>
-                        {product.is_active ? 'Activated' : 'Deactivated'}
+                      {order.status === 'Processing' && (
+                        <SeverityPill color={DELIVERY_STATUS.processing}>
+                          {order.status}
+                        </SeverityPill>
+                      )}
+
+                      {order.status === 'Packed' && (
+                        <SeverityPill color={DELIVERY_STATUS.packed}>
+                          {order.status}
+                        </SeverityPill>
+                      )}
+
+                      {order.status === 'Shipped' && (
+                        <SeverityPill color={DELIVERY_STATUS.shipped}>
+                          {order.status}
+                        </SeverityPill>
+                      )}
+
+                      {order.status === 'Out For Delivery' && (
+                        <SeverityPill color={DELIVERY_STATUS.delivery}>
+                          {order.status}
+                        </SeverityPill>
+                      )}
+
+                      {order.status === 'Delivered' && (
+                        <SeverityPill color={DELIVERY_STATUS.delivered}>
+                          {order.status}
+                        </SeverityPill>
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      <SeverityPill color={ACTIVE_STATUS[order.is_active]}>
+                        {order.is_active ? 'Activated' : 'Deactivated'}
                       </SeverityPill>
                     </TableCell>
                     <TableCell
@@ -235,7 +247,7 @@ const ProductsTable = (props) => {
   );
 };
 
-ProductsTable.propTypes = {
+OrdersTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -244,4 +256,4 @@ ProductsTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default ProductsTable;
+export default OrdersTable;

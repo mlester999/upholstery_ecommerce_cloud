@@ -1,12 +1,22 @@
+import React from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
 
-const DeliveriesSearch = () => (
+interface OrderSearchProps {
+  onChange: () => void;
+  searchQuery: string;
+}
+
+const OrdersSearch: React.FC<OrderSearchProps> = ({
+  onChange,
+  searchQuery,
+}) => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
+      onChange={onChange}
       defaultValue=''
       fullWidth
-      placeholder='Search a delivery...'
+      placeholder='Search an order...'
       startAdornment={
         <InputAdornment position='start'>
           <SvgIcon color='action' fontSize='small'>
@@ -15,8 +25,9 @@ const DeliveriesSearch = () => (
         </InputAdornment>
       }
       sx={{ maxWidth: 500 }}
+      value={searchQuery}
     />
   </Card>
 );
 
-export default DeliveriesSearch;
+export default OrdersSearch;

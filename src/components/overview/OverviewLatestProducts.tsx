@@ -1,7 +1,6 @@
 import { formatDistanceToNow } from 'date-fns';
 import PropTypes from 'prop-types';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
-import EllipsisVerticalIcon from '@heroicons/react/24/solid/EllipsisVerticalIcon';
 import {
   Box,
   Button,
@@ -9,82 +8,85 @@ import {
   CardActions,
   CardHeader,
   Divider,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  SvgIcon
+  SvgIcon,
 } from '@mui/material';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const OverviewLatestProducts = (props) => {
   const { products = [], sx } = props;
+  const navigate = useNavigate();
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Products" />
+      <CardHeader title='Latest Products' />
       <List>
-        {products.map((product, index) => {
-          const hasDivider = index < products.length - 1;
-          const ago = formatDistanceToNow(product.updatedAt);
+        {products
+          ?.sort((a, b) => b.id - a.id)
+          .map((product, index) => {
+            const hasDivider = index < products.length - 1;
+            const ago = formatDistanceToNow(new Date(product.updated_at));
 
-          return (
-            <ListItem
-              divider={hasDivider}
-              key={product.id}
-            >
-              <ListItemAvatar>
-                {
-                  product.image
-                    ? (
-                      <Box
-                        component="img"
-                        src={product.image}
-                        sx={{
-                          borderRadius: 1,
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                    : (
-                      <Box
-                        sx={{
-                          borderRadius: 1,
-                          backgroundColor: 'neutral.200',
-                          height: 48,
-                          width: 48
-                        }}
-                      />
-                    )
-                }
-              </ListItemAvatar>
-              <ListItemText
-                primary={product.name}
-                primaryTypographyProps={{ variant: 'subtitle1' }}
-                secondary={`Updated ${ago} ago`}
-                secondaryTypographyProps={{ variant: 'body2' }}
-              />
-              <IconButton edge="end">
-                <SvgIcon>
-                  <EllipsisVerticalIcon />
-                </SvgIcon>
-              </IconButton>
-            </ListItem>
-          );
-        })}
+            return (
+              <ListItem
+                onClick={() => navigate(`/portal/products/view/${product.id}`)}
+                sx={{
+                  cursor: 'pointer',
+                  '&:hover': {
+                    backgroundColor: '#f7f7f7',
+                  },
+                }}
+                divider={hasDivider}
+                key={product.id}
+              >
+                <ListItemAvatar>
+                  {product.image_file ? (
+                    <Box
+                      component='img'
+                      src={product?.image_file}
+                      sx={{
+                        borderRadius: 1,
+                        height: 48,
+                        width: 48,
+                      }}
+                    />
+                  ) : (
+                    <Box
+                      sx={{
+                        borderRadius: 1,
+                        backgroundColor: 'neutral.200',
+                        height: 48,
+                        width: 48,
+                      }}
+                    />
+                  )}
+                </ListItemAvatar>
+                <ListItemText
+                  primary={product.name}
+                  primaryTypographyProps={{ variant: 'subtitle1' }}
+                  secondary={`Updated ${ago} ago`}
+                  secondaryTypographyProps={{ variant: 'body2' }}
+                />
+              </ListItem>
+            );
+          })}
       </List>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
         <Button
-          color="inherit"
-          endIcon={(
-            <SvgIcon fontSize="small">
+          component={Link}
+          to='/portal/products'
+          color='inherit'
+          endIcon={
+            <SvgIcon fontSize='small'>
               <ArrowRightIcon />
             </SvgIcon>
-          )}
-          size="small"
-          variant="text"
+          }
+          size='small'
+          variant='text'
         >
           View all
         </Button>
@@ -95,5 +97,5 @@ export const OverviewLatestProducts = (props) => {
 
 OverviewLatestProducts.propTypes = {
   products: PropTypes.array,
-  sx: PropTypes.object
+  sx: PropTypes.object,
 };

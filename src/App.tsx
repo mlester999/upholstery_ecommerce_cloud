@@ -6,8 +6,7 @@ import Dashboard from './pages/portal/Dashboard';
 import Sellers from './pages/portal/seller/Sellers';
 import Customers from './pages/portal/customer/Customers';
 import AccountDetails from './pages/portal/AccountDetails';
-import Products from './pages/portal/Products';
-import Deliveries from './pages/portal/Deliveries';
+import Products from './pages/portal/product/Products';
 import DiscountVouchers from './pages/portal/DiscountVouchers';
 import Transactions from './pages/portal/Transactions';
 import Reviews from './pages/portal/Reviews';
@@ -17,6 +16,14 @@ import AddNewSeller from './pages/portal/seller/AddNewSeller';
 import AddNewCustomer from './pages/portal/customer/AddNewCustomer';
 import ViewCustomer from './pages/portal/customer/ViewCustomer';
 import ViewSeller from './pages/portal/seller/ViewSeller';
+import Categories from './pages/portal/category/Categories';
+import ViewCategory from './pages/portal/category/ViewCategory';
+import AddNewCategory from './pages/portal/category/AddNewCategory';
+import ViewProduct from './pages/portal/product/ViewProduct';
+import AddNewProduct from './pages/portal/product/AddNewProduct';
+import Orders from './pages/portal/order/Orders';
+import ViewOrder from './pages/portal/order/ViewOrder';
+import AddNewOrder from './pages/portal/order/AddNewOrder';
 
 function App() {
   return (
@@ -35,13 +42,26 @@ function App() {
           <Route path='view/:customerId' element={<ViewCustomer />} />
           <Route path='add' element={<AddNewCustomer />} />
         </Route>
-        <Route path='/portal/products' element={<Products />} />
-        <Route path='/portal/deliveries' element={<Deliveries />} />
+        <Route path='/portal/categories'>
+          <Route index element={<Categories />} />
+          <Route path='view/:categoryId' element={<ViewCategory />} />
+          <Route path='add' element={<AddNewCategory />} />
+        </Route>
+        <Route path='/portal/products'>
+          <Route index element={<Products />} />
+          <Route path='view/:productId' element={<ViewProduct />} />
+          <Route path='add' element={<AddNewProduct />} />
+        </Route>
+        <Route path='/portal/orders'>
+          <Route index element={<Orders />} />
+          <Route path='view/:orderId' element={<ViewOrder />} />
+          <Route path='add' element={<AddNewOrder />} />
+        </Route>
         <Route
           path='/portal/discount-vouchers'
           element={<DiscountVouchers />}
         />
-        <Route path='/portal/transactions' element={<Transactions />} />
+        {/* <Route path='/portal/transactions' element={<Transactions />} /> */}
         <Route path='/portal/reviews' element={<Reviews />} />
         <Route
           path='/portal/returns-and-refunds'

@@ -2,12 +2,12 @@ import React from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
 
-interface ProductsSearchProps {
+interface CategoriesSearchProps {
   onChange: () => void;
   searchQuery: string;
 }
 
-const ProductsSearch: React.FC<ProductsSearchProps> = ({
+const CategoriesSearch: React.FC<CategoriesSearchProps> = ({
   onChange,
   searchQuery,
 }) => (
@@ -16,7 +16,7 @@ const ProductsSearch: React.FC<ProductsSearchProps> = ({
       onChange={onChange}
       defaultValue=''
       fullWidth
-      placeholder='Search a product...'
+      placeholder='Search a category...'
       startAdornment={
         <InputAdornment position='start'>
           <SvgIcon color='action' fontSize='small'>
@@ -30,4 +30,4 @@ const ProductsSearch: React.FC<ProductsSearchProps> = ({
   </Card>
 );
 
-export default ProductsSearch;
+export default CategoriesSearch;

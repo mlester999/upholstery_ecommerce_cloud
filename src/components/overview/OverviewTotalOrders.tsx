@@ -1,5 +1,5 @@
 import React from 'react';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import TruckIcon from '@heroicons/react/24/solid/TruckIcon';
 import {
   Avatar,
   Card,
@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 
-interface OverviewTotalTransactionsProps {
+interface OverviewTotalOrdersProps {
   sx: {
     height: string;
     // Add any other properties from the `sx` object here if needed
@@ -17,7 +17,7 @@ interface OverviewTotalTransactionsProps {
   value: number;
 }
 
-const OverviewTotalTransactions: React.FC<OverviewTotalTransactionsProps> = ({
+const OverviewTotalOrders: React.FC<OverviewTotalOrdersProps> = ({
   sx,
   value,
 }) => {
@@ -32,7 +32,7 @@ const OverviewTotalTransactions: React.FC<OverviewTotalTransactionsProps> = ({
         >
           <Stack spacing={1}>
             <Typography color='text.secondary' variant='overline'>
-              Total Transactions
+              Total Orders
             </Typography>
             <Typography variant='h4'>{value}</Typography>
           </Stack>
@@ -44,7 +44,7 @@ const OverviewTotalTransactions: React.FC<OverviewTotalTransactionsProps> = ({
             }}
           >
             <SvgIcon>
-              <CurrencyDollarIcon />
+              <TruckIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
@@ -53,4 +53,4 @@ const OverviewTotalTransactions: React.FC<OverviewTotalTransactionsProps> = ({
   );
 };
 
-export default OverviewTotalTransactions;
+export default OverviewTotalOrders;

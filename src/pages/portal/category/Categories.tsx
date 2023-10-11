@@ -8,27 +8,27 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import SellersTable from '../../../components/sellers/SellersTable';
-import SellersSearch from '../../../components/sellers/SellersSearch';
+import CategoriesTable from '../../../components/categories/CategoriesTable';
+import CategoriesSearch from '../../../components/categories/CategoriesSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
-import { useGetSellersQuery } from '../../../services/crud-seller';
+import { useGetCategoriesQuery } from '../../../services/crud-category';
 
-const useSellers = (page, rowsPerPage, sellersInfo, query) => {
-  const dataReady = sellersInfo && sellersInfo.length > 0;
+const useCategories = (page, rowsPerPage, categoriesInfo, query) => {
+  const dataReady = categoriesInfo && categoriesInfo.length > 0;
 
   return useMemo(() => {
     if (dataReady) {
       if (query.trim() === '') {
-        const sellers = applyPagination(sellersInfo, page, rowsPerPage);
+        const categories = applyPagination(categoriesInfo, page, rowsPerPage);
 
-        const sellersLength = sellersInfo.length;
+        const categoriesLength = categoriesInfo.length;
 
-        return { sellers, sellersLength };
+        return { categories, categoriesLength };
       } else {
-        const latestSellers = sellersInfo.filter((item) => {
+        const latestCategories = categoriesInfo.filter((item) => {
           // Convert the item properties to lowercase strings and check if any of them contains the query
           for (const key in item) {
             if (
@@ -41,28 +41,28 @@ const useSellers = (page, rowsPerPage, sellersInfo, query) => {
           return false;
         });
 
-        const sellersLength = latestSellers.length;
+        const categoriesLength = latestCategories.length;
 
-        const sellers = applyPagination(latestSellers, page, rowsPerPage);
+        const categories = applyPagination(latestCategories, page, rowsPerPage);
 
-        return { sellers, sellersLength };
+        return { categories, categoriesLength };
       }
     } else {
       // Handle loading state or return an empty array
-      return { sellers: [], sellersLength: null }; // You can return an empty array or a loading state placeholder
+      return { categories: [], categoriesLength: null }; // You can return an empty array or a loading state placeholder
     }
-  }, [page, rowsPerPage, sellersInfo, dataReady, query]);
+  }, [page, rowsPerPage, categoriesInfo, dataReady, query]);
 };
 
-const Sellers = () => {
-  const { data: sellersData } = useGetSellersQuery();
+const Categories = () => {
+  const { data: categoriesData } = useGetCategoriesQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const { sellers, sellersLength } = useSellers(
+  const { categories, categoriesLength } = useCategories(
     page,
     rowsPerPage,
-    sellersData,
+    categoriesData,
     searchQuery
   );
 
@@ -91,12 +91,12 @@ const Sellers = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Sellers</Typography>
+                <Typography variant='h4'>Categories</Typography>
               </Stack>
 
               <Button
                 component={Link}
-                to='/portal/sellers/add'
+                to='/portal/categories/add'
                 startIcon={
                   <SvgIcon fontSize='small'>
                     <PlusIcon />
@@ -107,16 +107,16 @@ const Sellers = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Seller
+                Add New Category
               </Button>
             </Stack>
-            <SellersSearch
+            <CategoriesSearch
               onChange={handleSearchChange}
               searchQuery={searchQuery}
             />
-            <SellersTable
-              count={sellersLength}
-              items={sellers}
+            <CategoriesTable
+              count={categoriesLength}
+              items={categories}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -129,4 +129,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default Categories;

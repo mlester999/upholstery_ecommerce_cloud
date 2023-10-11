@@ -8,61 +8,75 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import SellersTable from '../../../components/sellers/SellersTable';
-import SellersSearch from '../../../components/sellers/SellersSearch';
+import OrdersTable from '../../../components/orders/OrdersTable';
+import OrdersSearch from '../../../components/orders/OrdersSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
-import { useGetSellersQuery } from '../../../services/crud-seller';
+import { useGetOrdersQuery } from '../../../services/crud-order';
 
-const useSellers = (page, rowsPerPage, sellersInfo, query) => {
-  const dataReady = sellersInfo && sellersInfo.length > 0;
+const useOrders = (page, rowsPerPage, ordersInfo, query) => {
+  const dataReady = ordersInfo && ordersInfo.length > 0;
 
   return useMemo(() => {
     if (dataReady) {
       if (query.trim() === '') {
-        const sellers = applyPagination(sellersInfo, page, rowsPerPage);
+        const orders = applyPagination(ordersInfo, page, rowsPerPage);
 
-        const sellersLength = sellersInfo.length;
+        const ordersLength = ordersInfo.length;
 
-        return { sellers, sellersLength };
+        return { orders, ordersLength };
       } else {
-        const latestSellers = sellersInfo.filter((item) => {
+        const latestOrders = ordersInfo.filter((item) => {
           // Convert the item properties to lowercase strings and check if any of them contains the query
           for (const key in item) {
-            if (
-              item[key] &&
-              item[key].toString().toLowerCase().includes(query.toLowerCase())
-            ) {
-              return true;
+            if (typeof item[key] === 'object') {
+              for (const objectKey in item[key]) {
+                if (
+                  item[key][objectKey] &&
+                  item[key][objectKey]
+                    .toString()
+                    .toLowerCase()
+                    .includes(query.toLowerCase())
+                ) {
+                  return true;
+                }
+              }
+            } else {
+              if (
+                item[key] &&
+                item[key].toString().toLowerCase().includes(query.toLowerCase())
+              ) {
+                return true;
+              }
             }
           }
           return false;
         });
 
-        const sellersLength = latestSellers.length;
+        const ordersLength = latestOrders.length;
 
-        const sellers = applyPagination(latestSellers, page, rowsPerPage);
+        const orders = applyPagination(latestOrders, page, rowsPerPage);
 
-        return { sellers, sellersLength };
+        return { orders, ordersLength };
       }
     } else {
       // Handle loading state or return an empty array
-      return { sellers: [], sellersLength: null }; // You can return an empty array or a loading state placeholder
+      return { orders: [], ordersLength: null }; // You can return an empty array or a loading state placeholder
     }
-  }, [page, rowsPerPage, sellersInfo, dataReady, query]);
+  }, [page, rowsPerPage, ordersInfo, dataReady, query]);
 };
 
-const Sellers = () => {
-  const { data: sellersData } = useGetSellersQuery();
+const Orders = () => {
+  const { data: ordersData } = useGetOrdersQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const { sellers, sellersLength } = useSellers(
+  const { orders, ordersLength } = useOrders(
     page,
     rowsPerPage,
-    sellersData,
+    ordersData,
     searchQuery
   );
 
@@ -91,12 +105,12 @@ const Sellers = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Sellers</Typography>
+                <Typography variant='h4'>Orders</Typography>
               </Stack>
 
               <Button
                 component={Link}
-                to='/portal/sellers/add'
+                to='/portal/orders/add'
                 startIcon={
                   <SvgIcon fontSize='small'>
                     <PlusIcon />
@@ -107,16 +121,16 @@ const Sellers = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Seller
+                Add New Order
               </Button>
             </Stack>
-            <SellersSearch
+            <OrdersSearch
               onChange={handleSearchChange}
               searchQuery={searchQuery}
             />
-            <SellersTable
-              count={sellersLength}
-              items={sellers}
+            <OrdersTable
+              count={ordersLength}
+              items={orders}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -129,4 +143,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default Orders;

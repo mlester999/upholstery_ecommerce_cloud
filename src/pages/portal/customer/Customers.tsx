@@ -16,10 +16,42 @@ import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
 import { useGetCustomersQuery } from '../../../services/crud-customer';
 
-const useCustomers = (page, rowsPerPage, customersData) => {
+const useCustomers = (page, rowsPerPage, customersInfo, query) => {
+  const dataReady = customersInfo && customersInfo.length > 0;
+
   return useMemo(() => {
-    return applyPagination(customersData, page, rowsPerPage);
-  }, [page, rowsPerPage, customersData]);
+    if (dataReady) {
+      if (query.trim() === '') {
+        const customers = applyPagination(customersInfo, page, rowsPerPage);
+
+        const customersLength = customersInfo.length;
+
+        return { customers, customersLength };
+      } else {
+        const latestCustomers = customersInfo.filter((item) => {
+          // Convert the item properties to lowercase strings and check if any of them contains the query
+          for (const key in item) {
+            if (
+              item[key] &&
+              item[key].toString().toLowerCase().includes(query.toLowerCase())
+            ) {
+              return true;
+            }
+          }
+          return false;
+        });
+
+        const customersLength = latestCustomers.length;
+
+        const customers = applyPagination(latestCustomers, page, rowsPerPage);
+
+        return { customers, customersLength };
+      }
+    } else {
+      // Handle loading state or return an empty array
+      return { customers: [], customersLength: null }; // You can return an empty array or a loading state placeholder
+    }
+  }, [page, rowsPerPage, customersInfo, dataReady, query]);
 };
 
 const Customers = () => {
@@ -27,7 +59,12 @@ const Customers = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const customers = useCustomers(page, rowsPerPage, customersData);
+  const { customers, customersLength } = useCustomers(
+    page,
+    rowsPerPage,
+    customersData,
+    searchQuery
+  );
 
   const handlePageChange = useCallback((event, value) => {
     setPage(value);
@@ -40,31 +77,6 @@ const Customers = () => {
   const handleSearchChange = useCallback((event) => {
     setSearchQuery(event.target.value);
   }, []);
-
-  const filterCustomers = (data, query) => {
-    return data.filter((item) => {
-      // Convert the item properties to lowercase strings and check if any of them contains the query
-      for (const key in item) {
-        if (
-          item[key] &&
-          item[key].toString().toLowerCase().includes(query.toLowerCase())
-        ) {
-          return true;
-        }
-      }
-      return false;
-    });
-  };
-
-  const filteredCustomers = useMemo(() => {
-    if (searchQuery.trim() === '') {
-      // If the search query is empty, return all customers
-      return customers?.sort((a, b) => b.id - a.id);
-    } else {
-      // Filter customers based on the search query
-      return filterCustomers(customers, searchQuery);
-    }
-  }, [customers, searchQuery]);
 
   return (
     <PortalLayout>
@@ -103,8 +115,8 @@ const Customers = () => {
               searchQuery={searchQuery}
             />
             <CustomersTable
-              count={filteredCustomers?.length}
-              items={filteredCustomers}
+              count={customersLength}
+              items={customers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}

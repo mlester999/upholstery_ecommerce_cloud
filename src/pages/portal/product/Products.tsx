@@ -8,27 +8,27 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import SellersTable from '../../../components/sellers/SellersTable';
-import SellersSearch from '../../../components/sellers/SellersSearch';
+import ProductsTable from '../../../components/products/ProductsTable';
+import ProductsSearch from '../../../components/products/ProductsSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
-import { useGetSellersQuery } from '../../../services/crud-seller';
+import { useGetProductsQuery } from '../../../services/crud-product';
 
-const useSellers = (page, rowsPerPage, sellersInfo, query) => {
-  const dataReady = sellersInfo && sellersInfo.length > 0;
+const useProducts = (page, rowsPerPage, productsInfo, query) => {
+  const dataReady = productsInfo && productsInfo.length > 0;
 
   return useMemo(() => {
     if (dataReady) {
       if (query.trim() === '') {
-        const sellers = applyPagination(sellersInfo, page, rowsPerPage);
+        const products = applyPagination(productsInfo, page, rowsPerPage);
 
-        const sellersLength = sellersInfo.length;
+        const productsLength = productsInfo.length;
 
-        return { sellers, sellersLength };
+        return { products, productsLength };
       } else {
-        const latestSellers = sellersInfo.filter((item) => {
+        const latestProducts = productsInfo.filter((item) => {
           // Convert the item properties to lowercase strings and check if any of them contains the query
           for (const key in item) {
             if (
@@ -41,28 +41,28 @@ const useSellers = (page, rowsPerPage, sellersInfo, query) => {
           return false;
         });
 
-        const sellersLength = latestSellers.length;
+        const productsLength = latestProducts.length;
 
-        const sellers = applyPagination(latestSellers, page, rowsPerPage);
+        const products = applyPagination(latestProducts, page, rowsPerPage);
 
-        return { sellers, sellersLength };
+        return { products, productsLength };
       }
     } else {
       // Handle loading state or return an empty array
-      return { sellers: [], sellersLength: null }; // You can return an empty array or a loading state placeholder
+      return { products: [], productsLength: null }; // You can return an empty array or a loading state placeholder
     }
-  }, [page, rowsPerPage, sellersInfo, dataReady, query]);
+  }, [page, rowsPerPage, productsInfo, dataReady, query]);
 };
 
-const Sellers = () => {
-  const { data: sellersData } = useGetSellersQuery();
+const Products = () => {
+  const { data: productsData } = useGetProductsQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const { sellers, sellersLength } = useSellers(
+  const { products, productsLength } = useProducts(
     page,
     rowsPerPage,
-    sellersData,
+    productsData,
     searchQuery
   );
 
@@ -91,12 +91,12 @@ const Sellers = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Sellers</Typography>
+                <Typography variant='h4'>Products</Typography>
               </Stack>
 
               <Button
                 component={Link}
-                to='/portal/sellers/add'
+                to='/portal/products/add'
                 startIcon={
                   <SvgIcon fontSize='small'>
                     <PlusIcon />
@@ -107,16 +107,16 @@ const Sellers = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Seller
+                Add New Product
               </Button>
             </Stack>
-            <SellersSearch
+            <ProductsSearch
               onChange={handleSearchChange}
               searchQuery={searchQuery}
             />
-            <SellersTable
-              count={sellersLength}
-              items={sellers}
+            <ProductsTable
+              count={productsLength}
+              items={products}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -129,4 +129,4 @@ const Sellers = () => {
   );
 };
 
-export default Sellers;
+export default Products;
