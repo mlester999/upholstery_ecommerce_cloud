@@ -1,6 +1,6 @@
 import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
 import ReceiptPercentIcon from '@heroicons/react/24/solid/ReceiptPercentIcon';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
+import BuildingStorefrontIcon from '@heroicons/react/24/solid/BuildingStorefrontIcon';
 import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
 import TruckIcon from '@heroicons/react/24/solid/TruckIcon';
 import UserGroupIcon from '@heroicons/react/24/solid/UserGroupIcon';
@@ -29,6 +29,17 @@ export const items = [
     icon: (
       <SvgIcon fontSize='small'>
         <UsersIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: 'Shops',
+    path: '/portal/shops',
+    icon: (
+      <SvgIcon fontSize='small'>
+        <BuildingStorefrontIcon />
       </SvgIcon>
     ),
     disabled: false,

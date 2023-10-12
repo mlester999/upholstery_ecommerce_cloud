@@ -26,6 +26,7 @@ export const OverviewLatestProducts = (props) => {
       <List>
         {products
           ?.sort((a, b) => b.id - a.id)
+          .slice(0, 5)
           .map((product, index) => {
             const hasDivider = index < products.length - 1;
             const ago = formatDistanceToNow(new Date(product.updated_at));

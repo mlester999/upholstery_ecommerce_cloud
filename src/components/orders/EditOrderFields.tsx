@@ -90,7 +90,7 @@ const EditOrderFields = (props) => {
                 theme: 'light',
               });
             })
-            .catch((error) => console.log(error));
+            .catch((error) => setErrors({ customer_id: error.data?.message }));
         }}
       >
         {({

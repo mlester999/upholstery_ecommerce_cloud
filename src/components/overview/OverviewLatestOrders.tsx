@@ -48,6 +48,7 @@ export const OverviewLatestOrders = (props) => {
             <TableBody>
               {orders
                 ?.sort((a, b) => b.id - a.id)
+                .slice(0, 6)
                 .map((order) => {
                   const createdAt = format(
                     new Date(order.created_at),

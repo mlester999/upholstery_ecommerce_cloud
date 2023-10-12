@@ -115,7 +115,7 @@ const Customers = () => {
               searchQuery={searchQuery}
             />
             <CustomersTable
-              count={customersLength}
+              count={customersLength ?? 0}
               items={customers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

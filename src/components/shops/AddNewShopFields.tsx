@@ -1,8 +1,8 @@
-import { useState } from 'react';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import {
   Box,
+  Button,
   Card,
   CardActions,
   CardContent,
@@ -16,23 +16,19 @@ import {
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
+import { useCreateShopMutation } from '../../services/crud-shop';
 import { toast } from 'react-toastify';
-import { useGetCustomersQuery } from '../../services/crud-customer';
 import { useGetSellersQuery } from '../../services/crud-seller';
-import { useCreateOrderMutation } from '../../services/crud-order';
-import { useGetProductsQuery } from '../../services/crud-product';
 
-const AddNewOrderFields = () => {
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
-  const { data: customersData } = useGetCustomersQuery();
+const AddNewShopFields = () => {
+  const [createShop, { isLoading }] = useCreateShopMutation();
   const { data: sellersData } = useGetSellersQuery();
-  const { data: productsData } = useGetProductsQuery();
   const navigate = useNavigate();
 
   const initialValues = {
-    customer_id: '',
     seller_id: '',
-    product_id: '',
+    name: '',
+    description: '',
   };
 
   return (
@@ -40,16 +36,17 @@ const AddNewOrderFields = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
-          customer_id: Yup.string().required('Customer Name is required'),
-          seller_id: Yup.string().required('Seller Name is required'),
-          product_id: Yup.string().required('Product Name is required'),
+          seller_id: Yup.string().required('Seller is required'),
+          name: Yup.string().required('Name is required'),
+          description: Yup.string().required('Description is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          createOrder(values)
+          createShop(values)
             .unwrap()
             .then((payload) => {
-              navigate('/portal/orders');
-              toast.success('Added Order Successfully!', {
+              navigate('/portal/shops');
+
+              toast.success('Added Shop Successfully!', {
                 position: 'top-right',
                 autoClose: 5000,
                 hideProgressBar: false,
@@ -58,7 +55,7 @@ const AddNewOrderFields = () => {
                 theme: 'light',
               });
             })
-            .catch((error) => setErrors({ customer_id: error.data?.message }));
+            .catch((error) => setErrors({ seller_id: error.data?.message }));
         }}
       >
         {({
@@ -76,50 +73,12 @@ const AddNewOrderFields = () => {
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='Please fill in the input fields to add a order.'
-                title='Order Information'
+                subheader='Please fill in the input fields to add a shop.'
+                title='Shop Information'
               />
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
                   <Grid container spacing={3}>
-                    <Grid xs={12}>
-                      <FormControl
-                        fullWidth
-                        error={Boolean(
-                          touched.customer_id && errors.customer_id
-                        )}
-                      >
-                        <TextField
-                          fullWidth
-                          error={Boolean(
-                            touched.customer_id && errors.customer_id
-                          )}
-                          label='Select Customer'
-                          name='customer_id'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.customer_id}
-                        >
-                          <option value='' disabled hidden></option>
-                          {customersData?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
-                              </option>
-                            );
-                          })}
-                        </TextField>
-                        {touched.customer_id && errors.customer_id && (
-                          <FormHelperText error id='text-customer-id'>
-                            {errors.customer_id}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </Grid>
-
                     <Grid xs={12}>
                       <FormControl
                         fullWidth
@@ -157,37 +116,50 @@ const AddNewOrderFields = () => {
                     <Grid xs={12}>
                       <FormControl
                         fullWidth
-                        error={Boolean(touched.product_id && errors.product_id)}
+                        error={Boolean(touched.name && errors.name)}
                       >
                         <TextField
-                          disabled={!values.seller_id}
                           fullWidth
-                          error={Boolean(
-                            touched.product_id && errors.product_id
-                          )}
-                          label='Select Product'
-                          name='product_id'
+                          error={Boolean(touched.name && errors.name)}
+                          label='Shop Name'
+                          name='name'
                           onBlur={handleBlur}
                           onChange={handleChange}
                           required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.product_id}
-                        >
-                          <option value='' disabled hidden></option>
-                          {productsData
-                            ?.filter((el) => el.seller.id == values.seller_id)
-                            .map((el) => {
-                              return (
-                                <option key={el.id} value={el.id}>
-                                  {el.name}
-                                </option>
-                              );
-                            })}
-                        </TextField>
-                        {touched.product_id && errors.product_id && (
-                          <FormHelperText error id='text-product-id'>
-                            {errors.product_id}
+                          value={values.name}
+                        />
+                        {touched.name && errors.name && (
+                          <FormHelperText error id='text-name'>
+                            {errors.name}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(
+                          touched.description && errors.description
+                        )}
+                      >
+                        <TextField
+                          fullWidth
+                          multiline
+                          rows={3}
+                          error={Boolean(
+                            touched.description && errors.description
+                          )}
+                          label='Description'
+                          name='description'
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          required
+                          value={values.description}
+                        />
+                        {touched.description && errors.description && (
+                          <FormHelperText error id='text-description'>
+                            {errors.description}
                           </FormHelperText>
                         )}
                       </FormControl>
@@ -216,4 +188,4 @@ const AddNewOrderFields = () => {
   );
 };
 
-export default AddNewOrderFields;
+export default AddNewShopFields;

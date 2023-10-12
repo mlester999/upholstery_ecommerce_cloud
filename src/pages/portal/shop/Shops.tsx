@@ -8,61 +8,75 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import CategoriesTable from '../../../components/categories/CategoriesTable';
-import CategoriesSearch from '../../../components/categories/CategoriesSearch';
+import ShopsTable from '../../../components/shops/ShopsTable';
+import ShopsSearch from '../../../components/shops/ShopsSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
-import { useGetCategoriesQuery } from '../../../services/crud-category';
+import { useGetShopsQuery } from '../../../services/crud-shop';
 
-const useCategories = (page, rowsPerPage, categoriesInfo, query) => {
-  const dataReady = categoriesInfo && categoriesInfo.length > 0;
+const useShops = (page, rowsPerPage, shopsInfo, query) => {
+  const dataReady = shopsInfo && shopsInfo.length > 0;
 
   return useMemo(() => {
     if (dataReady) {
       if (query.trim() === '') {
-        const categories = applyPagination(categoriesInfo, page, rowsPerPage);
+        const shops = applyPagination(shopsInfo, page, rowsPerPage);
 
-        const categoriesLength = categoriesInfo.length;
+        const shopsLength = shopsInfo.length;
 
-        return { categories, categoriesLength };
+        return { shops, shopsLength };
       } else {
-        const latestCategories = categoriesInfo.filter((item) => {
+        const latestShops = shopsInfo.filter((item) => {
           // Convert the item properties to lowercase strings and check if any of them contains the query
           for (const key in item) {
-            if (
-              item[key] &&
-              item[key].toString().toLowerCase().includes(query.toLowerCase())
-            ) {
-              return true;
+            if (typeof item[key] === 'object') {
+              for (const objectKey in item[key]) {
+                if (
+                  item[key][objectKey] &&
+                  item[key][objectKey]
+                    .toString()
+                    .toLowerCase()
+                    .includes(query.toLowerCase())
+                ) {
+                  return true;
+                }
+              }
+            } else {
+              if (
+                item[key] &&
+                item[key].toString().toLowerCase().includes(query.toLowerCase())
+              ) {
+                return true;
+              }
             }
           }
           return false;
         });
 
-        const categoriesLength = latestCategories.length;
+        const shopsLength = latestShops.length;
 
-        const categories = applyPagination(latestCategories, page, rowsPerPage);
+        const shops = applyPagination(latestShops, page, rowsPerPage);
 
-        return { categories, categoriesLength };
+        return { shops, shopsLength };
       }
     } else {
       // Handle loading state or return an empty array
-      return { categories: [], categoriesLength: null }; // You can return an empty array or a loading state placeholder
+      return { shops: [], shopsLength: null }; // You can return an empty array or a loading state placeholder
     }
-  }, [page, rowsPerPage, categoriesInfo, dataReady, query]);
+  }, [page, rowsPerPage, shopsInfo, dataReady, query]);
 };
 
-const Categories = () => {
-  const { data: categoriesData } = useGetCategoriesQuery();
+const Shops = () => {
+  const { data: shopsData } = useGetShopsQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const { categories, categoriesLength } = useCategories(
+  const { shops, shopsLength } = useShops(
     page,
     rowsPerPage,
-    categoriesData,
+    shopsData,
     searchQuery
   );
 
@@ -91,12 +105,12 @@ const Categories = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Categories</Typography>
+                <Typography variant='h4'>Shops</Typography>
               </Stack>
 
               <Button
                 component={Link}
-                to='/portal/categories/add'
+                to='/portal/shops/add'
                 startIcon={
                   <SvgIcon fontSize='small'>
                     <PlusIcon />
@@ -107,16 +121,16 @@ const Categories = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Category
+                Add New Shop
               </Button>
             </Stack>
-            <CategoriesSearch
+            <ShopsSearch
               onChange={handleSearchChange}
               searchQuery={searchQuery}
             />
-            <CategoriesTable
-              count={categoriesLength ?? 0}
-              items={categories}
+            <ShopsTable
+              count={shopsLength ?? 0}
+              items={shops}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -129,4 +143,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Shops;

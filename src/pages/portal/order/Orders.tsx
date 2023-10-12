@@ -129,7 +129,7 @@ const Orders = () => {
               searchQuery={searchQuery}
             />
             <OrdersTable
-              count={ordersLength}
+              count={ordersLength ?? 0}
               items={orders}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

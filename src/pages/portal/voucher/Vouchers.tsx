@@ -8,27 +8,27 @@ import {
   SvgIcon,
   Typography,
 } from '@mui/material';
-import CategoriesTable from '../../../components/categories/CategoriesTable';
-import CategoriesSearch from '../../../components/categories/CategoriesSearch';
+import VouchersTable from '../../../components/vouchers/VouchersTable';
+import VouchersSearch from '../../../components/vouchers/VouchersSearch';
 import { applyPagination } from '../../../utils/applyPagination';
 import PortalLayout from '../../../layouts/PortalLayout';
 import Colors from '../../../constants/Colors';
 import { Link } from 'react-router-dom';
-import { useGetCategoriesQuery } from '../../../services/crud-category';
+import { useGetVouchersQuery } from '../../../services/crud-voucher';
 
-const useCategories = (page, rowsPerPage, categoriesInfo, query) => {
-  const dataReady = categoriesInfo && categoriesInfo.length > 0;
+const useVouchers = (page, rowsPerPage, vouchersInfo, query) => {
+  const dataReady = vouchersInfo && vouchersInfo.length > 0;
 
   return useMemo(() => {
     if (dataReady) {
       if (query.trim() === '') {
-        const categories = applyPagination(categoriesInfo, page, rowsPerPage);
+        const vouchers = applyPagination(vouchersInfo, page, rowsPerPage);
 
-        const categoriesLength = categoriesInfo.length;
+        const vouchersLength = vouchersInfo.length;
 
-        return { categories, categoriesLength };
+        return { vouchers, vouchersLength };
       } else {
-        const latestCategories = categoriesInfo.filter((item) => {
+        const latestVouchers = vouchersInfo.filter((item) => {
           // Convert the item properties to lowercase strings and check if any of them contains the query
           for (const key in item) {
             if (
@@ -41,28 +41,28 @@ const useCategories = (page, rowsPerPage, categoriesInfo, query) => {
           return false;
         });
 
-        const categoriesLength = latestCategories.length;
+        const vouchersLength = latestVouchers.length;
 
-        const categories = applyPagination(latestCategories, page, rowsPerPage);
+        const vouchers = applyPagination(latestVouchers, page, rowsPerPage);
 
-        return { categories, categoriesLength };
+        return { vouchers, vouchersLength };
       }
     } else {
       // Handle loading state or return an empty array
-      return { categories: [], categoriesLength: null }; // You can return an empty array or a loading state placeholder
+      return { vouchers: [], vouchersLength: null }; // You can return an empty array or a loading state placeholder
     }
-  }, [page, rowsPerPage, categoriesInfo, dataReady, query]);
+  }, [page, rowsPerPage, vouchersInfo, dataReady, query]);
 };
 
-const Categories = () => {
-  const { data: categoriesData } = useGetCategoriesQuery();
+const Vouchers = () => {
+  const { data: vouchersData } = useGetVouchersQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [searchQuery, setSearchQuery] = useState('');
-  const { categories, categoriesLength } = useCategories(
+  const { vouchers, vouchersLength } = useVouchers(
     page,
     rowsPerPage,
-    categoriesData,
+    vouchersData,
     searchQuery
   );
 
@@ -91,12 +91,12 @@ const Categories = () => {
           <Stack spacing={3}>
             <Stack direction='row' justifyContent='space-between' spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Categories</Typography>
+                <Typography variant='h4'>Vouchers</Typography>
               </Stack>
 
               <Button
                 component={Link}
-                to='/portal/categories/add'
+                to='/portal/discount-vouchers/add'
                 startIcon={
                   <SvgIcon fontSize='small'>
                     <PlusIcon />
@@ -107,16 +107,16 @@ const Categories = () => {
                   backgroundColor: Colors.primaryColor,
                 }}
               >
-                Add New Category
+                Add New Voucher
               </Button>
             </Stack>
-            <CategoriesSearch
+            <VouchersSearch
               onChange={handleSearchChange}
               searchQuery={searchQuery}
             />
-            <CategoriesTable
-              count={categoriesLength ?? 0}
-              items={categories}
+            <VouchersTable
+              count={vouchersLength ?? 0}
+              items={vouchers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}
               page={page}
@@ -129,4 +129,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Vouchers;

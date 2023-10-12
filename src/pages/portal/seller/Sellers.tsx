@@ -115,7 +115,7 @@ const Sellers = () => {
               searchQuery={searchQuery}
             />
             <SellersTable
-              count={sellersLength}
+              count={sellersLength ?? 0}
               items={sellers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

@@ -77,13 +77,13 @@ const Main = () => {
 
             <Grid xs={12} md={6} lg={4}>
               <OverviewLatestProducts
-                products={productsData?.slice(0, 5)}
+                products={productsData?.slice()}
                 sx={{ height: '100%' }}
               />
             </Grid>
             <Grid xs={12} md={12} lg={8}>
               <OverviewLatestOrders
-                orders={ordersData?.slice(0, 6)}
+                orders={ordersData?.slice()}
                 sx={{ height: '100%' }}
               />
             </Grid>

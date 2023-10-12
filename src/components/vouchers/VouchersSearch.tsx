@@ -1,12 +1,22 @@
+import React from 'react';
 import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
 
-const DiscountVouchersSearch = () => (
+interface VouchersSearchProps {
+  onChange: () => void;
+  searchQuery: string;
+}
+
+const VouchersSearch: React.FC<VouchersSearchProps> = ({
+  onChange,
+  searchQuery,
+}) => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
+      onChange={onChange}
       defaultValue=''
       fullWidth
-      placeholder='Search a discount voucher...'
+      placeholder='Search a voucher...'
       startAdornment={
         <InputAdornment position='start'>
           <SvgIcon color='action' fontSize='small'>
@@ -15,8 +25,9 @@ const DiscountVouchersSearch = () => (
         </InputAdornment>
       }
       sx={{ maxWidth: 500 }}
+      value={searchQuery}
     />
   </Card>
 );
 
-export default DiscountVouchersSearch;
+export default VouchersSearch;
