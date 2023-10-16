@@ -51,7 +51,7 @@ export const authentication = createApi({
     }),
     logout: builder.mutation<Logout, void>({
       query: () => ({
-        url: `auth/logout`,
+        url: `auth/admin/logout`,
         method: 'POST',
         withCredentials: true,
       }),
@@ -59,7 +59,7 @@ export const authentication = createApi({
     }),
     getUser: builder.query<GetUser, void>({
       query: () => ({
-        url: `auth/user`,
+        url: `auth/admin/user`,
         method: 'GET',
         withCredentials: true,
       }),
@@ -67,7 +67,7 @@ export const authentication = createApi({
     }),
     updateUser: builder.mutation<UpdateUser, UpdateUser>({
       query: (details) => ({
-        url: `auth/user`,
+        url: `auth/admin/user`,
         method: 'POST',
         withCredentials: true,
         body: { details },
@@ -76,7 +76,7 @@ export const authentication = createApi({
     }),
     updatePass: builder.mutation<UpdatePass, UpdatePass>({
       query: (details) => ({
-        url: `auth/password`,
+        url: `auth/admin/password`,
         method: 'POST',
         withCredentials: true,
         body: { details },

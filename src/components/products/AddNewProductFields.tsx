@@ -21,14 +21,14 @@ import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useGetCategoriesQuery } from '../../services/crud-category';
-import { useGetSellersQuery } from '../../services/crud-seller';
 import { useCreateProductMutation } from '../../services/crud-product';
+import { useGetShopsQuery } from '../../services/crud-shop';
 import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 
 const AddNewOrderFields = () => {
   const [createProduct, { isLoading }] = useCreateProductMutation();
   const { data: categoriesData } = useGetCategoriesQuery();
-  const { data: sellersData } = useGetSellersQuery();
+  const { data: shopsData } = useGetShopsQuery();
   const [imagePreview, setImagePreview] = useState('/assets/empty_product.jpg');
   const [imageFileName, setImageFileName] = useState('');
   const navigate = useNavigate();
@@ -38,7 +38,7 @@ const AddNewOrderFields = () => {
     description: '',
     price: '',
     category_id: '',
-    seller_id: '',
+    shop_id: '',
     image_file: '',
   };
 
@@ -51,7 +51,7 @@ const AddNewOrderFields = () => {
           description: Yup.string().required('Description is required'),
           price: Yup.number().required('Price is required'),
           category_id: Yup.string().required('Category is required'),
-          seller_id: Yup.string().required('Seller Name is required'),
+          shop_id: Yup.string().required('Shop Name is required'),
           image_file: Yup.string().required('Image is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -209,32 +209,32 @@ const AddNewOrderFields = () => {
                     <Grid xs={12} md={4}>
                       <FormControl
                         fullWidth
-                        error={Boolean(touched.seller_id && errors.seller_id)}
+                        error={Boolean(touched.shop_id && errors.shop_id)}
                       >
                         <TextField
                           fullWidth
-                          error={Boolean(touched.seller_id && errors.seller_id)}
-                          label='Select Seller'
-                          name='seller_id'
+                          error={Boolean(touched.shop_id && errors.shop_id)}
+                          label='Select Shop'
+                          name='shop_id'
                           onBlur={handleBlur}
                           onChange={handleChange}
                           required
                           select
                           SelectProps={{ native: true }}
-                          value={values.seller_id}
+                          value={values.shop_id}
                         >
                           <option value='' disabled hidden></option>
-                          {sellersData?.map((el) => {
+                          {shopsData?.map((el) => {
                             return (
                               <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
+                                {el.name}
                               </option>
                             );
                           })}
                         </TextField>
-                        {touched.seller_id && errors.seller_id && (
-                          <FormHelperText error id='text-seller-id'>
-                            {errors.seller_id}
+                        {touched.shop_id && errors.shop_id && (
+                          <FormHelperText error id='text-shop-id'>
+                            {errors.shop_id}
                           </FormHelperText>
                         )}
                       </FormControl>
