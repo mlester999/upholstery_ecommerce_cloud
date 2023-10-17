@@ -24,6 +24,16 @@ export const OverviewLatestProducts = (props) => {
     <Card sx={sx}>
       <CardHeader title='Latest Products' />
       <List>
+        {products?.length === 0 && (
+          <ListItem>
+            <ListItemText
+              primary='No Products Found...'
+              primaryTypographyProps={{ variant: 'subtitle1' }}
+              sx={{ textAlign: 'center' }}
+            />
+          </ListItem>
+        )}
+
         {products
           ?.sort((a, b) => b.id - a.id)
           .slice(0, 5)

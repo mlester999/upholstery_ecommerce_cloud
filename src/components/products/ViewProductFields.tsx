@@ -134,6 +134,7 @@ const ViewProductFields = (props) => {
             display: 'flex',
             flexDirection: 'row',
             height: 'max',
+            width: 'max',
             gap: 1,
           }}
         >
@@ -141,8 +142,22 @@ const ViewProductFields = (props) => {
             Image File:
           </Typography>
 
-          <Typography color='text.secondary' variant='body1'>
-            {product?.image_file}
+          <Typography
+            noWrap
+            sx={{
+              overflowWrap: 'break-word',
+            }}
+            color='text.secondary'
+            variant='body1'
+          >
+            <a
+              href={product?.image_file}
+              target='_blank'
+              rel='noopener noreferrer'
+              style={{ whiteSpace: 'normal', textOverflow: 'ellipsis' }}
+            >
+              {product?.image_file}
+            </a>
           </Typography>
         </Box>
       </CardContent>

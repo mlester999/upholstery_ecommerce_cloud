@@ -14,6 +14,7 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  Typography,
 } from '@mui/material';
 import Scrollbar from '../ScrollBar';
 import SeverityPill from '../SeverityPill';
@@ -46,6 +47,22 @@ export const OverviewLatestOrders = (props) => {
               </TableRow>
             </TableHead>
             <TableBody>
+              {orders?.length === 0 && (
+                <TableRow>
+                  <TableCell
+                    colspan='12'
+                    sx={{
+                      whiteSpace: 'nowrap',
+                      textAlign: 'center',
+                    }}
+                  >
+                    <Typography variant='subtitle2'>
+                      No Orders Found...
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+
               {orders
                 ?.sort((a, b) => b.id - a.id)
                 .slice(0, 6)
