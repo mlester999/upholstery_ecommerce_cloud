@@ -119,11 +119,11 @@ const ViewProductFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Seller's Name:
+            Shop's Name:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {product?.seller?.first_name} {product?.seller?.last_name}
+            {product?.shop?.name}
           </Typography>
         </Box>
 

@@ -84,7 +84,7 @@ const ProductsTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Seller's Name
+                  Shop's Name
                 </TableCell>
                 <TableCell
                   sx={{
@@ -201,7 +201,7 @@ const ProductsTable = (props) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {product.seller.first_name} {product.seller.last_name}
+                      {product.shop.name}
                     </TableCell>
                     <TableCell>
                       <SeverityPill color={ACTIVE_STATUS[product.is_active]}>
