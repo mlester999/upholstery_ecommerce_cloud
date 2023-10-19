@@ -6,6 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import NotFound from '../../../components/NotFound';
 import EditOrderFields from '../../../components/orders/EditOrderFields';
 import ViewOrderFields from '../../../components/orders/ViewOrderFields';
 import PortalLayout from '../../../layouts/PortalLayout';
@@ -13,10 +14,19 @@ import { useGetOrderQuery } from '../../../services/crud-order';
 
 const ViewOrder = () => {
   const { orderId } = useParams();
-  const { data: order, isLoading, isFetching } = useGetOrderQuery(orderId);
+  const {
+    data: order,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetOrderQuery(orderId);
 
   if (isLoading || isFetching) {
     return <div></div>;
+  }
+
+  if (!order || isError) {
+    return <NotFound />;
   }
 
   return (

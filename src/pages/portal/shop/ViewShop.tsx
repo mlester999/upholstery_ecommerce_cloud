@@ -6,6 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import NotFound from '../../../components/NotFound';
 import EditShopFields from '../../../components/shops/EditShopFields';
 import ViewShopFields from '../../../components/shops/ViewShopFields';
 import PortalLayout from '../../../layouts/PortalLayout';
@@ -13,10 +14,19 @@ import { useGetShopQuery } from '../../../services/crud-shop';
 
 const ViewShop = () => {
   const { shopId } = useParams();
-  const { data: shop, isLoading, isFetching } = useGetShopQuery(shopId);
+  const {
+    data: shop,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetShopQuery(shopId);
 
   if (isLoading) {
     return <div></div>;
+  }
+
+  if (!shop || isError) {
+    return <NotFound />;
   }
 
   return (

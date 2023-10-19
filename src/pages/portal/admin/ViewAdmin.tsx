@@ -6,26 +6,26 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import EditAdminFields from '../../../components/admins/EditAdminFields';
+import ViewAdminFields from '../../../components/admins/ViewAdminFields';
 import NotFound from '../../../components/NotFound';
-import EditProductFields from '../../../components/products/EditProductFields';
-import ViewProductFields from '../../../components/products/ViewProductFields';
 import PortalLayout from '../../../layouts/PortalLayout';
-import { useGetProductQuery } from '../../../services/crud-product';
+import { useGetAdminQuery } from '../../../services/crud-admin';
 
-const ViewProduct = () => {
-  const { productId } = useParams();
+const ViewAdmin = () => {
+  const { adminId } = useParams();
   const {
-    data: product,
+    data: admin,
     isLoading,
     isFetching,
     isError,
-  } = useGetProductQuery(productId);
+  } = useGetAdminQuery(adminId);
 
   if (isLoading || isFetching) {
     return <div></div>;
   }
 
-  if (!product || isError) {
+  if (!admin || isError) {
     return <NotFound />;
   }
 
@@ -41,15 +41,15 @@ const ViewProduct = () => {
         <Container maxWidth='lg'>
           <Stack spacing={3}>
             <div>
-              <Typography variant='h4'>Product Details</Typography>
+              <Typography variant='h4'>Admin Details</Typography>
             </div>
             <div>
               <Grid container spacing={3}>
                 <Grid xs={12} lg={6}>
-                  <ViewProductFields product={product} />
+                  <ViewAdminFields admin={admin} />
                 </Grid>
                 <Grid xs={12} lg={6}>
-                  <EditProductFields product={product} />
+                  <EditAdminFields admin={admin} />
                 </Grid>
               </Grid>
             </div>
@@ -60,4 +60,4 @@ const ViewProduct = () => {
   );
 };
 
-export default ViewProduct;
+export default ViewAdmin;

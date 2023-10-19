@@ -6,6 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import NotFound from '../../../components/NotFound';
 import EditVoucherFields from '../../../components/vouchers/EditVoucherFields';
 import ViewVoucherFields from '../../../components/vouchers/ViewVoucherFields';
 import PortalLayout from '../../../layouts/PortalLayout';
@@ -17,10 +18,15 @@ const ViewVoucher = () => {
     data: voucher,
     isLoading,
     isFetching,
+    isError,
   } = useGetVoucherQuery(voucherId);
 
   if (isLoading || isFetching) {
     return <div></div>;
+  }
+
+  if (!voucher || isError) {
+    return <NotFound />;
   }
 
   return (

@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { setupListeners } from '@reduxjs/toolkit/query';
 import { authentication } from '../services/authentication';
+import { crudAdmin } from '../services/crud-admin';
 import { crudCategory } from '../services/crud-category';
 import { crudCustomer } from '../services/crud-customer';
 import { crudOrder } from '../services/crud-order';
@@ -12,6 +13,7 @@ import { crudVoucher } from '../services/crud-voucher';
 export const store = configureStore({
   reducer: {
     [authentication.reducerPath]: authentication.reducer,
+    [crudAdmin.reducerPath]: crudAdmin.reducer,
     [crudCustomer.reducerPath]: crudCustomer.reducer,
     [crudSeller.reducerPath]: crudSeller.reducer,
     [crudCategory.reducerPath]: crudCategory.reducer,
@@ -23,6 +25,7 @@ export const store = configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
       .concat(authentication.middleware)
+      .concat(crudAdmin.middleware)
       .concat(crudCustomer.middleware)
       .concat(crudSeller.middleware)
       .concat(crudCategory.middleware)

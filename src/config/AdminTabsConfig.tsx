@@ -24,6 +24,17 @@ export const items = [
     external: false,
   },
   {
+    title: 'Admins',
+    path: '/portal/admins',
+    icon: (
+      <SvgIcon fontSize='small'>
+        <UsersIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
     title: 'Sellers',
     path: '/portal/sellers',
     icon: (

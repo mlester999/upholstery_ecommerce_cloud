@@ -30,6 +30,9 @@ import AddNewVoucher from './pages/portal/voucher/AddNewVoucher';
 import Shops from './pages/portal/shop/Shops';
 import ViewShop from './pages/portal/shop/ViewShop';
 import AddNewShop from './pages/portal/shop/AddNewShop';
+import Admins from './pages/portal/admin/Admins';
+import ViewAdmin from './pages/portal/admin/ViewAdmin';
+import AddNewAdmin from './pages/portal/admin/AddNewAdmin';
 
 function App() {
   return (
@@ -38,6 +41,11 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/forgot-password' element={<ForgotPassword />} />
         <Route path='/portal/dashboard' element={<Dashboard />} />
+        <Route path='/portal/admins'>
+          <Route index element={<Admins />} />
+          <Route path='view/:adminId' element={<ViewAdmin />} />
+          <Route path='add' element={<AddNewAdmin />} />
+        </Route>
         <Route path='/portal/sellers'>
           <Route index element={<Sellers />} />
           <Route path='view/:sellerId' element={<ViewSeller />} />

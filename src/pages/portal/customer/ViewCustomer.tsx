@@ -8,6 +8,7 @@ import {
 import { useParams } from 'react-router-dom';
 import EditCustomerFields from '../../../components/customers/EditCustomerFields';
 import ViewCustomerFields from '../../../components/customers/ViewCustomerFields';
+import NotFound from '../../../components/NotFound';
 import PortalLayout from '../../../layouts/PortalLayout';
 import { useGetCustomerQuery } from '../../../services/crud-customer';
 
@@ -17,10 +18,15 @@ const ViewCustomer = () => {
     data: customer,
     isLoading,
     isFetching,
+    isError,
   } = useGetCustomerQuery(customerId);
 
   if (isLoading || isFetching) {
     return <div></div>;
+  }
+
+  if (!customer || isError) {
+    return <NotFound />;
   }
 
   return (
