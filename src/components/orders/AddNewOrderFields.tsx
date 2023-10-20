@@ -18,20 +18,20 @@ import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useGetCustomersQuery } from '../../services/crud-customer';
-import { useGetSellersQuery } from '../../services/crud-seller';
+import { useGetShopsQuery } from '../../services/crud-shop';
 import { useCreateOrderMutation } from '../../services/crud-order';
 import { useGetProductsQuery } from '../../services/crud-product';
 
 const AddNewOrderFields = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { data: customersData } = useGetCustomersQuery();
-  const { data: sellersData } = useGetSellersQuery();
+  const { data: shopsData } = useGetShopsQuery();
   const { data: productsData } = useGetProductsQuery();
   const navigate = useNavigate();
 
   const initialValues = {
     customer_id: '',
-    seller_id: '',
+    shop_id: '',
     product_id: '',
   };
 
@@ -41,7 +41,7 @@ const AddNewOrderFields = () => {
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
           customer_id: Yup.string().required('Customer Name is required'),
-          seller_id: Yup.string().required('Seller Name is required'),
+          shop_id: Yup.string().required('Seller Name is required'),
           product_id: Yup.string().required('Product Name is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -123,32 +123,32 @@ const AddNewOrderFields = () => {
                     <Grid xs={12}>
                       <FormControl
                         fullWidth
-                        error={Boolean(touched.seller_id && errors.seller_id)}
+                        error={Boolean(touched.shop_id && errors.shop_id)}
                       >
                         <TextField
                           fullWidth
-                          error={Boolean(touched.seller_id && errors.seller_id)}
-                          label='Select Seller'
-                          name='seller_id'
+                          error={Boolean(touched.shop_id && errors.shop_id)}
+                          label='Select Shop'
+                          name='shop_id'
                           onBlur={handleBlur}
                           onChange={handleChange}
                           required
                           select
                           SelectProps={{ native: true }}
-                          value={values.seller_id}
+                          value={values.shop_id}
                         >
                           <option value='' disabled hidden></option>
-                          {sellersData?.map((el) => {
+                          {shopsData?.map((el) => {
                             return (
                               <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
+                                {el.name}
                               </option>
                             );
                           })}
                         </TextField>
-                        {touched.seller_id && errors.seller_id && (
-                          <FormHelperText error id='text-seller-id'>
-                            {errors.seller_id}
+                        {touched.shop_id && errors.shop_id && (
+                          <FormHelperText error id='text-shop-id'>
+                            {errors.shop_id}
                           </FormHelperText>
                         )}
                       </FormControl>
@@ -160,7 +160,7 @@ const AddNewOrderFields = () => {
                         error={Boolean(touched.product_id && errors.product_id)}
                       >
                         <TextField
-                          disabled={!values.seller_id}
+                          disabled={!values.shop_id}
                           fullWidth
                           error={Boolean(
                             touched.product_id && errors.product_id
@@ -176,7 +176,7 @@ const AddNewOrderFields = () => {
                         >
                           <option value='' disabled hidden></option>
                           {productsData
-                            ?.filter((el) => el.seller.id == values.seller_id)
+                            ?.filter((el) => el.shop.id == values.shop_id)
                             .map((el) => {
                               return (
                                 <option key={el.id} value={el.id}>

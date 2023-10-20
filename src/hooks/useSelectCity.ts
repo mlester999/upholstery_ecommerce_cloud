@@ -6,7 +6,7 @@ export const useSelectCity = () => {
   const [citiesState, setCitiesState] = useState(null);
 
   useEffect(() => {
-    cities(provinceCode).then((city) => setCitiesState(city));
+    cities('0434').then((city) => setCitiesState(city));
   }, [provinceCode]);
 
   return [citiesState, setProvinceCode];

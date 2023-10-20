@@ -78,7 +78,7 @@ const OrdersTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Seller's Name
+                  Shop's Name
                 </TableCell>
                 <TableCell
                   sx={{
@@ -182,7 +182,7 @@ const OrdersTable = (props) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      {order.seller.first_name} {order.seller.last_name}
+                      {order.shop.name}
                     </TableCell>
                     <TableCell>
                       {order.status === 'Processing' && (

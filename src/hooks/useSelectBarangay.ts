@@ -6,7 +6,7 @@ export const useSelectBarangay = () => {
   const [barangaysState, setBarangaysState] = useState(null);
 
   useEffect(() => {
-    barangays(cityCode).then((barangay) => setBarangaysState(barangay));
+    barangays('043404').then((barangay) => setBarangaysState(barangay));
   }, [cityCode]);
 
   return [barangaysState, setCityCode];
