@@ -62,7 +62,7 @@ const Vouchers = () => {
   const { vouchers, vouchersLength } = useVouchers(
     page,
     rowsPerPage,
-    vouchersData,
+    vouchersData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 

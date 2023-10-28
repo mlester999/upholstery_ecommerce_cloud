@@ -33,6 +33,7 @@ const AddNewOrderFields = () => {
     customer_id: '',
     shop_id: '',
     product_id: '',
+    quantity: '',
   };
 
   return (
@@ -43,6 +44,7 @@ const AddNewOrderFields = () => {
           customer_id: Yup.string().required('Customer Name is required'),
           shop_id: Yup.string().required('Seller Name is required'),
           product_id: Yup.string().required('Product Name is required'),
+          quantity: Yup.number().required('Quantity is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           createOrder(values)
@@ -188,6 +190,30 @@ const AddNewOrderFields = () => {
                         {touched.product_id && errors.product_id && (
                           <FormHelperText error id='text-product-id'>
                             {errors.product_id}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(touched.quantity && errors.quantity)}
+                      >
+                        <TextField
+                          fullWidth
+                          error={Boolean(touched.quantity && errors.quantity)}
+                          label='Quantity'
+                          name='quantity'
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          required
+                          value={values.quantity}
+                          type='number'
+                        />
+                        {touched.quantity && errors.quantity && (
+                          <FormHelperText error id='text-product-quantity'>
+                            {errors.quantity}
                           </FormHelperText>
                         )}
                       </FormControl>

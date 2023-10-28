@@ -62,7 +62,7 @@ const Customers = () => {
   const { customers, customersLength } = useCustomers(
     page,
     rowsPerPage,
-    customersData,
+    customersData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 

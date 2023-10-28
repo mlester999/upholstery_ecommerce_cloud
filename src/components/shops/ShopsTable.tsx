@@ -30,6 +30,13 @@ const ShopsTable = (props) => {
 
   const navigate = useNavigate();
 
+  function limitString(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str; // If the string is already shorter than the limit, return it as is
+    }
+    return str.substring(0, maxLength) + '...'; // Truncate and add "..."
+  }
+
   return (
     <Card>
       <Scrollbar>
@@ -125,7 +132,9 @@ const ShopsTable = (props) => {
                       }}
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>{shop.name}</Typography>
+                        <Typography variant='subtitle2'>
+                          {limitString(shop.name, 40)}
+                        </Typography>
                       </Stack>
                     </TableCell>
 
@@ -136,7 +145,7 @@ const ShopsTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {shop.description}
+                          {limitString(shop.description, 30)}
                         </Typography>
                       </Stack>
                     </TableCell>

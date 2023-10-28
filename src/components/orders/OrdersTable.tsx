@@ -78,6 +78,14 @@ const OrdersTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
+                  Quantity
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   Shop's Name
                 </TableCell>
                 <TableCell
@@ -173,7 +181,22 @@ const OrdersTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          ₱{order.product.price}
+                          ₱
+                          {order.product.price.toLocaleString('en-US', {
+                            minimumFractionDigits: 2,
+                          })}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        <Typography variant='subtitle2'>
+                          {order.quantity ?? 0} {order.quantity ? 'pcs' : 'pc'}
                         </Typography>
                       </Stack>
                     </TableCell>

@@ -76,7 +76,7 @@ const Orders = () => {
   const { orders, ordersLength } = useOrders(
     page,
     rowsPerPage,
-    ordersData,
+    ordersData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 

@@ -107,7 +107,10 @@ const ViewOrderFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            ₱{order?.product?.price}
+            ₱
+            {order?.product?.price.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+            })}
           </Typography>
         </Box>
 
@@ -122,11 +125,30 @@ const ViewOrderFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Seller's Name:
+            Quantity:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {order?.seller?.first_name} {order?.seller?.last_name}
+            {order?.quantity ?? 0} {order.quantity ? 'pcs' : 'pc'}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingY: '10px',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            height: 'max',
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color='text.primary' variant='body1'>
+            Shop's Name:
+          </Typography>
+
+          <Typography color='text.secondary' variant='body1'>
+            {order?.shop?.name}
           </Typography>
         </Box>
 

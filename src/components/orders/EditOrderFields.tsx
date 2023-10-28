@@ -21,7 +21,7 @@ import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useGetProductsQuery } from '../../services/crud-product';
-import { useGetSellersQuery } from '../../services/crud-seller';
+import { useGetShopsQuery } from '../../services/crud-shop';
 import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 import { useGetCustomersQuery } from '../../services/crud-customer';
 import { useUpdateOrderMutation } from '../../services/crud-order';
@@ -30,14 +30,15 @@ const EditOrderFields = (props) => {
   const { order } = props;
   const [updateOrder, { isLoading: updateLoading }] = useUpdateOrderMutation();
   const { data: customersData } = useGetCustomersQuery();
-  const { data: sellersData } = useGetSellersQuery();
+  const { data: shopsData } = useGetShopsQuery();
   const { data: productsData } = useGetProductsQuery();
   const navigate = useNavigate();
 
   const initialValues = {
     customer_id: order?.customer.id,
-    seller_id: order?.seller.id,
+    shop_id: order?.shop.id,
     product_id: order?.product.id,
+    quantity: order?.quantity,
     status: order?.status,
   };
 
@@ -65,8 +66,9 @@ const EditOrderFields = (props) => {
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
           customer_id: Yup.string().required('Customer Name is required'),
-          seller_id: Yup.string().required('Seller Name is required'),
+          shop_id: Yup.string().required('Shop Name is required'),
           product_id: Yup.string().required('Product Name is required'),
+          quantity: Yup.number().required('Quantity is required'),
           status: Yup.string().required('Delivery Status is required'),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -155,32 +157,32 @@ const EditOrderFields = (props) => {
                     <Grid xs={12}>
                       <FormControl
                         fullWidth
-                        error={Boolean(touched.seller_id && errors.seller_id)}
+                        error={Boolean(touched.shop_id && errors.shop_id)}
                       >
                         <TextField
                           fullWidth
-                          error={Boolean(touched.seller_id && errors.seller_id)}
-                          label='Select Seller'
-                          name='seller_id'
+                          error={Boolean(touched.shop_id && errors.shop_id)}
+                          label='Select Shop'
+                          name='shop_id'
                           onBlur={handleBlur}
                           onChange={handleChange}
                           required
                           select
                           SelectProps={{ native: true }}
-                          value={values.seller_id}
+                          value={values.shop_id}
                         >
                           <option value='' disabled hidden></option>
-                          {sellersData?.map((el) => {
+                          {shopsData?.map((el) => {
                             return (
                               <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
+                                {el.name}
                               </option>
                             );
                           })}
                         </TextField>
-                        {touched.seller_id && errors.seller_id && (
-                          <FormHelperText error id='text-seller-id'>
-                            {errors.seller_id}
+                        {touched.shop_id && errors.shop_id && (
+                          <FormHelperText error id='text-shop-id'>
+                            {errors.shop_id}
                           </FormHelperText>
                         )}
                       </FormControl>
@@ -207,7 +209,7 @@ const EditOrderFields = (props) => {
                         >
                           <option value='' disabled hidden></option>
                           {productsData
-                            ?.filter((el) => el.seller.id == values.seller_id)
+                            ?.filter((el) => el.shop.id == values.shop_id)
                             .map((el) => {
                               return (
                                 <option key={el.id} value={el.id}>
@@ -219,6 +221,30 @@ const EditOrderFields = (props) => {
                         {touched.product_id && errors.product_id && (
                           <FormHelperText error id='text-product-id'>
                             {errors.product_id}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(touched.quantity && errors.quantity)}
+                      >
+                        <TextField
+                          fullWidth
+                          error={Boolean(touched.quantity && errors.quantity)}
+                          label='Quantity'
+                          name='quantity'
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          required
+                          value={values.quantity}
+                          type='number'
+                        />
+                        {touched.quantity && errors.quantity && (
+                          <FormHelperText error id='text-product-quantity'>
+                            {errors.quantity}
                           </FormHelperText>
                         )}
                       </FormControl>

@@ -62,7 +62,7 @@ const Admins = () => {
   const { admins, adminsLength } = useAdmins(
     page,
     rowsPerPage,
-    adminsData,
+    adminsData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 

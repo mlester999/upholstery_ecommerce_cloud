@@ -1,6 +1,6 @@
 export interface Shop {
   id: number;
-  title: string;
+  name: string;
   description: string;
   is_active: number;
   created_at: string;

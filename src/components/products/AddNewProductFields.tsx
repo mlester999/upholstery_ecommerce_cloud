@@ -37,6 +37,7 @@ const AddNewOrderFields = () => {
     name: '',
     description: '',
     price: '',
+    quantity: '',
     category_id: '',
     shop_id: '',
     image_file: '',
@@ -50,6 +51,7 @@ const AddNewOrderFields = () => {
           name: Yup.string().required('Product Name is required'),
           description: Yup.string().required('Description is required'),
           price: Yup.number().required('Price is required'),
+          quantity: Yup.number().required('Quantity is required'),
           category_id: Yup.string().required('Category is required'),
           shop_id: Yup.string().required('Shop Name is required'),
           image_file: Yup.string().required('Image is required'),
@@ -144,7 +146,7 @@ const AddNewOrderFields = () => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={4}>
+                    <Grid xs={12} md={3}>
                       <FormControl
                         fullWidth
                         error={Boolean(touched.price && errors.price)}
@@ -168,7 +170,31 @@ const AddNewOrderFields = () => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={4}>
+                    <Grid xs={12} md={3}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(touched.quantity && errors.quantity)}
+                      >
+                        <TextField
+                          fullWidth
+                          error={Boolean(touched.quantity && errors.quantity)}
+                          label='Quantity'
+                          name='quantity'
+                          onBlur={handleBlur}
+                          onChange={handleChange}
+                          required
+                          value={values.quantity}
+                          type='number'
+                        />
+                        {touched.quantity && errors.quantity && (
+                          <FormHelperText error id='text-product-quantity'>
+                            {errors.quantity}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12} md={3}>
                       <FormControl
                         fullWidth
                         error={Boolean(
@@ -206,7 +232,7 @@ const AddNewOrderFields = () => {
                       </FormControl>
                     </Grid>
 
-                    <Grid xs={12} md={4}>
+                    <Grid xs={12} md={3}>
                       <FormControl
                         fullWidth
                         error={Boolean(touched.shop_id && errors.shop_id)}

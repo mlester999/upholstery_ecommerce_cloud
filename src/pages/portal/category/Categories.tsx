@@ -62,7 +62,7 @@ const Categories = () => {
   const { categories, categoriesLength } = useCategories(
     page,
     rowsPerPage,
-    categoriesData,
+    categoriesData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 

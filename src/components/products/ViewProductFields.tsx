@@ -85,7 +85,29 @@ const ViewProductFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            ₱{product?.price}
+            ₱
+            {product?.price.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+            })}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingY: '10px',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            height: 'max',
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color='text.primary' variant='body1'>
+            Quantity:
+          </Typography>
+
+          <Typography color='text.secondary' variant='body1'>
+            {product?.quantity ?? 0} {product?.quantity ? 'pcs' : 'pc'}
           </Typography>
         </Box>
 

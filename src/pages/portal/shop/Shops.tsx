@@ -76,7 +76,7 @@ const Shops = () => {
   const { shops, shopsLength } = useShops(
     page,
     rowsPerPage,
-    shopsData,
+    shopsData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 
