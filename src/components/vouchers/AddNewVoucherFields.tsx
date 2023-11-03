@@ -16,8 +16,8 @@ import {
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
-import { useCreateVoucherMutation } from '../../services/crud-voucher';
 import { toast } from 'react-toastify';
+import { useCreateVoucherMutation } from '../../services/crud-voucher';
 
 const AddNewVoucherFields = () => {
   const [createVoucher, { isLoading }] = useCreateVoucherMutation();
@@ -59,7 +59,7 @@ const AddNewVoucherFields = () => {
                 theme: 'light',
               });
             })
-            .catch((error) => setErrors({ email: error.data?.message }));
+            .catch((error) => console.log(error));
         }}
       >
         {({
@@ -168,30 +168,6 @@ const AddNewVoucherFields = () => {
                     <Grid xs={12} md={4}>
                       <FormControl
                         fullWidth
-                        error={Boolean(touched.amount && errors.amount)}
-                      >
-                        <TextField
-                          fullWidth
-                          error={Boolean(touched.amount && errors.amount)}
-                          label='Amount'
-                          name='amount'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          value={values.amount}
-                          type='number'
-                        />
-                        {touched.amount && errors.amount && (
-                          <FormHelperText error id='text-product-amount'>
-                            {errors.amount}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </Grid>
-
-                    <Grid xs={12} md={4}>
-                      <FormControl
-                        fullWidth
                         error={Boolean(touched.mode && errors.mode)}
                       >
                         <TextField
@@ -200,7 +176,17 @@ const AddNewVoucherFields = () => {
                           label='Select Mode'
                           name='mode'
                           onBlur={handleBlur}
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            if (e.target.value === 'Percentage') {
+                              setFieldValue(
+                                'amount',
+                                Number(values.amount) > 100
+                                  ? 100
+                                  : values.amount
+                              );
+                            }
+                            setFieldValue('mode', e.target.value);
+                          }}
                           required
                           select
                           SelectProps={{ native: true }}
@@ -213,6 +199,46 @@ const AddNewVoucherFields = () => {
                         {touched.mode && errors.mode && (
                           <FormHelperText error id='text-mode'>
                             {errors.mode}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12} md={4}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(touched.amount && errors.amount)}
+                      >
+                        <TextField
+                          fullWidth
+                          error={Boolean(touched.amount && errors.amount)}
+                          label='Amount'
+                          name='amount'
+                          onBlur={handleBlur}
+                          onChange={(e) => {
+                            if (Math.sign(e.target.value) === 1) {
+                              if (values.mode === 'Percentage') {
+                                const discountVal = Number(e.target.value);
+
+                                setFieldValue(
+                                  'amount',
+                                  discountVal > 100 ? 100 : discountVal
+                                );
+                              } else {
+                                setFieldValue('amount', e.target.value);
+                              }
+                            } else {
+                              setFieldValue('amount', 1);
+                            }
+                          }}
+                          required
+                          value={values.amount}
+                          type='number'
+                          inputProps={{ min: 1, max: 100 }}
+                        />
+                        {touched.amount && errors.amount && (
+                          <FormHelperText error id='text-product-amount'>
+                            {errors.amount}
                           </FormHelperText>
                         )}
                       </FormControl>

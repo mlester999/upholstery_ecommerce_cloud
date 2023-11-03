@@ -54,7 +54,7 @@ export const crudVoucher = createApi({
     }),
     createVoucher: builder.mutation<CreateVoucher, CreateVoucher>({
       query: (details) => ({
-        url: `voucher/add`,
+        url: `voucher/add/new`,
         method: 'POST',
         withCredentials: true,
         body: { details },
