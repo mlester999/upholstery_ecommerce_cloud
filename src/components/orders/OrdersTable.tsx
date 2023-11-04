@@ -80,6 +80,14 @@ const OrdersTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
+                  Payment Method
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: 'nowrap',
+                  }}
+                >
                   Active Status
                 </TableCell>
 
@@ -168,6 +176,18 @@ const OrdersTable = (props) => {
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
                           {order.total_quantity} item(s)
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: 'nowrap',
+                      }}
+                    >
+                      <Stack alignItems='center' direction='row' spacing={2}>
+                        <Typography variant='subtitle2'>
+                          {order.payment_method}
                         </Typography>
                       </Stack>
                     </TableCell>

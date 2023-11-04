@@ -85,7 +85,6 @@ const AddNewOrderFields = () => {
           dirty,
           isValid,
         }) => {
-          console.log(values);
           return (
             <form noValidate onSubmit={handleSubmit}>
               <Card>

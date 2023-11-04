@@ -5,6 +5,7 @@ import {
   Typography,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import NotFound from '../../../components/NotFound';
 import EditOrderFields from '../../../components/orders/EditOrderFields';
@@ -21,7 +22,48 @@ const ViewOrder = () => {
     isError,
   } = useGetOrderQuery(orderId);
 
-  if (isLoading || isFetching) {
+  const [customer, setCustomer] = useState('');
+  const [shops, setShops] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [status, setStatus] = useState([]);
+  const [quantity, setQuantity] = useState([]);
+  const [settingState, setSettingState] = useState(true);
+
+  useEffect(() => {
+    if (order) {
+      const parseProducts = JSON.parse(order.products);
+
+      setCustomer(order.customer.id);
+
+      const getShopsId = parseProducts.map((el) => {
+        return el.shop.id;
+      });
+
+      setShops(getShopsId);
+
+      const getProductsId = parseProducts.map((el) => {
+        return el.id;
+      });
+
+      setProducts(getProductsId);
+
+      const getStatus = parseProducts.map((el) => {
+        return el.status;
+      });
+
+      setStatus(getStatus);
+
+      const getQuantity = parseProducts.map((el) => {
+        return el.quantity;
+      });
+
+      setQuantity(getQuantity);
+
+      setSettingState(false);
+    }
+  }, [order]);
+
+  if (isLoading || isFetching || settingState) {
     return <div></div>;
   }
 
@@ -48,9 +90,16 @@ const ViewOrder = () => {
                 <Grid xs={12} lg={6}>
                   <ViewOrderFields order={order} />
                 </Grid>
-                {/* <Grid xs={12} lg={6}>
-                  <EditOrderFields order={order} />
-                </Grid> */}
+                <Grid xs={12} lg={6}>
+                  <EditOrderFields
+                    orderId={order.id}
+                    orderCustomer={customer}
+                    orderShops={shops}
+                    orderProducts={products}
+                    orderStatus={status}
+                    orderQuantity={quantity}
+                  />
+                </Grid>
               </Grid>
             </div>
           </Stack>

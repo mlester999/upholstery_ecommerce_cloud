@@ -144,6 +144,25 @@ const ViewOrderFields = (props) => {
             {order?.total_quantity} item(s)
           </Typography>
         </Box>
+
+        <Box
+          sx={{
+            paddingY: '10px',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            height: 'max',
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color='text.primary' variant='body1'>
+            Payment Method:
+          </Typography>
+
+          <Typography color='text.secondary' variant='body1'>
+            {order?.payment_method}
+          </Typography>
+        </Box>
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
