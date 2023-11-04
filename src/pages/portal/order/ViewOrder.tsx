@@ -48,9 +48,9 @@ const ViewOrder = () => {
                 <Grid xs={12} lg={6}>
                   <ViewOrderFields order={order} />
                 </Grid>
-                <Grid xs={12} lg={6}>
+                {/* <Grid xs={12} lg={6}>
                   <EditOrderFields order={order} />
-                </Grid>
+                </Grid> */}
               </Grid>
             </div>
           </Stack>

@@ -57,21 +57,20 @@ const AddNewOrderFields = () => {
           ),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          console.log(values);
-          // createOrder(values)
-          //   .unwrap()
-          //   .then((payload) => {
-          //     navigate('/portal/orders');
-          //     toast.success('Added Order Successfully!', {
-          //       position: 'top-right',
-          //       autoClose: 5000,
-          //       hideProgressBar: false,
-          //       closeOnClick: true,
-          //       progress: undefined,
-          //       theme: 'light',
-          //     });
-          //   })
-          //   .catch((error) => setErrors({ customers: error.data?.message }));
+          createOrder(values)
+            .unwrap()
+            .then((payload) => {
+              navigate('/portal/orders');
+              toast.success('Added Order Successfully!', {
+                position: 'top-right',
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                progress: undefined,
+                theme: 'light',
+              });
+            })
+            .catch((error) => setErrors({ customer_id: error.data?.message }));
         }}
       >
         {({

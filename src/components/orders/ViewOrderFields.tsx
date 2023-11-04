@@ -28,6 +28,18 @@ const ViewOrderFields = (props) => {
   const [deactivateOrder, { isLoading: deactivateLoading }] =
     useDeactivateOrderMutation();
 
+  let orderedProducts = '';
+
+  const parsedProducts = JSON.parse(order?.products);
+
+  parsedProducts.map((el, i) => {
+    if (i < parsedProducts.length - 1) {
+      orderedProducts += `${el.quantity} pc(s) of ${el.name}, `;
+    } else {
+      orderedProducts += `and ${el.quantity} pc(s) of ${el.name}.`;
+    }
+  });
+
   return (
     <Card>
       <CardHeader
@@ -84,11 +96,11 @@ const ViewOrderFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Product's Name:
+            Ordered Products:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {order?.product?.name}
+            {orderedProducts}
           </Typography>
         </Box>
 
@@ -103,12 +115,12 @@ const ViewOrderFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Price:
+            Total Price:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
             ₱
-            {order?.product?.price.toLocaleString('en-US', {
+            {order?.subtotal_price.toLocaleString('en-US', {
               minimumFractionDigits: 2,
             })}
           </Typography>
@@ -125,76 +137,12 @@ const ViewOrderFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Quantity:
+            Total Quantity:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {order?.quantity ?? 0} {order.quantity ? 'pcs' : 'pc'}
+            {order?.total_quantity} item(s)
           </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            paddingY: '10px',
-            alignItems: 'center',
-            display: 'flex',
-            flexDirection: 'row',
-            height: 'max',
-            gap: 1,
-          }}
-        >
-          <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Shop's Name:
-          </Typography>
-
-          <Typography color='text.secondary' variant='body1'>
-            {order?.shop?.name}
-          </Typography>
-        </Box>
-
-        <Box
-          sx={{
-            paddingY: '10px',
-            alignItems: 'center',
-            display: 'flex',
-            flexDirection: 'row',
-            height: 'max',
-            gap: 1,
-          }}
-        >
-          <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Delivery Status:
-          </Typography>
-
-          {order.status === 'Processing' && (
-            <SeverityPill color={DELIVERY_STATUS.processing}>
-              {order.status}
-            </SeverityPill>
-          )}
-
-          {order.status === 'Packed' && (
-            <SeverityPill color={DELIVERY_STATUS.packed}>
-              {order.status}
-            </SeverityPill>
-          )}
-
-          {order.status === 'Shipped' && (
-            <SeverityPill color={DELIVERY_STATUS.shipped}>
-              {order.status}
-            </SeverityPill>
-          )}
-
-          {order.status === 'Out For Delivery' && (
-            <SeverityPill color={DELIVERY_STATUS.delivery}>
-              {order.status}
-            </SeverityPill>
-          )}
-
-          {order.status === 'Delivered' && (
-            <SeverityPill color={DELIVERY_STATUS.delivered}>
-              {order.status}
-            </SeverityPill>
-          )}
         </Box>
       </CardContent>
       <Divider />

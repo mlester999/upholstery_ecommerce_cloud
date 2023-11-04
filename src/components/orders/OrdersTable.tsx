@@ -58,19 +58,13 @@ const OrdersTable = (props) => {
                 >
                   Customer's Name
                 </TableCell>
+
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Product's Name
-                </TableCell>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Price
+                  Subtotal Price
                 </TableCell>
 
                 <TableCell
@@ -78,23 +72,9 @@ const OrdersTable = (props) => {
                     whiteSpace: 'nowrap',
                   }}
                 >
-                  Quantity
+                  Total Quantity
                 </TableCell>
 
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Shop's Name
-                </TableCell>
-                <TableCell
-                  sx={{
-                    whiteSpace: 'nowrap',
-                  }}
-                >
-                  Delivery Status
-                </TableCell>
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
@@ -102,6 +82,7 @@ const OrdersTable = (props) => {
                 >
                   Active Status
                 </TableCell>
+
                 <TableCell
                   sx={{
                     whiteSpace: 'nowrap',
@@ -163,17 +144,7 @@ const OrdersTable = (props) => {
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
-                          {limitString(order.product.name, 50)}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
+
                     <TableCell
                       sx={{
                         whiteSpace: 'nowrap',
@@ -182,7 +153,7 @@ const OrdersTable = (props) => {
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
                           ₱
-                          {order.product.price.toLocaleString('en-US', {
+                          {order.subtotal_price.toLocaleString('en-US', {
                             minimumFractionDigits: 2,
                           })}
                         </Typography>
@@ -196,48 +167,11 @@ const OrdersTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {order.quantity ?? 0} {order.quantity ? 'pcs' : 'pc'}
+                          {order.total_quantity} item(s)
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell
-                      sx={{
-                        whiteSpace: 'nowrap',
-                      }}
-                    >
-                      {order.shop.name}
-                    </TableCell>
-                    <TableCell>
-                      {order.status === 'Processing' && (
-                        <SeverityPill color={DELIVERY_STATUS.processing}>
-                          {order.status}
-                        </SeverityPill>
-                      )}
 
-                      {order.status === 'Packed' && (
-                        <SeverityPill color={DELIVERY_STATUS.packed}>
-                          {order.status}
-                        </SeverityPill>
-                      )}
-
-                      {order.status === 'Shipped' && (
-                        <SeverityPill color={DELIVERY_STATUS.shipped}>
-                          {order.status}
-                        </SeverityPill>
-                      )}
-
-                      {order.status === 'Out For Delivery' && (
-                        <SeverityPill color={DELIVERY_STATUS.delivery}>
-                          {order.status}
-                        </SeverityPill>
-                      )}
-
-                      {order.status === 'Delivered' && (
-                        <SeverityPill color={DELIVERY_STATUS.delivered}>
-                          {order.status}
-                        </SeverityPill>
-                      )}
-                    </TableCell>
                     <TableCell>
                       <SeverityPill color={ACTIVE_STATUS[order.is_active]}>
                         {order.is_active ? 'Activated' : 'Deactivated'}
