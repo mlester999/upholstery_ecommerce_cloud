@@ -35,7 +35,7 @@ const AddNewOrderFields = () => {
   const navigate = useNavigate();
 
   const initialValues = {
-    customers: Array(totalOrders).fill(''),
+    customer_id: '',
     shops: Array(totalOrders).fill(''),
     products: Array(totalOrders).fill(''),
     quantity: Array(totalOrders).fill(''),
@@ -47,9 +47,7 @@ const AddNewOrderFields = () => {
         initialValues={initialValues}
         enableReinitialize={true}
         validationSchema={Yup.object().shape({
-          customers: Yup.array().of(
-            Yup.string().required('Customer Name is required')
-          ),
+          customer_id: Yup.string().required('Customer Name is required'),
           shops: Yup.array().of(Yup.string().required('Shop Name is required')),
           products: Yup.array().of(
             Yup.string().required('Product is required')
@@ -98,59 +96,49 @@ const AddNewOrderFields = () => {
                 />
                 <CardContent sx={{ pt: 0 }}>
                   <Box sx={{ m: -1.5 }}>
-                    {Array.from({ length: totalOrders }, (_, index) => (
-                      <Grid container spacing={3}>
-                        <Grid xs={12} md={3}>
-                          <FormControl
+                    <Grid container spacing={3}>
+                      <Grid xs={12} md={12}>
+                        <FormControl
+                          fullWidth
+                          error={Boolean(
+                            touched.customer_id && errors.customer_id
+                          )}
+                        >
+                          <TextField
                             fullWidth
                             error={Boolean(
-                              touched?.customers &&
-                                errors?.customers &&
-                                touched.customers[index] &&
-                                errors.customers[index]
+                              touched.customer_id && errors.customer_id
                             )}
+                            label='Select Customer'
+                            name='customer_id'
+                            onBlur={handleBlur}
+                            onChange={handleChange}
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            value={values.customer_id}
                           >
-                            <TextField
-                              fullWidth
-                              error={Boolean(
-                                touched?.customers &&
-                                  errors?.customers &&
-                                  touched.customers[index] &&
-                                  errors.customers[index]
-                              )}
-                              label='Select Customer'
-                              name={`customers[${index}]`}
-                              onBlur={handleBlur}
-                              onChange={handleChange}
-                              required
-                              select
-                              SelectProps={{ native: true }}
-                              value={values.customers[index] || ''}
-                            >
-                              <option value='' disabled hidden></option>
-                              {customersData?.map((el) => {
-                                return (
-                                  <option key={el.id} value={el.id}>
-                                    {el.first_name} {el.last_name}
-                                  </option>
-                                );
-                              })}
-                            </TextField>
-                            {touched?.customers &&
-                              errors?.customers &&
-                              touched.customers[index] &&
-                              errors.customers[index] && (
-                                <FormHelperText
-                                  error
-                                  id={`text-customer-id[${index}]`}
-                                >
-                                  {errors.customers[index]}
-                                </FormHelperText>
-                              )}
-                          </FormControl>
-                        </Grid>
+                            <option value='' disabled hidden></option>
+                            {customersData?.map((el) => {
+                              return (
+                                <option key={el.id} value={el.id}>
+                                  {el.first_name} {el.last_name}
+                                </option>
+                              );
+                            })}
+                          </TextField>
+                          {touched.customer_id && errors.customer_id && (
+                            <FormHelperText error id={`text-customer-id`}>
+                              {errors.customer_id}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </Grid>
+                    </Grid>
 
-                        <Grid xs={12} md={3}>
+                    {Array.from({ length: totalOrders }, (_, index) => (
+                      <Grid container spacing={3}>
+                        <Grid xs={12} md={4}>
                           <FormControl
                             fullWidth
                             error={Boolean(
@@ -197,7 +185,7 @@ const AddNewOrderFields = () => {
                           </FormControl>
                         </Grid>
 
-                        <Grid xs={12} md={3}>
+                        <Grid xs={12} md={4}>
                           <FormControl
                             fullWidth
                             error={Boolean(
@@ -249,7 +237,7 @@ const AddNewOrderFields = () => {
                           </FormControl>
                         </Grid>
 
-                        <Grid xs={12} md={3}>
+                        <Grid xs={12} md={4}>
                           <FormControl
                             fullWidth
                             error={Boolean(
