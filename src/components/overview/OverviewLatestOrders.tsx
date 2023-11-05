@@ -41,9 +41,9 @@ export const OverviewLatestOrders = (props) => {
             <TableHead>
               <TableRow>
                 <TableCell>Order ID</TableCell>
-                <TableCell>Product Name</TableCell>
+                <TableCell>Customer's Name</TableCell>
+                <TableCell>Payment Method</TableCell>
                 <TableCell sortDirection='desc'>Date</TableCell>
-                <TableCell>Status</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -83,40 +83,10 @@ export const OverviewLatestOrders = (props) => {
                     >
                       <TableCell>{order.order_id}</TableCell>
                       <TableCell>
-                        {limitString(order.product.name, 30)}
+                        {order.customer.first_name} {order.customer.last_name}
                       </TableCell>
+                      <TableCell>{order.payment_method}</TableCell>
                       <TableCell>{createdAt}</TableCell>
-                      <TableCell>
-                        {order.status === 'Processing' && (
-                          <SeverityPill color={DELIVERY_STATUS.processing}>
-                            {order.status}
-                          </SeverityPill>
-                        )}
-
-                        {order.status === 'Packed' && (
-                          <SeverityPill color={DELIVERY_STATUS.packed}>
-                            {order.status}
-                          </SeverityPill>
-                        )}
-
-                        {order.status === 'Shipped' && (
-                          <SeverityPill color={DELIVERY_STATUS.shipped}>
-                            {order.status}
-                          </SeverityPill>
-                        )}
-
-                        {order.status === 'Out For Delivery' && (
-                          <SeverityPill color={DELIVERY_STATUS.delivery}>
-                            {order.status}
-                          </SeverityPill>
-                        )}
-
-                        {order.status === 'Delivered' && (
-                          <SeverityPill color={DELIVERY_STATUS.delivered}>
-                            {order.status}
-                          </SeverityPill>
-                        )}
-                      </TableCell>
                     </TableRow>
                   );
                 })}

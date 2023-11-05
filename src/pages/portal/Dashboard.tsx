@@ -81,12 +81,12 @@ const Main = () => {
                 sx={{ height: '100%' }}
               />
             </Grid>
-            {/* <Grid xs={12} md={12} lg={8}>
+            <Grid xs={12} md={12} lg={8}>
               <OverviewLatestOrders
                 orders={ordersData?.slice()}
                 sx={{ height: '100%' }}
               />
-            </Grid> */}
+            </Grid>
           </Grid>
         </Container>
       </Box>

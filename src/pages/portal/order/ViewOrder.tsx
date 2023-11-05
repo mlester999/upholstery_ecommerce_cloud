@@ -58,9 +58,9 @@ const ViewOrder = () => {
       });
 
       setQuantity(getQuantity);
-
-      setSettingState(false);
     }
+
+    setSettingState(false);
   }, [order]);
 
   if (isLoading || isFetching || settingState) {

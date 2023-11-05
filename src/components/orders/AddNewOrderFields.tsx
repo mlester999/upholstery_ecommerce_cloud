@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Formik } from 'formik';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import * as Yup from 'yup';
@@ -27,18 +27,35 @@ import { useCreateOrderMutation } from '../../services/crud-order';
 import { useGetProductsQuery } from '../../services/crud-product';
 
 const AddNewOrderFields = () => {
-  const [totalOrders, setTotalOrders] = useState(1);
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { data: customersData } = useGetCustomersQuery();
   const { data: shopsData } = useGetShopsQuery();
   const { data: productsData } = useGetProductsQuery();
   const navigate = useNavigate();
 
+  const [totalOrders, setTotalOrders] = useState(1);
+  const [customerIdState, setCustomerIdState] = useState('');
+  const [shopsState, setShopsState] = useState([]);
+  const [productsState, setProductsState] = useState([]);
+  const [quantityState, setQuantityState] = useState([]);
+  const hasRunUseEffect = useRef(false);
+
+  useEffect(() => {
+    if (!hasRunUseEffect.current) {
+      hasRunUseEffect.current = true;
+      return;
+    }
+
+    setShopsState((prev) => [...prev, '']);
+    setProductsState((prev) => [...prev, '']);
+    setQuantityState((prev) => [...prev, '']);
+  }, [totalOrders]);
+
   const initialValues = {
-    customer_id: '',
-    shops: Array(totalOrders).fill(''),
-    products: Array(totalOrders).fill(''),
-    quantity: Array(totalOrders).fill(''),
+    customer_id: customerIdState,
+    shops: shopsState,
+    products: productsState,
+    quantity: quantityState,
   };
 
   return (
@@ -79,6 +96,7 @@ const AddNewOrderFields = () => {
           handleChange,
           handleSubmit,
           setFieldValue,
+          setFieldTouched,
           isSubmitting,
           touched,
           values,
@@ -110,7 +128,11 @@ const AddNewOrderFields = () => {
                             label='Select Customer'
                             name='customer_id'
                             onBlur={handleBlur}
-                            onChange={handleChange}
+                            onChange={(e) => {
+                              setFieldValue(`customer_id`, e.target.value);
+
+                              setCustomerIdState(e.target.value);
+                            }}
                             required
                             select
                             SelectProps={{ native: true }}
@@ -157,7 +179,17 @@ const AddNewOrderFields = () => {
                               label='Select Shop'
                               name={`shops[${index}]`}
                               onBlur={handleBlur}
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                const newShops = [...shopsState];
+                                newShops[index] = e.target.value;
+
+                                setShopsState(newShops);
+                                setFieldValue(
+                                  `shops[${index}]`,
+                                  e.target.value
+                                );
+                                setFieldTouched(`shops[${index}]`, true);
+                              }}
                               required
                               select
                               SelectProps={{ native: true }}
@@ -205,7 +237,17 @@ const AddNewOrderFields = () => {
                               label='Select Product'
                               name={`products[${index}]`}
                               onBlur={handleBlur}
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                const newProducts = [...productsState];
+                                newProducts[index] = e.target.value;
+
+                                setProductsState(newProducts);
+                                setFieldValue(
+                                  `products[${index}]`,
+                                  e.target.value
+                                );
+                                setFieldTouched(`products[${index}]`, true);
+                              }}
                               required
                               select
                               SelectProps={{ native: true }}
@@ -256,7 +298,17 @@ const AddNewOrderFields = () => {
                               label='Quantity'
                               name={`quantity[${index}]`}
                               onBlur={handleBlur}
-                              onChange={handleChange}
+                              onChange={(e) => {
+                                const newQuantity = [...quantityState];
+                                newQuantity[index] = e.target.value;
+
+                                setQuantityState(newQuantity);
+                                setFieldValue(
+                                  `quantity[${index}]`,
+                                  e.target.value
+                                );
+                                setFieldTouched(`quantity[${index}]`, true);
+                              }}
                               required
                               value={values.quantity[index] || ''}
                               type='number'
@@ -299,7 +351,14 @@ const AddNewOrderFields = () => {
                   <LoadingButton
                     loading={isLoading}
                     disableElevation
-                    disabled={isSubmitting || !dirty || !isValid}
+                    disabled={
+                      isSubmitting ||
+                      !initialValues.customer_id ||
+                      !initialValues.shops.every((el) => el !== '') ||
+                      !initialValues.products.every((el) => el !== '') ||
+                      !initialValues.quantity.every((el) => el !== '') ||
+                      !isValid
+                    }
                     type='submit'
                     variant='contained'
                     sx={{ backgroundColor: Colors.primaryColor }}
