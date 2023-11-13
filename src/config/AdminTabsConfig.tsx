@@ -145,8 +145,8 @@ export const items = [
     external: false,
   },
   {
-    title: 'Logs',
-    path: '/portal/logs',
+    title: 'Activity Logs',
+    path: '/portal/activity-logs',
     icon: (
       <SvgIcon fontSize='small'>
         <DocumentTextIcon />

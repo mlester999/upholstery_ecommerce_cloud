@@ -9,6 +9,7 @@ import { crudProduct } from '../services/crud-product';
 import { crudSeller } from '../services/crud-seller';
 import { crudShop } from '../services/crud-shop';
 import { crudVoucher } from '../services/crud-voucher';
+import { crudActivityLog } from '../services/crud-activity-log';
 
 export const store = configureStore({
   reducer: {
@@ -21,6 +22,7 @@ export const store = configureStore({
     [crudOrder.reducerPath]: crudOrder.reducer,
     [crudVoucher.reducerPath]: crudVoucher.reducer,
     [crudShop.reducerPath]: crudShop.reducer,
+    [crudActivityLog.reducerPath]: crudActivityLog.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -32,7 +34,8 @@ export const store = configureStore({
       .concat(crudProduct.middleware)
       .concat(crudOrder.middleware)
       .concat(crudVoucher.middleware)
-      .concat(crudShop.middleware),
+      .concat(crudShop.middleware)
+      .concat(crudActivityLog.middleware),
 });
 
 setupListeners(store.dispatch);

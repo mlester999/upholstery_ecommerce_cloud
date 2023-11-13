@@ -33,6 +33,7 @@ import AddNewShop from './pages/portal/shop/AddNewShop';
 import Admins from './pages/portal/admin/Admins';
 import ViewAdmin from './pages/portal/admin/ViewAdmin';
 import AddNewAdmin from './pages/portal/admin/AddNewAdmin';
+import ActivityLogs from './pages/portal/activity-logs/ActivityLog';
 
 function App() {
   return (
@@ -87,7 +88,7 @@ function App() {
           path='/portal/returns-and-refunds'
           element={<ReturnsAndRefunds />}
         />
-        <Route path='/portal/logs' element={<Logs />} />
+        <Route path='/portal/activity-logs' element={<ActivityLogs />} />
         <Route path='/portal/account-details' element={<AccountDetails />} />
         <Route path='/' element={<Navigate to='/login' replace />} />
       </Routes>
