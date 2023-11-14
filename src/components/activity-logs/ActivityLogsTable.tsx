@@ -121,7 +121,9 @@ const ActivityLogsTable = (props) => {
                         whiteSpace: 'nowrap',
                       }}
                     >
-                      <Stack alignItems='center' direction='row' spacing={2}>
+                      <Stack alignItems='center' direction='row' spacing={2} sx={{
+                      whiteSpace: 'wrap'
+                    }}>
                         <Typography variant='subtitle2'>
                           {activityLog.description}
                         </Typography>

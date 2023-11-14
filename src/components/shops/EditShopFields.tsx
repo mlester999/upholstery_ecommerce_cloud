@@ -18,11 +18,12 @@ import { useNavigate } from 'react-router-dom';
 import { useUpdateShopMutation } from '../../services/crud-shop';
 import { useGetSellersQuery } from '../../services/crud-seller';
 import { toast } from 'react-toastify';
+import SkeletonEditShopFields from './SkeletonEditShopFields';
 
 const EditShopFields = (props) => {
   const { shop } = props;
   const [updateShop, { isLoading: updateLoading }] = useUpdateShopMutation();
-  const { data: sellersData } = useGetSellersQuery();
+  const { data: sellersData, isLoading: sellersLoading } = useGetSellersQuery();
   const navigate = useNavigate();
 
   const initialValues = {
@@ -47,6 +48,10 @@ const EditShopFields = (props) => {
     changedProperties.id = id;
 
     return changedProperties;
+  }
+
+  if (sellersLoading) {
+    return <SkeletonEditShopFields />
   }
 
   return (

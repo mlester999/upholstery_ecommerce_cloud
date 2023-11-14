@@ -24,13 +24,14 @@ import { useUpdateProductMutation } from '../../services/crud-product';
 import { useGetCategoriesQuery } from '../../services/crud-category';
 import { useGetShopsQuery } from '../../services/crud-shop';
 import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
+import SkeletonEditProductFields from './SkeletonEditProductFields';
 
 const EditProductFields = (props) => {
   const { product } = props;
   const [updateProduct, { isLoading: updateLoading }] =
     useUpdateProductMutation();
-  const { data: categoriesData } = useGetCategoriesQuery();
-  const { data: shopsData } = useGetShopsQuery();
+  const { data: categoriesData, isLoading: categoriesLoading } = useGetCategoriesQuery();
+  const { data: shopsData, isLoading: shopsLoading } = useGetShopsQuery();
   const [imagePreview, setImagePreview] = useState(product?.image_file);
   const [imageFileName, setImageFileName] = useState(
     product?.image_name.replace(/^[^-]+-/, '')
@@ -63,6 +64,10 @@ const EditProductFields = (props) => {
     changedProperties.id = id;
 
     return changedProperties;
+  }
+
+  if (categoriesLoading || shopsLoading) {
+    return <SkeletonEditProductFields />
   }
 
   return (

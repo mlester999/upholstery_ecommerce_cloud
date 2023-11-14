@@ -25,6 +25,7 @@ import { useGetShopsQuery } from '../../services/crud-shop';
 import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
 import { useGetCustomersQuery } from '../../services/crud-customer';
 import { useUpdateOrderMutation } from '../../services/crud-order';
+import SkeletonEditOrderFields from './SkeletonEditorderFields';
 
 const EditOrderFields = (props) => {
   const {
@@ -36,10 +37,12 @@ const EditOrderFields = (props) => {
     orderQuantity,
   } = props;
   const [updateOrder, { isLoading: updateLoading }] = useUpdateOrderMutation();
-  const { data: customersData } = useGetCustomersQuery();
-  const { data: shopsData } = useGetShopsQuery();
-  const { data: productsData } = useGetProductsQuery();
+  const { data: customersData, isLoading: customersLoading } = useGetCustomersQuery();
+  const { data: shopsData, isLoading: shopsLoading } = useGetShopsQuery();
+  const { data: productsData, isLoading: productsLoading } = useGetProductsQuery();
   const navigate = useNavigate();
+
+
 
   const initialValues = {
     customer_id: orderCustomer,
@@ -65,6 +68,12 @@ const EditOrderFields = (props) => {
     changedProperties.id = id;
 
     return changedProperties;
+  }
+
+  if(customersLoading || shopsLoading || productsLoading) {
+    return (
+      <SkeletonEditOrderFields />
+    )
   }
 
   return (
