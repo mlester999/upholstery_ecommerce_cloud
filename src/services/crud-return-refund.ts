@@ -62,6 +62,22 @@ export const crudReturnRefund = createApi({
         }),
         invalidatesTags: ['ReturnRefunds'],
       }),
+      deactivateReturnRefund: builder.mutation({
+        query: (id) => ({
+          url: `return-refund/deactivate/${id}`,
+          method: 'PATCH',
+          withCredentials: true,
+        }),
+        invalidatesTags: ['ReturnRefunds'],
+      }),
+      activateReturnRefund: builder.mutation({
+        query: (id) => ({
+          url: `return-refund/activate/${id}`,
+          method: 'PATCH',
+          withCredentials: true,
+        }),
+        invalidatesTags: ['ReturnRefunds'],
+      }),
   }),
 });
 
@@ -70,5 +86,7 @@ export const {
   useGetReturnRefundQuery,
   useGetReturnRefundBySlugQuery,
   useCreateReturnRefundMutation,
+  useDeactivateReturnRefundMutation,
+  useActivateReturnRefundMutation,
   useUpdateReturnRefundMutation,
 } = crudReturnRefund;

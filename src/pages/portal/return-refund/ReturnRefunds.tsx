@@ -1,5 +1,5 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
+import { useCallback, useEffect, useMemo, useState } from "react";
+import PlusIcon from "@heroicons/react/24/solid/PlusIcon";
 import {
   Box,
   Button,
@@ -7,22 +7,26 @@ import {
   Stack,
   SvgIcon,
   Typography,
-} from '@mui/material';
-import ReturnRefundsTable from '../../../components/return-refunds/ReturnRefundsTable';
-import ReturnRefundsSearch from '../../../components/return-refunds/ReturnRefundsSearch';
-import { applyPagination } from '../../../utils/applyPagination';
-import PortalLayout from '../../../layouts/PortalLayout';
-import Colors from '../../../constants/Colors';
-import { Link } from 'react-router-dom';
-import { useGetReturnRefundsQuery } from '../../../services/crud-return-refund';
+} from "@mui/material";
+import ReturnRefundsTable from "../../../components/return-refunds/ReturnRefundsTable";
+import ReturnRefundsSearch from "../../../components/return-refunds/ReturnRefundsSearch";
+import { applyPagination } from "../../../utils/applyPagination";
+import PortalLayout from "../../../layouts/PortalLayout";
+import Colors from "../../../constants/Colors";
+import { Link } from "react-router-dom";
+import { useGetReturnRefundsQuery } from "../../../services/crud-return-refund";
 
 const useReturnRefunds = (page, rowsPerPage, returnRefundsInfo, query) => {
   const dataReady = returnRefundsInfo && returnRefundsInfo.length > 0;
 
   return useMemo(() => {
     if (dataReady) {
-      if (query.trim() === '') {
-        const returnRefunds = applyPagination(returnRefundsInfo, page, rowsPerPage);
+      if (query.trim() === "") {
+        const returnRefunds = applyPagination(
+          returnRefundsInfo,
+          page,
+          rowsPerPage
+        );
 
         const returnRefundsLength = returnRefundsInfo.length;
 
@@ -43,7 +47,11 @@ const useReturnRefunds = (page, rowsPerPage, returnRefundsInfo, query) => {
 
         const returnRefundsLength = latestReturnRefunds.length;
 
-        const returnRefunds = applyPagination(latestReturnRefunds, page, rowsPerPage);
+        const returnRefunds = applyPagination(
+          latestReturnRefunds,
+          page,
+          rowsPerPage
+        );
 
         return { returnRefunds, returnRefundsLength };
       }
@@ -58,7 +66,7 @@ const ReturnRefunds = () => {
   const { data: returnRefundsData } = useGetReturnRefundsQuery();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const { returnRefunds, returnRefundsLength } = useReturnRefunds(
     page,
     rowsPerPage,
@@ -81,34 +89,18 @@ const ReturnRefunds = () => {
   return (
     <PortalLayout>
       <Box
-        component='main'
+        component="main"
         sx={{
           flexGrow: 1,
           py: 8,
         }}
       >
-        <Container maxWidth='xl'>
+        <Container maxWidth="xl">
           <Stack spacing={3}>
-            <Stack direction='row' justifyContent='space-between' spacing={4}>
+            <Stack direction="row" justifyContent="space-between" spacing={4}>
               <Stack spacing={1}>
-                <Typography variant='h4'>Return / Refunds</Typography>
+                <Typography variant="h4">Return / Refunds</Typography>
               </Stack>
-
-              <Button
-                component={Link}
-                to='/portal/return-refunds/add'
-                startIcon={
-                  <SvgIcon fontSize='small'>
-                    <PlusIcon />
-                  </SvgIcon>
-                }
-                variant='contained'
-                sx={{
-                  backgroundColor: Colors.primaryColor,
-                }}
-              >
-                Add New Return / Refund
-              </Button>
             </Stack>
             <ReturnRefundsSearch
               onChange={handleSearchChange}
