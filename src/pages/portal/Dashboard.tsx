@@ -15,6 +15,9 @@ import { useGetProductsQuery } from '../../services/crud-product';
 import { useGetSellersQuery } from '../../services/crud-seller';
 import { useGetCustomersQuery } from '../../services/crud-customer';
 import { useGetOrdersQuery } from '../../services/crud-order';
+import { useGetVouchersQuery } from '../../services/crud-voucher';
+import { useGetReturnRefundsQuery } from '../../services/crud-return-refund';
+import { useGetActivityLogsQuery } from '../../services/crud-activity-log';
 
 const now = new Date();
 
@@ -23,6 +26,9 @@ const Main = () => {
   const { data: customersData } = useGetCustomersQuery();
   const { data: productsData } = useGetProductsQuery();
   const { data: ordersData } = useGetOrdersQuery();
+  const { data: vouchersData } = useGetVouchersQuery();
+  const { data: returnRefundsData } = useGetReturnRefundsQuery();
+  const { data: activityLogsData } = useGetActivityLogsQuery();
 
   return (
     <PortalLayout>
@@ -62,17 +68,17 @@ const Main = () => {
             <Grid xs={12} sm={6} lg={3}>
               <OverviewTotalDiscountVouchers
                 sx={{ height: '100%' }}
-                value={8}
+                value={vouchersData?.length}
               />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTotalReturnsRefunds sx={{ height: '100%' }} value={85} />
+              <OverviewTotalReturnsRefunds sx={{ height: '100%' }} value={returnRefundsData?.length} />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewTotalReviews sx={{ height: '100%' }} value={13} />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTotalLogs sx={{ height: '100%' }} value={111} />
+              <OverviewTotalLogs sx={{ height: '100%' }} value={activityLogsData?.length} />
             </Grid>
 
             <Grid xs={12} md={6} lg={4}>
