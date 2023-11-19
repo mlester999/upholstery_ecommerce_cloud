@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Formik } from 'formik';
-import * as Yup from 'yup';
+import { useState } from "react";
+import { Formik } from "formik";
+import * as Yup from "yup";
 import {
   Box,
   Card,
@@ -15,17 +15,17 @@ import {
   Typography,
   Button,
   SvgIcon,
-} from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import Colors from '../../constants/Colors';
-import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { useGetProductsQuery } from '../../services/crud-product';
-import { useGetShopsQuery } from '../../services/crud-shop';
-import CloudArrowUpIcon from '@heroicons/react/24/solid/CloudArrowUpIcon';
-import { useGetCustomersQuery } from '../../services/crud-customer';
-import { useUpdateOrderMutation } from '../../services/crud-order';
-import SkeletonEditOrderFields from './SkeletonEditorderFields';
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import Colors from "../../constants/Colors";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { useGetProductsQuery } from "../../services/crud-product";
+import { useGetShopsQuery } from "../../services/crud-shop";
+import CloudArrowUpIcon from "@heroicons/react/24/solid/CloudArrowUpIcon";
+import { useGetCustomersQuery } from "../../services/crud-customer";
+import { useUpdateOrderMutation } from "../../services/crud-order";
+import SkeletonEditOrderFields from "./SkeletonEditorderFields";
 
 const EditOrderFields = (props) => {
   const {
@@ -37,12 +37,12 @@ const EditOrderFields = (props) => {
     orderQuantity,
   } = props;
   const [updateOrder, { isLoading: updateLoading }] = useUpdateOrderMutation();
-  const { data: customersData, isLoading: customersLoading } = useGetCustomersQuery();
+  const { data: customersData, isLoading: customersLoading } =
+    useGetCustomersQuery();
   const { data: shopsData, isLoading: shopsLoading } = useGetShopsQuery();
-  const { data: productsData, isLoading: productsLoading } = useGetProductsQuery();
+  const { data: productsData, isLoading: productsLoading } =
+    useGetProductsQuery();
   const navigate = useNavigate();
-
-
 
   const initialValues = {
     customer_id: orderCustomer,
@@ -70,10 +70,8 @@ const EditOrderFields = (props) => {
     return changedProperties;
   }
 
-  if(customersLoading || shopsLoading || productsLoading) {
-    return (
-      <SkeletonEditOrderFields />
-    )
+  if (customersLoading || shopsLoading || productsLoading) {
+    return <SkeletonEditOrderFields />;
   }
 
   return (
@@ -81,16 +79,16 @@ const EditOrderFields = (props) => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
-          customer_id: Yup.string().required('Customer Name is required'),
-          shops: Yup.array().of(Yup.string().required('Shop Name is required')),
+          customer_id: Yup.string().required("Customer Name is required"),
+          shops: Yup.array().of(Yup.string().required("Shop Name is required")),
           products: Yup.array().of(
-            Yup.string().required('Product is required')
+            Yup.string().required("Product is required")
           ),
           quantity: Yup.array().of(
-            Yup.string().required('Quantity is required')
+            Yup.string().required("Quantity is required")
           ),
           status: Yup.array().of(
-            Yup.string().required('Delivery Status is required')
+            Yup.string().required("Delivery Status is required")
           ),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
@@ -103,15 +101,15 @@ const EditOrderFields = (props) => {
           updateOrder(updatedValues)
             .unwrap()
             .then((payload) => {
-              navigate('/portal/orders');
+              navigate("/portal/orders");
 
-              toast.success('Updated Order Successfully!', {
-                position: 'top-right',
+              toast.success("Updated Order Successfully!", {
+                position: "top-right",
                 autoClose: 5000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 progress: undefined,
-                theme: 'light',
+                theme: "light",
               });
             })
             .catch((error) => setErrors({ customer_id: error.data?.message }));
@@ -132,8 +130,8 @@ const EditOrderFields = (props) => {
           <form noValidate onSubmit={handleSubmit}>
             <Card>
               <CardHeader
-                subheader='Please update the input fields to edit the order information.'
-                title='Update Order Information'
+                subheader="Please update the input fields to edit the order information."
+                title="Update Order Information"
               />
               <CardContent sx={{ pt: 0 }}>
                 <Box sx={{ m: -1.5 }}>
@@ -150,8 +148,8 @@ const EditOrderFields = (props) => {
                           error={Boolean(
                             touched.customer_id && errors.customer_id
                           )}
-                          label='Select Customer'
-                          name='customer_id'
+                          label="Select Customer"
+                          name="customer_id"
                           onBlur={handleBlur}
                           onChange={handleChange}
                           required
@@ -159,7 +157,7 @@ const EditOrderFields = (props) => {
                           SelectProps={{ native: true }}
                           value={values.customer_id}
                         >
-                          <option value='' disabled hidden></option>
+                          <option value="" disabled hidden></option>
                           {customersData?.map((el) => {
                             return (
                               <option key={el.id} value={el.id}>
@@ -197,16 +195,16 @@ const EditOrderFields = (props) => {
                                 touched.shops[index] &&
                                 errors.shops[index]
                             )}
-                            label='Select Shop'
+                            label="Select Shop"
                             name={`shops[${index}]`}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             required
                             select
                             SelectProps={{ native: true }}
-                            value={values.shops[index] || ''}
+                            value={values.shops[index] || ""}
                           >
-                            <option value='' disabled hidden></option>
+                            <option value="" disabled hidden></option>
                             {shopsData?.map((el) => {
                               return (
                                 <option key={el.id} value={el.id}>
@@ -219,7 +217,7 @@ const EditOrderFields = (props) => {
                             errors?.shops &&
                             touched.shops[index] &&
                             errors.shops[index] && (
-                              <FormHelperText error id='text-shop-id'>
+                              <FormHelperText error id="text-shop-id">
                                 {errors.shops[index]}
                               </FormHelperText>
                             )}
@@ -245,16 +243,16 @@ const EditOrderFields = (props) => {
                                 touched.products[index] &&
                                 errors.products[index]
                             )}
-                            label='Select Product'
+                            label="Select Product"
                             name={`products[${index}]`}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             required
                             select
                             SelectProps={{ native: true }}
-                            value={values.products[index] || ''}
+                            value={values.products[index] || ""}
                           >
-                            <option value='' disabled hidden></option>
+                            <option value="" disabled hidden></option>
                             {productsData
                               ?.filter(
                                 (el) => el.shop.id == values.shops[index]
@@ -271,7 +269,7 @@ const EditOrderFields = (props) => {
                             errors?.products &&
                             touched.products[index] &&
                             errors.products[index] && (
-                              <FormHelperText error id='text-product-id'>
+                              <FormHelperText error id="text-product-id">
                                 {errors.products[index]}
                               </FormHelperText>
                             )}
@@ -296,19 +294,19 @@ const EditOrderFields = (props) => {
                                 touched.quantity[index] &&
                                 errors.quantity[index]
                             )}
-                            label='Quantity'
+                            label="Quantity"
                             name={`quantity[${index}]`}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             required
-                            value={values.quantity[index] || ''}
-                            type='number'
+                            value={values.quantity[index] || ""}
+                            type="number"
                           />
                           {touched?.quantity &&
                             errors?.quantity &&
                             touched.quantity[index] &&
                             errors.quantity[index] && (
-                              <FormHelperText error id='text-product-quantity'>
+                              <FormHelperText error id="text-product-quantity">
                                 {errors.quantity[index]}
                               </FormHelperText>
                             )}
@@ -333,29 +331,30 @@ const EditOrderFields = (props) => {
                                 touched.status[index] &&
                                 errors.status[index]
                             )}
-                            label='Select Delivery Status'
+                            label="Select Delivery Status"
                             name={`status[${index}]`}
                             onBlur={handleBlur}
                             onChange={handleChange}
                             required
                             select
                             SelectProps={{ native: true }}
-                            value={values.status[index] || ''}
+                            value={values.status[index] || ""}
                           >
-                            <option value='' disabled hidden></option>
-                            <option value='Processing'>Processing</option>
-                            <option value='Packed'>Packed</option>
-                            <option value='Shipped'>Shipped</option>
-                            <option value='Out For Delivery'>
+                            <option value="" disabled hidden></option>
+                            <option value="Processing">Processing</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Packed">Packed</option>
+                            <option value="Shipped">Shipped</option>
+                            <option value="Out For Delivery">
                               Out For Delivery
                             </option>
-                            <option value='Delivered'>Delivered</option>
+                            <option value="Delivered">Delivered</option>
                           </TextField>
                           {touched?.status &&
                             errors?.status &&
                             touched.status[index] &&
                             errors.status[index] && (
-                              <FormHelperText error id='text-order-id'>
+                              <FormHelperText error id="text-order-id">
                                 {errors.status}
                               </FormHelperText>
                             )}
@@ -366,13 +365,13 @@ const EditOrderFields = (props) => {
                 </Box>
               </CardContent>
               <Divider />
-              <CardActions sx={{ justifyContent: 'flex-end' }}>
+              <CardActions sx={{ justifyContent: "flex-end" }}>
                 <LoadingButton
                   loading={updateLoading}
                   disableElevation
                   disabled={isSubmitting || !dirty || !isValid}
-                  type='submit'
-                  variant='contained'
+                  type="submit"
+                  variant="contained"
                   sx={{ backgroundColor: Colors.primaryColor }}
                 >
                   Update details

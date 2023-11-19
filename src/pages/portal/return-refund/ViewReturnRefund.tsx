@@ -45,12 +45,12 @@ const ViewReturnRefund = () => {
             </div>
             <div>
               <Grid container spacing={3}>
-                <Grid xs={12} lg={6}>
+                <Grid xs={12}>
                   <ViewReturnRefundsFields returnRefund={returnRefund} />
                 </Grid>
-                <Grid xs={12} lg={6}>
+                {/* <Grid xs={12} lg={6}>
                   <EditReturnRefundsFields returnRefund={returnRefund} />
-                </Grid>
+                </Grid> */}
               </Grid>
             </div>
           </Stack>
