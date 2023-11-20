@@ -17,7 +17,7 @@ import { ACTIVE_STATUS } from "../../constants/Enums";
 import SeverityPill from "../SeverityPill";
 import { useNavigate } from "react-router-dom";
 
-const ReviewsTable = (props) => {
+const SellerWithdrawalsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -42,7 +42,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Review ID
+                  Seller Withdrawal ID
                 </TableCell>
 
                 <TableCell
@@ -50,7 +50,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Order ID
+                  Seller Name
                 </TableCell>
 
                 <TableCell
@@ -58,7 +58,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Shop Name
+                  Amount
                 </TableCell>
 
                 <TableCell
@@ -66,31 +66,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Product Name
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Customer Name
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Comments
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Ratings
+                  Withdrawal Status
                 </TableCell>
 
                 <TableCell
@@ -113,32 +89,34 @@ const ReviewsTable = (props) => {
               {items.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colspan="9"
+                    colspan="6"
                     sx={{
                       whiteSpace: "nowrap",
                       textAlign: "center",
                     }}
                   >
                     <Typography variant="subtitle2">
-                      No Reviews Found...
+                      No Seller Withdrawals Found...
                     </Typography>
                   </TableCell>
                 </TableRow>
               )}
-              {items?.map((reviews) => {
-                const isSelected = selected.includes(reviews.id);
+              {items?.map((sellerWithdrawal) => {
+                const isSelected = selected.includes(sellerWithdrawal.id);
 
-                const createdDate = new Date(reviews.created_at);
+                const createdDate = new Date(sellerWithdrawal.created_at);
                 const createdAt = format(createdDate, "yyyy-MM-dd");
 
                 return (
                   <TableRow
                     onClick={() =>
-                      navigate(`/portal/reviews/view/${reviews.id}`)
+                      navigate(
+                        `/portal/seller-withdrawals/view/${sellerWithdrawal.id}`
+                      )
                     }
                     hover
                     sx={{ cursor: "pointer" }}
-                    key={reviews.id}
+                    key={sellerWithdrawal.id}
                     selected={isSelected}
                   >
                     <TableCell
@@ -148,7 +126,7 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.review_id}
+                          {sellerWithdrawal.seller_withdrawal_id}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -160,7 +138,8 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.order_id}
+                          {sellerWithdrawal.seller.first_name}{" "}
+                          {sellerWithdrawal.seller.last_name}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -170,11 +149,10 @@ const ReviewsTable = (props) => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.shop.name}
-                        </Typography>
-                      </Stack>
+                      ₱
+                      {sellerWithdrawal.amount.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                      })}
                     </TableCell>
 
                     <TableCell
@@ -182,53 +160,26 @@ const ReviewsTable = (props) => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.product.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
+                      {sellerWithdrawal.status === "Pending Withdrawal" && (
+                        <SeverityPill color={"warning"}>
+                          {sellerWithdrawal.status}
+                        </SeverityPill>
+                      )}
 
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.customer.first_name}{" "}
-                          {reviews.customer.last_name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.comments}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.ratings}⭐
-                        </Typography>
-                      </Stack>
+                      {sellerWithdrawal.status === "Processed Withdrawal" && (
+                        <SeverityPill color={"success"}>
+                          {sellerWithdrawal.status}
+                        </SeverityPill>
+                      )}
                     </TableCell>
 
                     <TableCell>
-                      <SeverityPill color={ACTIVE_STATUS[reviews.is_active]}>
-                        {reviews.is_active ? "Activated" : "Deactivated"}
+                      <SeverityPill
+                        color={ACTIVE_STATUS[sellerWithdrawal.is_active]}
+                      >
+                        {sellerWithdrawal.is_active
+                          ? "Activated"
+                          : "Deactivated"}
                       </SeverityPill>
                     </TableCell>
 
@@ -259,7 +210,7 @@ const ReviewsTable = (props) => {
   );
 };
 
-ReviewsTable.propTypes = {
+SellerWithdrawalsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -268,4 +219,4 @@ ReviewsTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default ReviewsTable;
+export default SellerWithdrawalsTable;

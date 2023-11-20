@@ -9,7 +9,6 @@ import AccountDetails from "./pages/portal/AccountDetails";
 import Products from "./pages/portal/product/Products";
 import DiscountVouchers from "./pages/portal/DiscountVouchers";
 import Transactions from "./pages/portal/Transactions";
-import Reviews from "./pages/portal/Reviews";
 import ReturnsAndRefunds from "./pages/portal/ReturnsAndRefunds";
 import Logs from "./pages/portal/Logs";
 import AddNewSeller from "./pages/portal/seller/AddNewSeller";
@@ -36,6 +35,18 @@ import AddNewAdmin from "./pages/portal/admin/AddNewAdmin";
 import ActivityLogs from "./pages/portal/activity-logs/ActivityLog";
 import ViewReturnRefund from "./pages/portal/return-refund/ViewReturnRefund";
 import ReturnRefunds from "./pages/portal/return-refund/ReturnRefunds";
+import BankAccounts from "./pages/portal/bank-account/BankAccounts";
+import ViewBankAccount from "./pages/portal/bank-account/ViewBankAccount";
+import AddNewBankAccount from "./pages/portal/bank-account/AddNewBankAccount";
+import SellerBalances from "./pages/portal/seller-balance/SellerBalances";
+import ViewSellerBalance from "./pages/portal/seller-balance/ViewSellerBalance";
+import AddNewSellerBalance from "./pages/portal/seller-balance/AddNewSellerBalance";
+import SellerWithdrawals from "./pages/portal/seller-withdrawal/SellerWithdrawals";
+import ViewSellerWithdrawal from "./pages/portal/seller-withdrawal/ViewSellerWithdrawal";
+import AddNewSellerWithdrawal from "./pages/portal/seller-withdrawal/AddNewSellerWithdrawal";
+import Reviews from "./pages/portal/review/Reviews";
+import AddNewReview from "./pages/portal/review/AddNewReview";
+import ViewReview from "./pages/portal/review/ViewReview";
 
 function App() {
   return (
@@ -84,8 +95,30 @@ function App() {
           <Route path="view/:voucherId" element={<ViewVoucher />} />
           <Route path="add" element={<AddNewVoucher />} />
         </Route>
+        <Route path="/portal/bank-accounts">
+          <Route index element={<BankAccounts />} />
+          <Route path="view/:bankAccountId" element={<ViewBankAccount />} />
+          <Route path="add" element={<AddNewBankAccount />} />
+        </Route>
+        <Route path="/portal/seller-balances">
+          <Route index element={<SellerBalances />} />
+          <Route path="view/:sellerBalanceId" element={<ViewSellerBalance />} />
+          {/* <Route path="add" element={<AddNewSellerBalance />} /> */}
+        </Route>
+        <Route path="/portal/seller-withdrawals">
+          <Route index element={<SellerWithdrawals />} />
+          <Route
+            path="view/:sellerWithdrawalId"
+            element={<ViewSellerWithdrawal />}
+          />
+          {/* <Route path="add" element={<AddNewSellerWithdrawal />} /> */}
+        </Route>
         {/* <Route path='/portal/transactions' element={<Transactions />} /> */}
-        <Route path="/portal/reviews" element={<Reviews />} />
+        <Route path="/portal/reviews">
+          <Route index element={<Reviews />} />
+          <Route path="view/:reviewId" element={<ViewReview />} />
+          <Route path="add" element={<AddNewReview />} />
+        </Route>
         <Route path="/portal/return-refunds">
           <Route index element={<ReturnRefunds />} />
           <Route path="view/:returnRefundId" element={<ViewReturnRefund />} />

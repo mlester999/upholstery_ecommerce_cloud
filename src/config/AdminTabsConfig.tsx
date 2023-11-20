@@ -9,6 +9,9 @@ import ReceiptRefundIcon from "@heroicons/react/24/solid/ReceiptRefundIcon";
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import DocumentTextIcon from "@heroicons/react/24/solid/DocumentTextIcon";
 import RectangleStackIcon from "@heroicons/react/24/solid/RectangleStackIcon";
+import CreditCardIcon from "@heroicons/react/24/solid/CreditCardIcon";
+import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
+import BanknotesIcon from "@heroicons/react/24/solid/BanknotesIcon";
 import { SvgIcon } from "@mui/material";
 
 export const items = [
@@ -106,6 +109,39 @@ export const items = [
     icon: (
       <SvgIcon fontSize="small">
         <ReceiptPercentIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Bank Accounts",
+    path: "/portal/bank-accounts",
+    icon: (
+      <SvgIcon fontSize="small">
+        <CreditCardIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Seller Balances",
+    path: "/portal/seller-balances",
+    icon: (
+      <SvgIcon fontSize="small">
+        <CurrencyDollarIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Seller Withdrawals",
+    path: "/portal/seller-withdrawals",
+    icon: (
+      <SvgIcon fontSize="small">
+        <BanknotesIcon />
       </SvgIcon>
     ),
     disabled: false,

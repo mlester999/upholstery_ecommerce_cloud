@@ -2,12 +2,12 @@ import React from "react";
 import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
 import { Card, InputAdornment, OutlinedInput, SvgIcon } from "@mui/material";
 
-interface ReviewsSearchProps {
+interface SellerWithdrawalsSearchProps {
   onChange: () => void;
   searchQuery: string;
 }
 
-const ReviewsSearch: React.FC<ReviewsSearchProps> = ({
+const SellerWithdrawalsSearch: React.FC<SellerWithdrawalsSearchProps> = ({
   onChange,
   searchQuery,
 }) => (
@@ -16,7 +16,7 @@ const ReviewsSearch: React.FC<ReviewsSearchProps> = ({
       onChange={onChange}
       defaultValue=""
       fullWidth
-      placeholder="Search a review..."
+      placeholder="Search a voucher..."
       startAdornment={
         <InputAdornment position="start">
           <SvgIcon color="action" fontSize="small">
@@ -30,4 +30,4 @@ const ReviewsSearch: React.FC<ReviewsSearchProps> = ({
   </Card>
 );
 
-export default ReviewsSearch;
+export default SellerWithdrawalsSearch;

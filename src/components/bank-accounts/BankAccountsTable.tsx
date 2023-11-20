@@ -10,6 +10,7 @@ import {
   TableHead,
   TablePagination,
   TableRow,
+  ListItemAvatar,
   Typography,
 } from "@mui/material";
 import Scrollbar from "../ScrollBar";
@@ -17,7 +18,7 @@ import { ACTIVE_STATUS } from "../../constants/Enums";
 import SeverityPill from "../SeverityPill";
 import { useNavigate } from "react-router-dom";
 
-const ReviewsTable = (props) => {
+const BankAccountsTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -42,7 +43,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Review ID
+                  Name
                 </TableCell>
 
                 <TableCell
@@ -50,7 +51,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Order ID
+                  Seller Name
                 </TableCell>
 
                 <TableCell
@@ -58,7 +59,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Shop Name
+                  Contact Number
                 </TableCell>
 
                 <TableCell
@@ -66,31 +67,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Product Name
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Customer Name
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Comments
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
-                  Ratings
+                  Verification Status
                 </TableCell>
 
                 <TableCell
@@ -113,32 +90,32 @@ const ReviewsTable = (props) => {
               {items.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colspan="9"
+                    colspan="6"
                     sx={{
                       whiteSpace: "nowrap",
                       textAlign: "center",
                     }}
                   >
                     <Typography variant="subtitle2">
-                      No Reviews Found...
+                      No Bank Accounts Found...
                     </Typography>
                   </TableCell>
                 </TableRow>
               )}
-              {items?.map((reviews) => {
-                const isSelected = selected.includes(reviews.id);
+              {items?.map((bankAccount) => {
+                const isSelected = selected.includes(bankAccount.id);
 
-                const createdDate = new Date(reviews.created_at);
+                const createdDate = new Date(bankAccount.created_at);
                 const createdAt = format(createdDate, "yyyy-MM-dd");
 
                 return (
                   <TableRow
                     onClick={() =>
-                      navigate(`/portal/reviews/view/${reviews.id}`)
+                      navigate(`/portal/bank-accounts/view/${bankAccount.id}`)
                     }
                     hover
                     sx={{ cursor: "pointer" }}
-                    key={reviews.id}
+                    key={bankAccount.id}
                     selected={isSelected}
                   >
                     <TableCell
@@ -147,8 +124,22 @@ const ReviewsTable = (props) => {
                       }}
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
+                        <ListItemAvatar>
+                          <Box
+                            component="img"
+                            src={`/assets/${bankAccount.name
+                              .replace(/\s/g, "")
+                              .toLowerCase()}.png`}
+                            sx={{
+                              borderRadius: 1,
+                              height: 40,
+                              width: 40,
+                            }}
+                          />
+                        </ListItemAvatar>
+
                         <Typography variant="subtitle2">
-                          {reviews.review_id}
+                          {bankAccount.name}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -160,7 +151,8 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.order_id}
+                          {bankAccount.seller.first_name}{" "}
+                          {bankAccount.seller.last_name}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -172,63 +164,28 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.shop.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.product.name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.customer.first_name}{" "}
-                          {reviews.customer.last_name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.comments}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.ratings}⭐
+                          {bankAccount.contact_number}
                         </Typography>
                       </Stack>
                     </TableCell>
 
                     <TableCell>
-                      <SeverityPill color={ACTIVE_STATUS[reviews.is_active]}>
-                        {reviews.is_active ? "Activated" : "Deactivated"}
+                      {bankAccount.contact_number_verified_at && (
+                        <SeverityPill color={"success"}>Verified</SeverityPill>
+                      )}
+
+                      {!bankAccount.contact_number_verified_at && (
+                        <SeverityPill color={"error"}>
+                          Not Verified
+                        </SeverityPill>
+                      )}
+                    </TableCell>
+
+                    <TableCell>
+                      <SeverityPill
+                        color={ACTIVE_STATUS[bankAccount.is_active]}
+                      >
+                        {bankAccount.is_active ? "Activated" : "Deactivated"}
                       </SeverityPill>
                     </TableCell>
 
@@ -259,7 +216,7 @@ const ReviewsTable = (props) => {
   );
 };
 
-ReviewsTable.propTypes = {
+BankAccountsTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -268,4 +225,4 @@ ReviewsTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default ReviewsTable;
+export default BankAccountsTable;

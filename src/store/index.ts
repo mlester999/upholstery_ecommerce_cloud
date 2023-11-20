@@ -11,6 +11,10 @@ import { crudShop } from '../services/crud-shop';
 import { crudVoucher } from '../services/crud-voucher';
 import { crudActivityLog } from '../services/crud-activity-log';
 import { crudReturnRefund } from '../services/crud-return-refund';
+import { crudBankAccount } from '../services/crud-bank-account';
+import { crudSellerBalance } from '../services/crud-seller-balance';
+import { crudSellerWithdrawal } from '../services/crud-seller-withdrawal';
+import { crudReview } from '../services/crud-review';
 
 export const store = configureStore({
   reducer: {
@@ -25,6 +29,10 @@ export const store = configureStore({
     [crudShop.reducerPath]: crudShop.reducer,
     [crudActivityLog.reducerPath]: crudActivityLog.reducer,
     [crudReturnRefund.reducerPath]: crudReturnRefund.reducer,
+    [crudBankAccount.reducerPath]: crudBankAccount.reducer,
+    [crudSellerBalance.reducerPath]: crudSellerBalance.reducer,
+    [crudSellerWithdrawal.reducerPath]: crudSellerWithdrawal.reducer,
+    [crudReview.reducerPath]: crudReview.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware()
@@ -38,7 +46,11 @@ export const store = configureStore({
       .concat(crudVoucher.middleware)
       .concat(crudShop.middleware)
       .concat(crudActivityLog.middleware)
-      .concat(crudReturnRefund.middleware),
+      .concat(crudReturnRefund.middleware)
+      .concat(crudBankAccount.middleware)
+      .concat(crudSellerBalance.middleware)
+      .concat(crudSellerWithdrawal.middleware)
+      .concat(crudReview.middleware),
 });
 
 setupListeners(store.dispatch);

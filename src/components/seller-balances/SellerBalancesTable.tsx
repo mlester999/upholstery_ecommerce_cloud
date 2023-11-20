@@ -17,7 +17,7 @@ import { ACTIVE_STATUS } from "../../constants/Enums";
 import SeverityPill from "../SeverityPill";
 import { useNavigate } from "react-router-dom";
 
-const ReviewsTable = (props) => {
+const SellerBalancesTable = (props) => {
   const {
     count = 0,
     items = [],
@@ -42,7 +42,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Review ID
+                  Seller Balance ID
                 </TableCell>
 
                 <TableCell
@@ -58,14 +58,6 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Shop Name
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
                   Product Name
                 </TableCell>
 
@@ -74,7 +66,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Customer Name
+                  Seller Name
                 </TableCell>
 
                 <TableCell
@@ -82,7 +74,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Comments
+                  Amount
                 </TableCell>
 
                 <TableCell
@@ -90,7 +82,7 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Ratings
+                  Status
                 </TableCell>
 
                 <TableCell
@@ -113,32 +105,34 @@ const ReviewsTable = (props) => {
               {items.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colspan="9"
+                    colspan="8"
                     sx={{
                       whiteSpace: "nowrap",
                       textAlign: "center",
                     }}
                   >
                     <Typography variant="subtitle2">
-                      No Reviews Found...
+                      No Seller Balances Found...
                     </Typography>
                   </TableCell>
                 </TableRow>
               )}
-              {items?.map((reviews) => {
-                const isSelected = selected.includes(reviews.id);
+              {items?.map((sellerBalance) => {
+                const isSelected = selected.includes(sellerBalance.id);
 
-                const createdDate = new Date(reviews.created_at);
+                const createdDate = new Date(sellerBalance.created_at);
                 const createdAt = format(createdDate, "yyyy-MM-dd");
 
                 return (
                   <TableRow
                     onClick={() =>
-                      navigate(`/portal/reviews/view/${reviews.id}`)
+                      navigate(
+                        `/portal/seller-balances/view/${sellerBalance.id}`
+                      )
                     }
                     hover
                     sx={{ cursor: "pointer" }}
-                    key={reviews.id}
+                    key={sellerBalance.id}
                     selected={isSelected}
                   >
                     <TableCell
@@ -148,7 +142,7 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.review_id}
+                          {sellerBalance.seller_balance_id}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -160,7 +154,7 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.order_id}
+                          {sellerBalance.order_id}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -172,7 +166,7 @@ const ReviewsTable = (props) => {
                     >
                       <Stack alignItems="center" direction="row" spacing={2}>
                         <Typography variant="subtitle2">
-                          {reviews.shop.name}
+                          {sellerBalance.product.name}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -182,11 +176,8 @@ const ReviewsTable = (props) => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.product.name}
-                        </Typography>
-                      </Stack>
+                      {sellerBalance.shop.seller.first_name}{" "}
+                      {sellerBalance.shop.seller.last_name}
                     </TableCell>
 
                     <TableCell
@@ -194,12 +185,10 @@ const ReviewsTable = (props) => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.customer.first_name}{" "}
-                          {reviews.customer.last_name}
-                        </Typography>
-                      </Stack>
+                      ₱
+                      {sellerBalance.amount.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                      })}
                     </TableCell>
 
                     <TableCell
@@ -207,28 +196,42 @@ const ReviewsTable = (props) => {
                         whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.comments}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
+                      {sellerBalance.status === "Pending" && (
+                        <SeverityPill color={"info"}>
+                          {sellerBalance.status}
+                        </SeverityPill>
+                      )}
 
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.ratings}⭐
-                        </Typography>
-                      </Stack>
+                      {sellerBalance.status === "Cancelled" && (
+                        <SeverityPill color={"error"}>
+                          {sellerBalance.status}
+                        </SeverityPill>
+                      )}
+
+                      {sellerBalance.status === "Completed" && (
+                        <SeverityPill color={"primary"}>
+                          {sellerBalance.status}
+                        </SeverityPill>
+                      )}
+
+                      {sellerBalance.status === "Pending Withdrawal" && (
+                        <SeverityPill color={"warning"}>
+                          {sellerBalance.status}
+                        </SeverityPill>
+                      )}
+
+                      {sellerBalance.status === "Processed Withdrawal" && (
+                        <SeverityPill color={"success"}>
+                          {sellerBalance.status}
+                        </SeverityPill>
+                      )}
                     </TableCell>
 
                     <TableCell>
-                      <SeverityPill color={ACTIVE_STATUS[reviews.is_active]}>
-                        {reviews.is_active ? "Activated" : "Deactivated"}
+                      <SeverityPill
+                        color={ACTIVE_STATUS[sellerBalance.is_active]}
+                      >
+                        {sellerBalance.is_active ? "Activated" : "Deactivated"}
                       </SeverityPill>
                     </TableCell>
 
@@ -259,7 +262,7 @@ const ReviewsTable = (props) => {
   );
 };
 
-ReviewsTable.propTypes = {
+SellerBalancesTable.propTypes = {
   count: PropTypes.number,
   items: PropTypes.array,
   onPageChange: PropTypes.func,
@@ -268,4 +271,4 @@ ReviewsTable.propTypes = {
   rowsPerPage: PropTypes.number,
 };
 
-export default ReviewsTable;
+export default SellerBalancesTable;
