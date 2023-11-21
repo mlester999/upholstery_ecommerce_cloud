@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
+import PropTypes from "prop-types";
+import { format } from "date-fns";
 import {
   Box,
   Card,
@@ -11,11 +11,11 @@ import {
   TablePagination,
   TableRow,
   Typography,
-} from '@mui/material';
-import Scrollbar from '../ScrollBar';
-import { ACTIVE_STATUS, DELIVERY_STATUS } from '../../constants/Enums';
-import SeverityPill from '../SeverityPill';
-import { useNavigate } from 'react-router-dom';
+} from "@mui/material";
+import Scrollbar from "../ScrollBar";
+import { ACTIVE_STATUS, DELIVERY_STATUS } from "../../constants/Enums";
+import SeverityPill from "../SeverityPill";
+import { useNavigate } from "react-router-dom";
 
 const OrdersTable = (props) => {
   const {
@@ -34,7 +34,7 @@ const OrdersTable = (props) => {
     if (str.length <= maxLength) {
       return str; // If the string is already shorter than the limit, return it as is
     }
-    return str.substring(0, maxLength) + '...'; // Truncate and add "..."
+    return str.substring(0, maxLength) + "..."; // Truncate and add "..."
   }
 
   return (
@@ -46,14 +46,14 @@ const OrdersTable = (props) => {
               <TableRow>
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Order ID
                 </TableCell>
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Customer's Name
@@ -61,7 +61,7 @@ const OrdersTable = (props) => {
 
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Subtotal Price
@@ -69,7 +69,7 @@ const OrdersTable = (props) => {
 
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Total Quantity
@@ -77,7 +77,7 @@ const OrdersTable = (props) => {
 
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Payment Method
@@ -85,7 +85,7 @@ const OrdersTable = (props) => {
 
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Active Status
@@ -93,7 +93,7 @@ const OrdersTable = (props) => {
 
                 <TableCell
                   sx={{
-                    whiteSpace: 'nowrap',
+                    whiteSpace: "nowrap",
                   }}
                 >
                   Created At
@@ -104,13 +104,13 @@ const OrdersTable = (props) => {
               {items.length === 0 && (
                 <TableRow>
                   <TableCell
-                    colspan='12'
+                    colspan="12"
                     sx={{
-                      whiteSpace: 'nowrap',
-                      textAlign: 'center',
+                      whiteSpace: "nowrap",
+                      textAlign: "center",
                     }}
                   >
-                    <Typography variant='subtitle2'>
+                    <Typography variant="subtitle2">
                       No Orders Found...
                     </Typography>
                   </TableCell>
@@ -120,34 +120,34 @@ const OrdersTable = (props) => {
                 const isSelected = selected.includes(order.id);
 
                 const createdDate = new Date(order.created_at);
-                const createdAt = format(createdDate, 'yyyy-MM-dd');
+                const createdAt = format(createdDate, "yyyy-MM-dd");
 
                 return (
                   <TableRow
                     onClick={() => navigate(`/portal/orders/view/${order.id}`)}
                     hover
-                    sx={{ cursor: 'pointer' }}
+                    sx={{ cursor: "pointer" }}
                     key={order.id}
                     selected={isSelected}
                   >
                     <TableCell
                       sx={{
-                        whiteSpace: 'nowrap',
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
                           {order.order_id}
                         </Typography>
                       </Stack>
                     </TableCell>
                     <TableCell
                       sx={{
-                        whiteSpace: 'nowrap',
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
                           {order.customer.first_name} {order.customer.last_name}
                         </Typography>
                       </Stack>
@@ -155,13 +155,13 @@ const OrdersTable = (props) => {
 
                     <TableCell
                       sx={{
-                        whiteSpace: 'nowrap',
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
                           ₱
-                          {order.subtotal_price.toLocaleString('en-US', {
+                          {order.total_price.toLocaleString("en-US", {
                             minimumFractionDigits: 2,
                           })}
                         </Typography>
@@ -170,11 +170,11 @@ const OrdersTable = (props) => {
 
                     <TableCell
                       sx={{
-                        whiteSpace: 'nowrap',
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
                           {order.total_quantity} item(s)
                         </Typography>
                       </Stack>
@@ -182,11 +182,11 @@ const OrdersTable = (props) => {
 
                     <TableCell
                       sx={{
-                        whiteSpace: 'nowrap',
+                        whiteSpace: "nowrap",
                       }}
                     >
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
                           {order.payment_method}
                         </Typography>
                       </Stack>
@@ -194,12 +194,12 @@ const OrdersTable = (props) => {
 
                     <TableCell>
                       <SeverityPill color={ACTIVE_STATUS[order.is_active]}>
-                        {order.is_active ? 'Activated' : 'Deactivated'}
+                        {order.is_active ? "Activated" : "Deactivated"}
                       </SeverityPill>
                     </TableCell>
                     <TableCell
                       sx={{
-                        whiteSpace: 'nowrap',
+                        whiteSpace: "nowrap",
                       }}
                     >
                       {createdAt}
@@ -212,7 +212,7 @@ const OrdersTable = (props) => {
         </Box>
       </Scrollbar>
       <TablePagination
-        component='div'
+        component="div"
         count={count}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}

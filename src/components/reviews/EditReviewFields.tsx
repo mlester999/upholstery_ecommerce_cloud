@@ -68,7 +68,9 @@ const EditReviewFields = (props) => {
           product_id: Yup.string().required("Product is required"),
           customer_id: Yup.string().required("Customer is required"),
           comments: Yup.string().required("Comments is required"),
-          ratings: Yup.number().required("Ratings is required"),
+          ratings: Yup.number()
+            .required("Ratings is required")
+            .oneOf([1, 2, 3, 4, 5], "Ratings must be 1, 2, 3, 4, or 5"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const updatedValues = findChangedProperties(
@@ -284,6 +286,7 @@ const EditReviewFields = (props) => {
                           required
                           value={values.ratings}
                           type="number"
+                          inputProps={{ min: 1, max: 5 }}
                         />
                         {touched.ratings && errors.ratings && (
                           <FormHelperText error id="text-product-ratings">

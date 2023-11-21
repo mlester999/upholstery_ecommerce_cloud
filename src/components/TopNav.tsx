@@ -1,6 +1,6 @@
-import React from 'react';
-import BellIcon from '@heroicons/react/24/solid/BellIcon';
-import Bars3Icon from '@heroicons/react/24/solid/Bars3Icon';
+import React from "react";
+import BellIcon from "@heroicons/react/24/solid/BellIcon";
+import Bars3Icon from "@heroicons/react/24/solid/Bars3Icon";
 import {
   Avatar,
   Badge,
@@ -10,29 +10,29 @@ import {
   SvgIcon,
   Tooltip,
   useMediaQuery,
-} from '@mui/material';
-import { alpha, Theme } from '@mui/material/styles';
-import { usePopover } from '../hooks/usePopover';
-import AccountPopover from './AccountPopover';
-import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from '../constants/BoxModel';
+} from "@mui/material";
+import { alpha, Theme } from "@mui/material/styles";
+import { usePopover } from "../hooks/usePopover";
+import AccountPopover from "./AccountPopover";
+import { SIDE_NAV_WIDTH, TOP_NAV_HEIGHT } from "../constants/BoxModel";
 
 interface TopNavProps {
   onNavOpen: () => void;
 }
 
 const TopNav: React.FC<TopNavProps> = ({ onNavOpen }) => {
-  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
+  const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up("lg"));
   const accountPopover = usePopover();
 
   return (
     <>
       <Box
-        component='header'
+        component="header"
         sx={{
-          backdropFilter: 'blur(6px)',
+          backdropFilter: "blur(6px)",
           backgroundColor: (theme) =>
             alpha(theme.palette.background.default, 0.8),
-          position: 'sticky',
+          position: "sticky",
           left: {
             lg: `${SIDE_NAV_WIDTH}px`,
           },
@@ -44,26 +44,26 @@ const TopNav: React.FC<TopNavProps> = ({ onNavOpen }) => {
         }}
       >
         <Stack
-          alignItems='center'
-          direction='row'
-          justifyContent='space-between'
+          alignItems="center"
+          direction="row"
+          justifyContent="space-between"
           spacing={2}
           sx={{
             minHeight: TOP_NAV_HEIGHT,
             px: 2,
           }}
         >
-          <Stack alignItems='center' direction='row' spacing={2}>
+          <Stack alignItems="center" direction="row" spacing={2}>
             {!lgUp && (
               <IconButton onClick={onNavOpen}>
-                <SvgIcon fontSize='small'>
+                <SvgIcon fontSize="small">
                   <Bars3Icon />
                 </SvgIcon>
               </IconButton>
             )}
           </Stack>
-          <Stack alignItems='center' direction='row' spacing={2}>
-            <Tooltip title='Notifications'>
+          <Stack alignItems="center" direction="row" spacing={2}>
+            {/* <Tooltip title='Notifications'>
               <IconButton>
                 <Badge badgeContent={4} color='success' variant='dot'>
                   <SvgIcon fontSize='small'>
@@ -71,12 +71,12 @@ const TopNav: React.FC<TopNavProps> = ({ onNavOpen }) => {
                   </SvgIcon>
                 </Badge>
               </IconButton>
-            </Tooltip>
+            </Tooltip> */}
             <Avatar
               onClick={accountPopover.handleOpen}
               ref={accountPopover.anchorRef}
               sx={{
-                cursor: 'pointer',
+                cursor: "pointer",
                 height: 40,
                 width: 40,
               }}

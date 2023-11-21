@@ -82,14 +82,6 @@ const ReviewsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  Comments
-                </TableCell>
-
-                <TableCell
-                  sx={{
-                    whiteSpace: "nowrap",
-                  }}
-                >
                   Ratings
                 </TableCell>
 
@@ -198,18 +190,6 @@ const ReviewsTable = (props) => {
                         <Typography variant="subtitle2">
                           {reviews.customer.first_name}{" "}
                           {reviews.customer.last_name}
-                        </Typography>
-                      </Stack>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      <Stack alignItems="center" direction="row" spacing={2}>
-                        <Typography variant="subtitle2">
-                          {reviews.comments}
                         </Typography>
                       </Stack>
                     </TableCell>
