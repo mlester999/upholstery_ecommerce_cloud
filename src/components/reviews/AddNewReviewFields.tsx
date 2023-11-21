@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
 import {
@@ -21,15 +22,19 @@ import { useCreateReviewMutation } from "../../services/crud-review";
 import { useGetShopsQuery } from "../../services/crud-shop";
 import { useGetProductsQuery } from "../../services/crud-product";
 import { useGetCustomersQuery } from "../../services/crud-customer";
+import { useGetOrdersQuery } from "../../services/crud-order";
 
 const AddNewReviewFields = () => {
   const [createReview, { isLoading }] = useCreateReviewMutation();
+  const { data: ordersData } = useGetOrdersQuery();
   const { data: shopsData } = useGetShopsQuery();
   const { data: productsData } = useGetProductsQuery();
   const { data: customersData } = useGetCustomersQuery();
+  const [orderedProducts, setOrderedProducts] = useState([]);
   const navigate = useNavigate();
 
   const initialValues = {
+    order_id: "",
     shop_id: "",
     product_id: "",
     customer_id: "",
@@ -42,14 +47,16 @@ const AddNewReviewFields = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
+          order_id: Yup.string().required("Order is required"),
           shop_id: Yup.string().required("Shop is required"),
           product_id: Yup.string().required("Product is required"),
           customer_id: Yup.string().required("Customer is required"),
           comments: Yup.string().required("Comments is required"),
-          ratings: Yup.number().required("Ratings is required"),
+          ratings: Yup.number()
+            .required("Ratings is required")
+            .oneOf([1, 2, 3, 4, 5], "Ratings must be 1, 2, 3, 4, or 5"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-          console.log(values);
           createReview(values)
             .unwrap()
             .then((payload) => {
@@ -93,47 +100,42 @@ const AddNewReviewFields = () => {
                     <Grid xs={12}>
                       <FormControl
                         fullWidth
-                        error={Boolean(touched.shop_id && errors.shop_id)}
+                        error={Boolean(touched.order_id && errors.order_id)}
                       >
                         <TextField
                           fullWidth
-                          error={Boolean(touched.shop_id && errors.shop_id)}
-                          label="Select Shop"
-                          name="shop_id"
+                          error={Boolean(touched.order_id && errors.order_id)}
+                          label="Select Order"
+                          name="order_id"
                           onBlur={handleBlur}
                           onChange={(e) => {
-                            setFieldValue("shop_id", e.target.value);
+                            setFieldValue("order_id", e.target.value);
 
-                            const checkProduct = productsData?.find((el) => {
-                              return el.shop.id == e.target.value;
+                            const findOrder = ordersData?.find((el) => {
+                              return el.order_id == e.target.value;
                             });
 
-                            if (!checkProduct) {
-                              setFieldValue("product_id", "");
-                              setFieldError(
-                                "product_id",
-                                "Product is required"
-                              );
-                              setFieldTouched("product_id", true);
-                            }
+                            setFieldValue("customer_id", findOrder.customer.id);
+
+                            setOrderedProducts(JSON.parse(findOrder.products));
                           }}
                           required
                           select
                           SelectProps={{ native: true }}
-                          value={values.shop_id}
+                          value={values.order_id}
                         >
                           <option value="" disabled hidden></option>
-                          {shopsData?.map((el) => {
+                          {ordersData?.map((el) => {
                             return (
-                              <option key={el.id} value={el.id}>
-                                {el.name}
+                              <option key={el.id} value={el.order_id}>
+                                {el.order_id}
                               </option>
                             );
                           })}
                         </TextField>
-                        {touched.shop_id && errors.shop_id && (
-                          <FormHelperText error id="text-shop-id">
-                            {errors.shop_id}
+                        {touched.order_id && errors.order_id && (
+                          <FormHelperText error id="text-order-id">
+                            {errors.order_id}
                           </FormHelperText>
                         )}
                       </FormControl>
@@ -152,16 +154,28 @@ const AddNewReviewFields = () => {
                           label="Select Product"
                           name="product_id"
                           onBlur={handleBlur}
-                          onChange={handleChange}
+                          onChange={(e) => {
+                            setFieldValue("product_id", e.target.value);
+
+                            const findProduct = productsData?.find((el) => {
+                              return el.id == e.target.value;
+                            });
+
+                            setFieldValue("shop_id", findProduct.shop.id);
+                          }}
                           required
                           select
                           SelectProps={{ native: true }}
                           value={values.product_id}
+                          disabled={!values.order_id}
                         >
                           <option value="" disabled hidden></option>
-                          {productsData
+                          {orderedProducts
                             ?.filter((el) => {
-                              return el.shop.id == values.shop_id;
+                              console.log(el);
+                              return (
+                                el.status == "Delivered" && el.order_received
+                              );
                             })
                             .map((el) => {
                               return (
@@ -174,44 +188,6 @@ const AddNewReviewFields = () => {
                         {touched.product_id && errors.product_id && (
                           <FormHelperText error id="text-product-id">
                             {errors.product_id}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </Grid>
-
-                    <Grid xs={12}>
-                      <FormControl
-                        fullWidth
-                        error={Boolean(
-                          touched.customer_id && errors.customer_id
-                        )}
-                      >
-                        <TextField
-                          fullWidth
-                          error={Boolean(
-                            touched.customer_id && errors.customer_id
-                          )}
-                          label="Select Customer"
-                          name="customer_id"
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.customer_id}
-                        >
-                          <option value="" disabled hidden></option>
-                          {customersData?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
-                              </option>
-                            );
-                          })}
-                        </TextField>
-                        {touched.customer_id && errors.customer_id && (
-                          <FormHelperText error id="text-customer-id">
-                            {errors.customer_id}
                           </FormHelperText>
                         )}
                       </FormControl>
@@ -257,6 +233,7 @@ const AddNewReviewFields = () => {
                           required
                           value={values.ratings}
                           type="number"
+                          inputProps={{ min: 1, max: 5 }}
                         />
                         {touched.ratings && errors.ratings && (
                           <FormHelperText error id="text-product-ratings">
