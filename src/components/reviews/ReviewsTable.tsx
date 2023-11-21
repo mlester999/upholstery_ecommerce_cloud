@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import { format } from 'date-fns';
+import PropTypes from "prop-types";
+import { format } from "date-fns";
 import {
   Box,
   Card,
@@ -11,10 +11,11 @@ import {
   TablePagination,
   TableRow,
   Typography,
-} from '@mui/material';
-import Scrollbar from '../ScrollBar';
-import { STATUS } from '../../constants/Enums';
-import SeverityPill from '../SeverityPill';
+} from "@mui/material";
+import Scrollbar from "../ScrollBar";
+import { ACTIVE_STATUS } from "../../constants/Enums";
+import SeverityPill from "../SeverityPill";
+import { useNavigate } from "react-router-dom";
 
 const ReviewsTable = (props) => {
   const {
@@ -27,6 +28,8 @@ const ReviewsTable = (props) => {
     selected = [],
   } = props;
 
+  const navigate = useNavigate();
+
   return (
     <Card>
       <Scrollbar>
@@ -34,35 +37,188 @@ const ReviewsTable = (props) => {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>Review ID</TableCell>
-                <TableCell>Customer Name</TableCell>
-                <TableCell>Comments</TableCell>
-                <TableCell>Product Name</TableCell>
-                <TableCell>Ratings</TableCell>
-                <TableCell>Seller Name</TableCell>
-                <TableCell>Created At</TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Review ID
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Order ID
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Shop Name
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Product Name
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Customer Name
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Ratings
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Active Status
+                </TableCell>
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Created At
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {items.map((review) => {
-                const isSelected = selected.includes(review.id);
-                const createdAt = format(review.createdAt, 'dd/MM/yyyy');
+              {items.length === 0 && (
+                <TableRow>
+                  <TableCell
+                    colspan="9"
+                    sx={{
+                      whiteSpace: "nowrap",
+                      textAlign: "center",
+                    }}
+                  >
+                    <Typography variant="subtitle2">
+                      No Reviews Found...
+                    </Typography>
+                  </TableCell>
+                </TableRow>
+              )}
+              {items?.map((reviews) => {
+                const isSelected = selected.includes(reviews.id);
+
+                const createdDate = new Date(reviews.created_at);
+                const createdAt = format(createdDate, "yyyy-MM-dd");
 
                 return (
-                  <TableRow hover key={review.id} selected={isSelected}>
-                    <TableCell>
-                      <Stack alignItems='center' direction='row' spacing={2}>
-                        <Typography variant='subtitle2'>
-                          {review.review_id}
+                  <TableRow
+                    onClick={() =>
+                      navigate(`/portal/reviews/view/${reviews.id}`)
+                    }
+                    hover
+                    sx={{ cursor: "pointer" }}
+                    key={reviews.id}
+                    selected={isSelected}
+                  >
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
+                          {reviews.review_id}
                         </Typography>
                       </Stack>
                     </TableCell>
-                    <TableCell>{review.customer}</TableCell>
-                    <TableCell>{review.comments}</TableCell>
-                    <TableCell>{review.product}</TableCell>
-                    <TableCell>{review.ratings}</TableCell>
-                    <TableCell>{review.seller}</TableCell>
-                    <TableCell>{createdAt}</TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
+                          {reviews.order_id}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
+                          {reviews.shop.name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
+                          {reviews.product.name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
+                          {reviews.customer.first_name}{" "}
+                          {reviews.customer.last_name}
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      <Stack alignItems="center" direction="row" spacing={2}>
+                        <Typography variant="subtitle2">
+                          {reviews.ratings}⭐
+                        </Typography>
+                      </Stack>
+                    </TableCell>
+
+                    <TableCell>
+                      <SeverityPill color={ACTIVE_STATUS[reviews.is_active]}>
+                        {reviews.is_active ? "Activated" : "Deactivated"}
+                      </SeverityPill>
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {createdAt}
+                    </TableCell>
                   </TableRow>
                 );
               })}
@@ -71,7 +227,7 @@ const ReviewsTable = (props) => {
         </Box>
       </Scrollbar>
       <TablePagination
-        component='div'
+        component="div"
         count={count}
         onPageChange={onPageChange}
         onRowsPerPageChange={onRowsPerPageChange}

@@ -6,6 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import NotFound from '../../../components/NotFound';
 import EditProductFields from '../../../components/products/EditProductFields';
 import ViewProductFields from '../../../components/products/ViewProductFields';
 import PortalLayout from '../../../layouts/PortalLayout';
@@ -17,10 +18,15 @@ const ViewProduct = () => {
     data: product,
     isLoading,
     isFetching,
+    isError,
   } = useGetProductQuery(productId);
 
   if (isLoading || isFetching) {
     return <div></div>;
+  }
+
+  if (!product || isError) {
+    return <NotFound />;
   }
 
   return (

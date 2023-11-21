@@ -85,7 +85,29 @@ const ViewProductFields = (props) => {
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            ₱{product?.price}
+            ₱
+            {product?.price.toLocaleString('en-US', {
+              minimumFractionDigits: 2,
+            })}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingY: '10px',
+            alignItems: 'center',
+            display: 'flex',
+            flexDirection: 'row',
+            height: 'max',
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color='text.primary' variant='body1'>
+            Quantity:
+          </Typography>
+
+          <Typography color='text.secondary' variant='body1'>
+            {product?.quantity ?? 0} {product?.quantity ? 'pcs' : 'pc'}
           </Typography>
         </Box>
 
@@ -119,11 +141,11 @@ const ViewProductFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color='text.primary' variant='body1'>
-            Seller's Name:
+            Shop's Name:
           </Typography>
 
           <Typography color='text.secondary' variant='body1'>
-            {product?.seller?.first_name} {product?.seller?.last_name}
+            {product?.shop?.name}
           </Typography>
         </Box>
 
@@ -134,6 +156,7 @@ const ViewProductFields = (props) => {
             display: 'flex',
             flexDirection: 'row',
             height: 'max',
+            width: 'max',
             gap: 1,
           }}
         >
@@ -141,8 +164,22 @@ const ViewProductFields = (props) => {
             Image File:
           </Typography>
 
-          <Typography color='text.secondary' variant='body1'>
-            {product?.image_file}
+          <Typography
+            noWrap
+            sx={{
+              overflowWrap: 'break-word',
+            }}
+            color='text.secondary'
+            variant='body1'
+          >
+            <a
+              href={product?.image_file}
+              target='_blank'
+              rel='noopener noreferrer'
+              style={{ whiteSpace: 'normal', textOverflow: 'ellipsis' }}
+            >
+              {product?.image_file}
+            </a>
           </Typography>
         </Box>
       </CardContent>

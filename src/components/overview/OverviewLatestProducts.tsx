@@ -24,11 +24,22 @@ export const OverviewLatestProducts = (props) => {
     <Card sx={sx}>
       <CardHeader title='Latest Products' />
       <List>
+        {products?.length === 0 && (
+          <ListItem>
+            <ListItemText
+              primary='No Products Found...'
+              primaryTypographyProps={{ variant: 'subtitle1' }}
+              sx={{ textAlign: 'center' }}
+            />
+          </ListItem>
+        )}
+
         {products
           ?.sort((a, b) => b.id - a.id)
+          .slice(0, 5)
           .map((product, index) => {
             const hasDivider = index < products.length - 1;
-            const ago = formatDistanceToNow(new Date(product.updated_at));
+            const ago = formatDistanceToNow(new Date(product.created_at));
 
             return (
               <ListItem
@@ -67,7 +78,7 @@ export const OverviewLatestProducts = (props) => {
                 <ListItemText
                   primary={product.name}
                   primaryTypographyProps={{ variant: 'subtitle1' }}
-                  secondary={`Updated ${ago} ago`}
+                  secondary={`Created ${ago} ago`}
                   secondaryTypographyProps={{ variant: 'body2' }}
                 />
               </ListItem>

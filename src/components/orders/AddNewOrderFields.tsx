@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Formik } from 'formik';
+import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import * as Yup from 'yup';
 import {
   Box,
@@ -10,39 +11,67 @@ import {
   Divider,
   TextField,
   FormControl,
+  Button,
+  SvgIcon,
   FormHelperText,
   Unstable_Grid2 as Grid,
+  Container,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import Colors from '../../constants/Colors';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useGetCustomersQuery } from '../../services/crud-customer';
-import { useGetSellersQuery } from '../../services/crud-seller';
+import { useGetShopsQuery } from '../../services/crud-shop';
 import { useCreateOrderMutation } from '../../services/crud-order';
 import { useGetProductsQuery } from '../../services/crud-product';
 
 const AddNewOrderFields = () => {
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const { data: customersData } = useGetCustomersQuery();
-  const { data: sellersData } = useGetSellersQuery();
+  const { data: shopsData } = useGetShopsQuery();
   const { data: productsData } = useGetProductsQuery();
   const navigate = useNavigate();
 
+  const [totalOrders, setTotalOrders] = useState(1);
+  const [customerIdState, setCustomerIdState] = useState('');
+  const [shopsState, setShopsState] = useState([]);
+  const [productsState, setProductsState] = useState([]);
+  const [quantityState, setQuantityState] = useState([]);
+  const hasRunUseEffect = useRef(false);
+
+  useEffect(() => {
+    if (!hasRunUseEffect.current) {
+      hasRunUseEffect.current = true;
+      return;
+    }
+
+    setShopsState((prev) => [...prev, '']);
+    setProductsState((prev) => [...prev, '']);
+    setQuantityState((prev) => [...prev, '']);
+  }, [totalOrders]);
+
   const initialValues = {
-    customer_id: '',
-    seller_id: '',
-    product_id: '',
+    customer_id: customerIdState,
+    shops: shopsState,
+    products: productsState,
+    quantity: quantityState,
   };
 
   return (
     <>
       <Formik
         initialValues={initialValues}
+        enableReinitialize={true}
         validationSchema={Yup.object().shape({
           customer_id: Yup.string().required('Customer Name is required'),
-          seller_id: Yup.string().required('Seller Name is required'),
-          product_id: Yup.string().required('Product Name is required'),
+          shops: Yup.array().of(Yup.string().required('Shop Name is required')),
+          products: Yup.array().of(
+            Yup.string().required('Product is required')
+          ),
+          quantity: Yup.array().of(
+            Yup.string().required('Quantity is required')
+          ),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           createOrder(values)
@@ -58,7 +87,7 @@ const AddNewOrderFields = () => {
                 theme: 'light',
               });
             })
-            .catch((error) => setErrors({ email: error.data?.message }));
+            .catch((error) => setErrors({ customer_id: error.data?.message }));
         }}
       >
         {({
@@ -67,150 +96,280 @@ const AddNewOrderFields = () => {
           handleChange,
           handleSubmit,
           setFieldValue,
+          setFieldTouched,
           isSubmitting,
           touched,
           values,
           dirty,
           isValid,
-        }) => (
-          <form noValidate onSubmit={handleSubmit}>
-            <Card>
-              <CardHeader
-                subheader='Please fill in the input fields to add a order.'
-                title='Order Information'
-              />
-              <CardContent sx={{ pt: 0 }}>
-                <Box sx={{ m: -1.5 }}>
-                  <Grid container spacing={3}>
-                    <Grid xs={12}>
-                      <FormControl
-                        fullWidth
-                        error={Boolean(
-                          touched.customer_id && errors.customer_id
-                        )}
-                      >
-                        <TextField
+        }) => {
+          return (
+            <form noValidate onSubmit={handleSubmit}>
+              <Card>
+                <CardHeader
+                  subheader='Please fill in the input fields to add a order.'
+                  title='Order Information'
+                />
+                <CardContent sx={{ pt: 0 }}>
+                  <Box sx={{ m: -1.5 }}>
+                    <Grid container spacing={3}>
+                      <Grid xs={12} md={12}>
+                        <FormControl
                           fullWidth
                           error={Boolean(
                             touched.customer_id && errors.customer_id
                           )}
-                          label='Select Customer'
-                          name='customer_id'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.customer_id}
                         >
-                          <option value='' disabled hidden></option>
-                          {customersData?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
-                              </option>
-                            );
-                          })}
-                        </TextField>
-                        {touched.customer_id && errors.customer_id && (
-                          <FormHelperText error id='text-customer-id'>
-                            {errors.customer_id}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </Grid>
+                          <TextField
+                            fullWidth
+                            error={Boolean(
+                              touched.customer_id && errors.customer_id
+                            )}
+                            label='Select Customer'
+                            name='customer_id'
+                            onBlur={handleBlur}
+                            onChange={(e) => {
+                              setFieldValue(`customer_id`, e.target.value);
 
-                    <Grid xs={12}>
-                      <FormControl
-                        fullWidth
-                        error={Boolean(touched.seller_id && errors.seller_id)}
-                      >
-                        <TextField
-                          fullWidth
-                          error={Boolean(touched.seller_id && errors.seller_id)}
-                          label='Select Seller'
-                          name='seller_id'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.seller_id}
-                        >
-                          <option value='' disabled hidden></option>
-                          {sellersData?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.id}>
-                                {el.first_name} {el.last_name}
-                              </option>
-                            );
-                          })}
-                        </TextField>
-                        {touched.seller_id && errors.seller_id && (
-                          <FormHelperText error id='text-seller-id'>
-                            {errors.seller_id}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
-                    </Grid>
-
-                    <Grid xs={12}>
-                      <FormControl
-                        fullWidth
-                        error={Boolean(touched.product_id && errors.product_id)}
-                      >
-                        <TextField
-                          disabled={!values.seller_id}
-                          fullWidth
-                          error={Boolean(
-                            touched.product_id && errors.product_id
-                          )}
-                          label='Select Product'
-                          name='product_id'
-                          onBlur={handleBlur}
-                          onChange={handleChange}
-                          required
-                          select
-                          SelectProps={{ native: true }}
-                          value={values.product_id}
-                        >
-                          <option value='' disabled hidden></option>
-                          {productsData
-                            ?.filter((el) => el.seller.id == values.seller_id)
-                            .map((el) => {
+                              setCustomerIdState(e.target.value);
+                            }}
+                            required
+                            select
+                            SelectProps={{ native: true }}
+                            value={values.customer_id}
+                          >
+                            <option value='' disabled hidden></option>
+                            {customersData?.map((el) => {
                               return (
                                 <option key={el.id} value={el.id}>
-                                  {el.name}
+                                  {el.first_name} {el.last_name}
                                 </option>
                               );
                             })}
-                        </TextField>
-                        {touched.product_id && errors.product_id && (
-                          <FormHelperText error id='text-product-id'>
-                            {errors.product_id}
-                          </FormHelperText>
-                        )}
-                      </FormControl>
+                          </TextField>
+                          {touched.customer_id && errors.customer_id && (
+                            <FormHelperText error id={`text-customer-id`}>
+                              {errors.customer_id}
+                            </FormHelperText>
+                          )}
+                        </FormControl>
+                      </Grid>
                     </Grid>
-                  </Grid>
-                </Box>
-              </CardContent>
-              <Divider />
-              <CardActions sx={{ justifyContent: 'flex-end' }}>
-                <LoadingButton
-                  loading={isLoading}
-                  disableElevation
-                  disabled={isSubmitting || !dirty || !isValid}
-                  type='submit'
-                  variant='contained'
-                  sx={{ backgroundColor: Colors.primaryColor }}
-                >
-                  Save details
-                </LoadingButton>
-              </CardActions>
-            </Card>
-          </form>
-        )}
+
+                    {Array.from({ length: totalOrders }, (_, index) => (
+                      <Grid container spacing={3}>
+                        <Grid xs={12} md={4}>
+                          <FormControl
+                            fullWidth
+                            error={Boolean(
+                              touched?.shops &&
+                                errors?.shops &&
+                                touched.shops[index] &&
+                                errors.shops[index]
+                            )}
+                          >
+                            <TextField
+                              fullWidth
+                              error={Boolean(
+                                touched?.shops &&
+                                  errors?.shops &&
+                                  touched.shops[index] &&
+                                  errors.shops[index]
+                              )}
+                              label='Select Shop'
+                              name={`shops[${index}]`}
+                              onBlur={handleBlur}
+                              onChange={(e) => {
+                                const newShops = [...shopsState];
+                                newShops[index] = e.target.value;
+
+                                setShopsState(newShops);
+                                setFieldValue(
+                                  `shops[${index}]`,
+                                  e.target.value
+                                );
+                                setFieldTouched(`shops[${index}]`, true);
+                              }}
+                              required
+                              select
+                              SelectProps={{ native: true }}
+                              value={values.shops[index] || ''}
+                            >
+                              <option value='' disabled hidden></option>
+                              {shopsData?.map((el) => {
+                                return (
+                                  <option key={el.id} value={el.id}>
+                                    {el.name}
+                                  </option>
+                                );
+                              })}
+                            </TextField>
+                            {touched?.shops &&
+                              errors?.shops &&
+                              touched.shops[index] &&
+                              errors.shops[index] && (
+                                <FormHelperText error id='text-shop-id'>
+                                  {errors.shops[index]}
+                                </FormHelperText>
+                              )}
+                          </FormControl>
+                        </Grid>
+
+                        <Grid xs={12} md={4}>
+                          <FormControl
+                            fullWidth
+                            error={Boolean(
+                              touched?.products &&
+                                errors?.products &&
+                                touched.products[index] &&
+                                errors.products[index]
+                            )}
+                          >
+                            <TextField
+                              disabled={!values.shops[index]}
+                              fullWidth
+                              error={Boolean(
+                                touched?.products &&
+                                  errors?.products &&
+                                  touched.products[index] &&
+                                  errors.products[index]
+                              )}
+                              label='Select Product'
+                              name={`products[${index}]`}
+                              onBlur={handleBlur}
+                              onChange={(e) => {
+                                const newProducts = [...productsState];
+                                newProducts[index] = e.target.value;
+
+                                setProductsState(newProducts);
+                                setFieldValue(
+                                  `products[${index}]`,
+                                  e.target.value
+                                );
+                                setFieldTouched(`products[${index}]`, true);
+                              }}
+                              required
+                              select
+                              SelectProps={{ native: true }}
+                              value={values.products[index] || ''}
+                            >
+                              <option value='' disabled hidden></option>
+                              {productsData
+                                ?.filter(
+                                  (el) => el.shop.id == values.shops[index]
+                                )
+                                .map((el) => {
+                                  return (
+                                    <option key={el.id} value={el.id}>
+                                      {el.name}
+                                    </option>
+                                  );
+                                })}
+                            </TextField>
+                            {touched?.products &&
+                              errors?.products &&
+                              touched.products[index] &&
+                              errors.products[index] && (
+                                <FormHelperText error id='text-product-id'>
+                                  {errors.products[index]}
+                                </FormHelperText>
+                              )}
+                          </FormControl>
+                        </Grid>
+
+                        <Grid xs={12} md={4}>
+                          <FormControl
+                            fullWidth
+                            error={Boolean(
+                              touched?.quantity &&
+                                errors?.quantity &&
+                                touched.quantity[index] &&
+                                errors.quantity[index]
+                            )}
+                          >
+                            <TextField
+                              fullWidth
+                              error={Boolean(
+                                touched?.quantity &&
+                                  errors?.quantity &&
+                                  touched.quantity[index] &&
+                                  errors.quantity[index]
+                              )}
+                              label='Quantity'
+                              name={`quantity[${index}]`}
+                              onBlur={handleBlur}
+                              onChange={(e) => {
+                                const newQuantity = [...quantityState];
+                                newQuantity[index] = e.target.value;
+
+                                setQuantityState(newQuantity);
+                                setFieldValue(
+                                  `quantity[${index}]`,
+                                  e.target.value
+                                );
+                                setFieldTouched(`quantity[${index}]`, true);
+                              }}
+                              required
+                              value={values.quantity[index] || ''}
+                              type='number'
+                            />
+                            {touched?.quantity &&
+                              errors?.quantity &&
+                              touched.quantity[index] &&
+                              errors.quantity[index] && (
+                                <FormHelperText
+                                  error
+                                  id='text-product-quantity'
+                                >
+                                  {errors.quantity[index]}
+                                </FormHelperText>
+                              )}
+                          </FormControl>
+                        </Grid>
+                      </Grid>
+                    ))}
+
+                    <Button
+                      onClick={() => setTotalOrders((prev) => prev + 1)}
+                      startIcon={
+                        <SvgIcon fontSize='small'>
+                          <PlusIcon />
+                        </SvgIcon>
+                      }
+                      sx={{
+                        mt: 2,
+                        ml: 'auto',
+                        color: Colors.primaryColor,
+                      }}
+                    >
+                      Add More
+                    </Button>
+                  </Box>
+                </CardContent>
+                <Divider />
+                <CardActions sx={{ justifyContent: 'flex-end' }}>
+                  <LoadingButton
+                    loading={isLoading}
+                    disableElevation
+                    disabled={
+                      isSubmitting ||
+                      !initialValues.customer_id ||
+                      !initialValues.shops.every((el) => el !== '') ||
+                      !initialValues.products.every((el) => el !== '') ||
+                      !initialValues.quantity.every((el) => el !== '') ||
+                      !isValid
+                    }
+                    type='submit'
+                    variant='contained'
+                    sx={{ backgroundColor: Colors.primaryColor }}
+                  >
+                    Save details
+                  </LoadingButton>
+                </CardActions>
+              </Card>
+            </form>
+          );
+        }}
       </Formik>
     </>
   );

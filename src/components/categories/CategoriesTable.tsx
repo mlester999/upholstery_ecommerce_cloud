@@ -30,6 +30,13 @@ const CategoriesTable = (props) => {
 
   const navigate = useNavigate();
 
+  function limitString(str, maxLength) {
+    if (str.length <= maxLength) {
+      return str; // If the string is already shorter than the limit, return it as is
+    }
+    return str.substring(0, maxLength) + '...'; // Truncate and add "..."
+  }
+
   return (
     <Card>
       <Scrollbar>
@@ -108,7 +115,7 @@ const CategoriesTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {category.title}
+                          {limitString(category.title, 40)}
                         </Typography>
                       </Stack>
                     </TableCell>
@@ -120,7 +127,7 @@ const CategoriesTable = (props) => {
                     >
                       <Stack alignItems='center' direction='row' spacing={2}>
                         <Typography variant='subtitle2'>
-                          {category.description}
+                          {limitString(category.description, 30)}
                         </Typography>
                       </Stack>
                     </TableCell>

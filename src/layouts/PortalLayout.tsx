@@ -28,10 +28,6 @@ const PortalLayout = ({ children }) => {
   const { isLoading, isFetching, isError } = useGetUserQuery();
   const [openNav, setOpenNav] = useState(false);
 
-  useEffect(() => {
-    console.log(Cookies.get('is_authenticated'));
-  }, []);
-
   const handlePathnameChange = useCallback(() => {
     if (openNav) {
       setOpenNav(false);

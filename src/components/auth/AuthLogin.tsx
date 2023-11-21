@@ -1,9 +1,9 @@
-import { Link } from 'react-router-dom';
-import * as Yup from 'yup';
-import Cookies from 'js-cookie';
-import { useState } from 'react';
-import { Formik } from 'formik';
-import { useNavigate } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import * as Yup from "yup";
+import Cookies from "js-cookie";
+import { useState } from "react";
+import { Formik } from "formik";
+import { useNavigate } from "react-router-dom";
 import {
   FormControl,
   FormHelperText,
@@ -16,12 +16,12 @@ import {
   OutlinedInput,
   Typography,
   Box,
-} from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import Colors from '../../constants/Colors';
-import { useLoginMutation } from '../../services/authentication';
+} from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import Colors from "../../constants/Colors";
+import { useLoginMutation } from "../../services/authentication";
 
 const AuthLogin = () => {
   const [login, { isLoading }] = useLoginMutation();
@@ -40,16 +40,16 @@ const AuthLogin = () => {
     <>
       <Formik
         initialValues={{
-          email: '',
-          password: '',
+          email: "",
+          password: "",
           submit: null,
         }}
         validationSchema={Yup.object().shape({
           email: Yup.string()
-            .email('Must be a valid email')
+            .email("Must be a valid email")
             .max(255)
-            .required('Email is required'),
-          password: Yup.string().max(255).required('Password is required'),
+            .required("Email is required"),
+          password: Yup.string().max(255).required("Password is required"),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           await login({ email: values.email, password: values.password })
@@ -59,8 +59,8 @@ const AuthLogin = () => {
                 new Date().getTime() + 3 * 60 * 60 * 1000
               );
 
-              Cookies.set('is_authenticated', true, { expires: inThreeHours });
-              navigate('/portal/dashboard');
+              Cookies.set("is_authenticated", true, { expires: inThreeHours });
+              navigate("/portal/dashboard");
             })
             .catch((error) => setErrors({ email: error.data.message }));
         }}
@@ -79,19 +79,19 @@ const AuthLogin = () => {
               fullWidth
               error={Boolean(touched.email && errors.email)}
             >
-              <InputLabel htmlFor='email-login'>Email Address</InputLabel>
+              <InputLabel htmlFor="email-login">Email Address</InputLabel>
               <OutlinedInput
-                id='email-login'
-                type='email'
+                id="email-login"
+                type="email"
                 value={values.email}
-                name='email'
+                name="email"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                label='Email Address'
+                label="Email Address"
                 inputProps={{}}
               />
               {touched.email && errors.email && (
-                <FormHelperText error id='text-email-login'>
+                <FormHelperText error id="text-email-login">
                   {errors.email}
                 </FormHelperText>
               )}
@@ -102,43 +102,43 @@ const AuthLogin = () => {
               error={Boolean(touched.password && errors.password)}
               sx={{ marginTop: 4, marginBottom: 4 }}
             >
-              <InputLabel htmlFor='password-login'>Password</InputLabel>
+              <InputLabel htmlFor="password-login">Password</InputLabel>
               <OutlinedInput
-                id='password-login'
-                type={showPassword ? 'text' : 'password'}
+                id="password-login"
+                type={showPassword ? "text" : "password"}
                 value={values.password}
-                name='password'
+                name="password"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 endAdornment={
-                  <InputAdornment position='end'>
+                  <InputAdornment position="end">
                     <IconButton
-                      aria-label='toggle password visibility'
+                      aria-label="toggle password visibility"
                       onClick={handleClickShowPassword}
                       onMouseDown={handleMouseDownPassword}
-                      edge='end'
-                      size='large'
+                      edge="end"
+                      size="large"
                     >
                       {showPassword ? <Visibility /> : <VisibilityOff />}
                     </IconButton>
                   </InputAdornment>
                 }
-                label='Password'
+                label="Password"
                 inputProps={{}}
               />
               {touched.password && errors.password && (
                 <FormHelperText
                   error
-                  id='standard-weight-helper-text-password-login'
+                  id="standard-weight-helper-text-password-login"
                 >
                   {errors.password}
                 </FormHelperText>
               )}
             </FormControl>
             <Stack
-              direction='row'
-              alignItems='center'
-              justifyContent='space-between'
+              direction="row"
+              alignItems="center"
+              justifyContent="space-between"
               spacing={1}
             >
               <FormControlLabel
@@ -146,13 +146,13 @@ const AuthLogin = () => {
                   <Checkbox
                     checked={checked}
                     onChange={(event) => setChecked(event.target.checked)}
-                    name='checked'
-                    color='primary'
+                    name="checked"
+                    color="primary"
                   />
                 }
-                label='Remember me'
+                label="Remember me"
               />
-              <Typography
+              {/* <Typography
                 component={Link}
                 to='/forgot-password'
                 variant='subtitle1'
@@ -163,7 +163,7 @@ const AuthLogin = () => {
                 }}
               >
                 Forgot Password?
-              </Typography>
+              </Typography> */}
             </Stack>
             {errors.submit && (
               <Box sx={{ mt: 3 }}>
@@ -177,9 +177,9 @@ const AuthLogin = () => {
                 disableElevation
                 disabled={isSubmitting}
                 fullWidth
-                size='large'
-                type='submit'
-                variant='contained'
+                size="large"
+                type="submit"
+                variant="contained"
                 sx={{ backgroundColor: Colors.primaryColor }}
               >
                 Sign in

@@ -62,7 +62,7 @@ const Customers = () => {
   const { customers, customersLength } = useCustomers(
     page,
     rowsPerPage,
-    customersData,
+    customersData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 
@@ -115,7 +115,7 @@ const Customers = () => {
               searchQuery={searchQuery}
             />
             <CustomersTable
-              count={customersLength}
+              count={customersLength ?? 0}
               items={customers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

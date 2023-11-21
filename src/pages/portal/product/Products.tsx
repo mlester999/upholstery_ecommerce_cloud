@@ -62,7 +62,7 @@ const Products = () => {
   const { products, productsLength } = useProducts(
     page,
     rowsPerPage,
-    productsData,
+    productsData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 
@@ -115,7 +115,7 @@ const Products = () => {
               searchQuery={searchQuery}
             />
             <ProductsTable
-              count={productsLength}
+              count={productsLength ?? 0}
               items={products}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

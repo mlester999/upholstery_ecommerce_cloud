@@ -1,22 +1,25 @@
-import ChartBarIcon from '@heroicons/react/24/solid/ChartBarIcon';
-import ReceiptPercentIcon from '@heroicons/react/24/solid/ReceiptPercentIcon';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
-import ShoppingBagIcon from '@heroicons/react/24/solid/ShoppingBagIcon';
-import TruckIcon from '@heroicons/react/24/solid/TruckIcon';
-import UserGroupIcon from '@heroicons/react/24/solid/UserGroupIcon';
-import StarIcon from '@heroicons/react/24/solid/StarIcon';
-import ReceiptRefundIcon from '@heroicons/react/24/solid/ReceiptRefundIcon';
-import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
-import DocumentTextIcon from '@heroicons/react/24/solid/DocumentTextIcon';
-import RectangleStackIcon from '@heroicons/react/24/solid/RectangleStackIcon';
-import { SvgIcon } from '@mui/material';
+import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
+import ReceiptPercentIcon from "@heroicons/react/24/solid/ReceiptPercentIcon";
+import BuildingStorefrontIcon from "@heroicons/react/24/solid/BuildingStorefrontIcon";
+import ShoppingBagIcon from "@heroicons/react/24/solid/ShoppingBagIcon";
+import TruckIcon from "@heroicons/react/24/solid/TruckIcon";
+import UserGroupIcon from "@heroicons/react/24/solid/UserGroupIcon";
+import StarIcon from "@heroicons/react/24/solid/StarIcon";
+import ReceiptRefundIcon from "@heroicons/react/24/solid/ReceiptRefundIcon";
+import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
+import DocumentTextIcon from "@heroicons/react/24/solid/DocumentTextIcon";
+import RectangleStackIcon from "@heroicons/react/24/solid/RectangleStackIcon";
+import CreditCardIcon from "@heroicons/react/24/solid/CreditCardIcon";
+import CurrencyDollarIcon from "@heroicons/react/24/solid/CurrencyDollarIcon";
+import BanknotesIcon from "@heroicons/react/24/solid/BanknotesIcon";
+import { SvgIcon } from "@mui/material";
 
 export const items = [
   {
-    title: 'Dashboard',
-    path: '/portal/dashboard',
+    title: "Dashboard",
+    path: "/portal/dashboard",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <ChartBarIcon />
       </SvgIcon>
     ),
@@ -24,10 +27,10 @@ export const items = [
     external: false,
   },
   {
-    title: 'Sellers',
-    path: '/portal/sellers',
+    title: "Admins",
+    path: "/portal/admins",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <UsersIcon />
       </SvgIcon>
     ),
@@ -35,10 +38,32 @@ export const items = [
     external: false,
   },
   {
-    title: 'Customers',
-    path: '/portal/customers',
+    title: "Sellers",
+    path: "/portal/sellers",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
+        <UsersIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Shops",
+    path: "/portal/shops",
+    icon: (
+      <SvgIcon fontSize="small">
+        <BuildingStorefrontIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Customers",
+    path: "/portal/customers",
+    icon: (
+      <SvgIcon fontSize="small">
         <UserGroupIcon />
       </SvgIcon>
     ),
@@ -46,10 +71,10 @@ export const items = [
     external: false,
   },
   {
-    title: 'Categories',
-    path: '/portal/categories',
+    title: "Categories",
+    path: "/portal/categories",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <RectangleStackIcon />
       </SvgIcon>
     ),
@@ -57,10 +82,10 @@ export const items = [
     external: false,
   },
   {
-    title: 'Products',
-    path: '/portal/products',
+    title: "Products",
+    path: "/portal/products",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <ShoppingBagIcon />
       </SvgIcon>
     ),
@@ -68,10 +93,10 @@ export const items = [
     external: false,
   },
   {
-    title: 'Orders',
-    path: '/portal/orders',
+    title: "Orders",
+    path: "/portal/orders",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <TruckIcon />
       </SvgIcon>
     ),
@@ -79,11 +104,44 @@ export const items = [
     external: false,
   },
   {
-    title: 'Discount Vouchers',
-    path: '/portal/discount-vouchers',
+    title: "Discount Vouchers",
+    path: "/portal/discount-vouchers",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <ReceiptPercentIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Bank Accounts",
+    path: "/portal/bank-accounts",
+    icon: (
+      <SvgIcon fontSize="small">
+        <CreditCardIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Seller Balances",
+    path: "/portal/seller-balances",
+    icon: (
+      <SvgIcon fontSize="small">
+        <CurrencyDollarIcon />
+      </SvgIcon>
+    ),
+    disabled: false,
+    external: false,
+  },
+  {
+    title: "Seller Withdrawals",
+    path: "/portal/seller-withdrawals",
+    icon: (
+      <SvgIcon fontSize="small">
+        <BanknotesIcon />
       </SvgIcon>
     ),
     disabled: false,
@@ -101,10 +159,10 @@ export const items = [
   //   external: false,
   // },
   {
-    title: 'Reviews',
-    path: '/portal/reviews',
+    title: "Reviews",
+    path: "/portal/reviews",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <StarIcon />
       </SvgIcon>
     ),
@@ -112,10 +170,10 @@ export const items = [
     external: false,
   },
   {
-    title: 'Returns / Refunds',
-    path: '/portal/returns-and-refunds',
+    title: "Returns / Refunds",
+    path: "/portal/return-refunds",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <ReceiptRefundIcon />
       </SvgIcon>
     ),
@@ -123,10 +181,10 @@ export const items = [
     external: false,
   },
   {
-    title: 'Logs',
-    path: '/portal/logs',
+    title: "Activity Logs",
+    path: "/portal/activity-logs",
     icon: (
-      <SvgIcon fontSize='small'>
+      <SvgIcon fontSize="small">
         <DocumentTextIcon />
       </SvgIcon>
     ),

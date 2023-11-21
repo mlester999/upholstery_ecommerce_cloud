@@ -13,6 +13,7 @@ import SideNavItem from './SideNavItem';
 import { Link, useLocation } from 'react-router-dom';
 import TransparentLogo from './TransparentLogo';
 import { Theme } from '@mui/material/styles';
+import { useGetUserQuery } from '../services/authentication';
 
 interface SideNavProps {
   open: boolean;
@@ -20,6 +21,7 @@ interface SideNavProps {
 }
 
 const SideNav: React.FC<SideNavProps> = ({ open, onClose }) => {
+  const { data: user } = useGetUserQuery();
   const location = useLocation();
   const lgUp = useMediaQuery((theme: Theme) => theme.breakpoints.up('lg'));
 
@@ -85,6 +87,12 @@ const SideNav: React.FC<SideNavProps> = ({ open, onClose }) => {
               const active = item.path
                 ? location.pathname === item.path
                 : false;
+
+              if (item.title === 'Admins') {
+                if (user?.user.user_type === 2) {
+                  return null;
+                }
+              }
 
               return (
                 <SideNavItem

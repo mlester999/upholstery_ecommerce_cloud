@@ -62,7 +62,7 @@ const Sellers = () => {
   const { sellers, sellersLength } = useSellers(
     page,
     rowsPerPage,
-    sellersData,
+    sellersData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 
@@ -115,7 +115,7 @@ const Sellers = () => {
               searchQuery={searchQuery}
             />
             <SellersTable
-              count={sellersLength}
+              count={sellersLength ?? 0}
               items={sellers}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

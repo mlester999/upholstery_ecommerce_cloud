@@ -1,20 +1,31 @@
-import MagnifyingGlassIcon from '@heroicons/react/24/solid/MagnifyingGlassIcon';
-import { Card, InputAdornment, OutlinedInput, SvgIcon } from '@mui/material';
+import React from "react";
+import MagnifyingGlassIcon from "@heroicons/react/24/solid/MagnifyingGlassIcon";
+import { Card, InputAdornment, OutlinedInput, SvgIcon } from "@mui/material";
 
-const ReviewsSearch = () => (
+interface ReviewsSearchProps {
+  onChange: () => void;
+  searchQuery: string;
+}
+
+const ReviewsSearch: React.FC<ReviewsSearchProps> = ({
+  onChange,
+  searchQuery,
+}) => (
   <Card sx={{ p: 2 }}>
     <OutlinedInput
-      defaultValue=''
+      onChange={onChange}
+      defaultValue=""
       fullWidth
-      placeholder='Search a review...'
+      placeholder="Search a review..."
       startAdornment={
-        <InputAdornment position='start'>
-          <SvgIcon color='action' fontSize='small'>
+        <InputAdornment position="start">
+          <SvgIcon color="action" fontSize="small">
             <MagnifyingGlassIcon />
           </SvgIcon>
         </InputAdornment>
       }
       sx={{ maxWidth: 500 }}
+      value={searchQuery}
     />
   </Card>
 );

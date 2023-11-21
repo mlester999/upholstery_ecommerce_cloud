@@ -62,7 +62,7 @@ const Categories = () => {
   const { categories, categoriesLength } = useCategories(
     page,
     rowsPerPage,
-    categoriesData,
+    categoriesData?.slice().sort((a, b) => b.id - a.id),
     searchQuery
   );
 
@@ -115,7 +115,7 @@ const Categories = () => {
               searchQuery={searchQuery}
             />
             <CategoriesTable
-              count={categoriesLength}
+              count={categoriesLength ?? 0}
               items={categories}
               onPageChange={handlePageChange}
               onRowsPerPageChange={handleRowsPerPageChange}

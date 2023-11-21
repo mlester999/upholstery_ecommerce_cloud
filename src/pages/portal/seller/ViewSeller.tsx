@@ -6,6 +6,7 @@ import {
   Unstable_Grid2 as Grid,
 } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import NotFound from '../../../components/NotFound';
 import EditSellerFields from '../../../components/sellers/EditSellerFields';
 import ViewSellerFields from '../../../components/sellers/ViewSellerFields';
 import PortalLayout from '../../../layouts/PortalLayout';
@@ -13,10 +14,19 @@ import { useGetSellerQuery } from '../../../services/crud-seller';
 
 const ViewSeller = () => {
   const { sellerId } = useParams();
-  const { data: seller, isLoading, isFetching } = useGetSellerQuery(sellerId);
+  const {
+    data: seller,
+    isLoading,
+    isFetching,
+    isError,
+  } = useGetSellerQuery(sellerId);
 
   if (isLoading || isFetching) {
     return <div></div>;
+  }
+
+  if (!seller || isError) {
+    return <NotFound />;
   }
 
   return (

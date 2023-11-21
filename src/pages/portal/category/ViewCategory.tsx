@@ -8,6 +8,7 @@ import {
 import { useParams } from 'react-router-dom';
 import EditCategoryFields from '../../../components/categories/EditCategoryFields';
 import ViewCategoryFields from '../../../components/categories/ViewCategoryFields';
+import NotFound from '../../../components/NotFound';
 import PortalLayout from '../../../layouts/PortalLayout';
 import { useGetCategoryQuery } from '../../../services/crud-category';
 
@@ -17,10 +18,15 @@ const ViewCategory = () => {
     data: category,
     isLoading,
     isFetching,
+    isError,
   } = useGetCategoryQuery(categoryId);
 
   if (isLoading || isFetching) {
     return <div></div>;
+  }
+
+  if (!category || isError) {
+    return <NotFound />;
   }
 
   return (

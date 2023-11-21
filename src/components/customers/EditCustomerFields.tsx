@@ -54,15 +54,15 @@ const EditCustomerFields = (props) => {
     street_address: customer?.street_address,
   };
 
-  const selectedRegion = regions?.find(
-    (el) => el.region_name === initialValues.region
-  );
-  const selectedProvince = provinces?.find(
-    (el) => el.province_name === initialValues.province
-  );
-  const selectedCity = cities?.find(
-    (el) => el.city_name === initialValues.city
-  );
+  // const selectedRegion = regions?.find(
+  //   (el) => el.region_name === initialValues.region
+  // );
+  // const selectedProvince = provinces?.find(
+  //   (el) => el.province_name === initialValues.province
+  // );
+  // const selectedCity = cities?.find(
+  //   (el) => el.city_name === initialValues.city
+  // );
 
   function findChangedProperties(
     oldObj,
@@ -90,19 +90,19 @@ const EditCustomerFields = (props) => {
 
   useEffect(() => {
     if (regions?.length > 0) {
-      setRegionCode(selectedRegion?.region_code);
+      setRegionCode(regions?.region_code);
     }
   }, [regions]);
 
   useEffect(() => {
     if (provinces?.length > 0) {
-      setProvinceCode(selectedProvince?.province_code);
+      setProvinceCode(provinces?.province_code);
     }
   }, [provinces]);
 
   useEffect(() => {
     if (cities?.length > 0) {
-      setCityCode(selectedCity?.city_code);
+      setCityCode(cities?.city_code);
     }
   }, [cities]);
 
@@ -385,11 +385,7 @@ const EditCustomerFields = (props) => {
                           name='region'
                           onBlur={handleBlur}
                           onChange={(e) => {
-                            const selectedRegion = regions?.find(
-                              (el) => el.region_name === e.target.value
-                            );
-
-                            setRegionCode(selectedRegion.region_code);
+                            setRegionCode(regions?.region_code);
 
                             setFieldValue('region', e.target.value);
                             setFieldValue('province', '');
@@ -402,13 +398,12 @@ const EditCustomerFields = (props) => {
                           value={values.region}
                         >
                           <option value='' disabled hidden></option>
-                          {regions?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.region_name}>
-                                {el.region_name}
-                              </option>
-                            );
-                          })}
+                          <option
+                            key={regions?.id}
+                            value={regions?.region_name}
+                          >
+                            {regions?.region_name}
+                          </option>
                         </TextField>
                         {touched.region && errors.region && (
                           <FormHelperText error id='text-region'>
@@ -434,11 +429,7 @@ const EditCustomerFields = (props) => {
                           name='province'
                           onBlur={handleBlur}
                           onChange={(e) => {
-                            const selectedProvince = provinces?.find(
-                              (el) => el.province_name === e.target.value
-                            );
-
-                            setProvinceCode(selectedProvince.province_code);
+                            setProvinceCode(provinces?.province_code);
                             setFieldValue('province', e.target.value);
                             setFieldValue('city', '');
                             setFieldValue('barangay', '');
@@ -449,13 +440,12 @@ const EditCustomerFields = (props) => {
                           value={values.province}
                         >
                           <option value='' disabled hidden></option>
-                          {provinces?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.province_name}>
-                                {el.province_name}
-                              </option>
-                            );
-                          })}
+                          <option
+                            key={provinces?.id}
+                            value={provinces?.province_name}
+                          >
+                            {provinces?.province_name}
+                          </option>
                         </TextField>
                         {touched.province && errors.province && (
                           <FormHelperText error id='text-province'>
@@ -496,11 +486,15 @@ const EditCustomerFields = (props) => {
                         >
                           <option value='' disabled hidden></option>
                           {cities?.map((el) => {
-                            return (
-                              <option key={el.id} value={el.city_name}>
-                                {el.city_name}
-                              </option>
-                            );
+                            if (el.city_name === 'Cabuyao City') {
+                              return (
+                                <option key={el.id} value={el.city_name}>
+                                  {el.city_name}
+                                </option>
+                              );
+                            } else {
+                              return null;
+                            }
                           })}
                         </TextField>
                         {touched.city && errors.city && (
