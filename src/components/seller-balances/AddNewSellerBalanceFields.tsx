@@ -37,7 +37,7 @@ const AddNewSellerBalanceFields = () => {
       <Formik
         initialValues={initialValues}
         validationSchema={Yup.object().shape({
-          voucher_code: Yup.string().required("Voucher Code is required"),
+          shop_id: Yup.string().required("Shop is required"),
           title: Yup.string().required("Title is required"),
           description: Yup.string().required("Description is required"),
           amount: Yup.number().required("Amount is required"),
