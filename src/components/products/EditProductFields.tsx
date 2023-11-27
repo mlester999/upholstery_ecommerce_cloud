@@ -37,6 +37,10 @@ const EditProductFields = (props) => {
   const [imageFileName, setImageFileName] = useState(
     product?.image_name.replace(/^[^-]+-/, "")
   );
+  const [videoPreview, setVideoPreview] = useState(product?.video_file);
+  const [videoFileName, setVideoFileName] = useState(
+    product?.video_name?.replace(/^[^-]+-/, "")
+  );
   const navigate = useNavigate();
 
   const initialValues = {
@@ -47,6 +51,7 @@ const EditProductFields = (props) => {
     category_id: product?.category.id,
     shop_id: product?.shop.id,
     image_file: product?.image_file,
+    video_file: product?.video_file,
   };
 
   function findChangedProperties(oldObj, newObj, id: number | undefined) {
@@ -83,6 +88,7 @@ const EditProductFields = (props) => {
           category_id: Yup.string().required("Category is required"),
           shop_id: Yup.string().required("Seller Name is required"),
           image_file: Yup.string().required("Image is required"),
+          video_file: Yup.string().notRequired(),
         })}
         onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
           const updatedValues = findChangedProperties(
@@ -372,6 +378,82 @@ const EditProductFields = (props) => {
                         {touched.image_file && errors.image_file && (
                           <FormHelperText error id="text-product-image-file">
                             {errors.image_file}
+                          </FormHelperText>
+                        )}
+                      </FormControl>
+                    </Grid>
+
+                    <Grid xs={12}>
+                      <FormControl
+                        fullWidth
+                        error={Boolean(touched.video_file && errors.video_file)}
+                      >
+                        <Box
+                          display="flex"
+                          textAlign="center"
+                          alignItems="center"
+                          justifyContent="center"
+                          flexDirection="column"
+                          gap={2}
+                          sx={{
+                            marginY: "16px",
+                          }}
+                        >
+                          <Box
+                            component="video"
+                            sx={{
+                              height: 300,
+                              width: 500,
+                            }}
+                            controls
+                            src={videoPreview}
+                          />
+
+                          {videoFileName && (
+                            <Typography
+                              fontWeight={500}
+                              color="text.primary"
+                              variant="body1"
+                            >
+                              File Name: {videoFileName}
+                            </Typography>
+                          )}
+                        </Box>
+
+                        <Button
+                          variant="contained"
+                          component="label"
+                          sx={{ backgroundColor: Colors.primaryColor }}
+                        >
+                          <SvgIcon fontSize="small" sx={{ marginX: "4px" }}>
+                            <CloudArrowUpIcon />
+                          </SvgIcon>
+                          Upload Product Video (Optional)
+                          <input
+                            name="video_file"
+                            accept="video/*"
+                            id="video_file"
+                            type="file"
+                            hidden
+                            onChange={(e) => {
+                              const fileReader = new FileReader();
+                              fileReader.onload = () => {
+                                if (fileReader.readyState === 2) {
+                                  setVideoPreview(fileReader.result);
+                                  setFieldValue(
+                                    "video_file",
+                                    e.target.files[0]
+                                  );
+                                  setVideoFileName(e.target.files[0].name);
+                                }
+                              };
+                              fileReader.readAsDataURL(e.target.files[0]);
+                            }}
+                          />
+                        </Button>
+                        {touched.video_file && errors.video_file && (
+                          <FormHelperText error id="text-product-video-file">
+                            {errors.video_file}
                           </FormHelperText>
                         )}
                       </FormControl>
