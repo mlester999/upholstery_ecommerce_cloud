@@ -172,7 +172,6 @@ const AddNewReviewFields = () => {
                           <option value="" disabled hidden></option>
                           {orderedProducts
                             ?.filter((el) => {
-                              console.log(el);
                               return (
                                 el.status == "Delivered" && el.order_received
                               );

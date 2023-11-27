@@ -14,6 +14,7 @@ interface CreateOrder {
 
 interface UpdateOrder {
   id?: number;
+  admin_id?: number;
   order_id?: string;
   customer_id?: string;
   seller_id?: string;

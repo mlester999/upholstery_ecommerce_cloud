@@ -29,6 +29,7 @@ import SkeletonEditOrderFields from "./SkeletonEditorderFields";
 
 const EditOrderFields = (props) => {
   const {
+    adminId,
     orderId,
     orderCustomer,
     orderShops,
@@ -98,7 +99,7 @@ const EditOrderFields = (props) => {
             orderId
           );
 
-          updateOrder(updatedValues)
+          updateOrder({ ...updatedValues, admin_id: adminId })
             .unwrap()
             .then((payload) => {
               navigate("/portal/orders");
