@@ -25,7 +25,7 @@ interface UpdateProduct {
 export const crudProduct = createApi({
   reducerPath: 'crudProduct',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Products'],
