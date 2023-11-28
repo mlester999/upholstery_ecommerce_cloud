@@ -32,8 +32,6 @@ interface UpdatePass {
   confirm_new_password?: string;
 }
 
-console.log(import.meta.env.VITE_API_URL);
-
 export const authentication = createApi({
   reducerPath: 'authentication',
   baseQuery: fetchBaseQuery({
