@@ -15,7 +15,7 @@ interface UpdateBankAccount {
 export const crudBankAccount = createApi({
   reducerPath: 'crudBankAccount',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['BankAccounts', 'ERROR'],
