@@ -28,7 +28,7 @@ interface UpdateOrder {
 export const crudOrder = createApi({
   reducerPath: 'crudOrder',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/',
+    baseUrl: process.env.API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Orders'],
