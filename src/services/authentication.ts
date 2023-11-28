@@ -32,7 +32,7 @@ interface UpdatePass {
   confirm_new_password?: string;
 }
 
-console.log(process.env.API_URL);
+console.log(process.env.VITE_API_URL);
 
 export const authentication = createApi({
   reducerPath: 'authentication',
