@@ -34,7 +34,7 @@ interface UpdateReview {
 export const crudReview = createApi({
   reducerPath: 'crudReview',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Reviews'],
