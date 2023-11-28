@@ -5,7 +5,7 @@ import { SellerBalance } from '../models/SellerBalance';
 export const crudSellerBalance = createApi({
   reducerPath: 'crudSellerBalance',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['SellerBalance', 'ERROR'],
