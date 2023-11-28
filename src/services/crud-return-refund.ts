@@ -4,7 +4,7 @@ import { ReturnRefund } from '../models/ReturnRefund';
 export const crudReturnRefund = createApi({
   reducerPath: 'crudReturnRefund',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['ReturnRefunds'],
