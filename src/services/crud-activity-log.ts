@@ -4,7 +4,7 @@ import { ActivityLog } from '../models/ActivityLog';
 export const crudActivityLog = createApi({
   reducerPath: 'crudActivityLog',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['ActivityLogs'],
