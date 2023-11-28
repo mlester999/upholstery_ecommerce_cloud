@@ -31,7 +31,7 @@ interface UpdateAdmin {
 export const crudAdmin = createApi({
   reducerPath: 'crudAdmin',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Admins'],
