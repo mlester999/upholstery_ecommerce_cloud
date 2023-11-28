@@ -32,12 +32,12 @@ interface UpdatePass {
   confirm_new_password?: string;
 }
 
-console.log(process.env.REACT_APP_API_URL);
+console.log(import.meta.env.VITE_API_URL);
 
 export const authentication = createApi({
   reducerPath: 'authentication',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.REACT_APP_API_URL,
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Authentication'],
