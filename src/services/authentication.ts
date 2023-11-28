@@ -37,7 +37,7 @@ console.log(process.env.API_URL);
 export const authentication = createApi({
   reducerPath: 'authentication',
   baseQuery: fetchBaseQuery({
-    baseUrl: process.env.API_URL,
+    baseUrl: 'https://ccldo-api-zsu87.ondigitalocean.app/',
     credentials: 'include',
   }),
   tagTypes: ['Authentication'],
