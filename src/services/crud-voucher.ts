@@ -31,7 +31,7 @@ interface UpdateVoucher {
 export const crudVoucher = createApi({
   reducerPath: 'crudVoucher',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/',
+    baseUrl: process.env.API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Vouchers'],
