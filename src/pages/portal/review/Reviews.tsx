@@ -94,7 +94,7 @@ const Reviews = () => {
                 <Typography variant="h4">Reviews</Typography>
               </Stack>
 
-              <Button
+{/*               <Button
                 component={Link}
                 to="/portal/reviews/add"
                 startIcon={
@@ -108,7 +108,7 @@ const Reviews = () => {
                 }}
               >
                 Add New Review
-              </Button>
+              </Button> */}
             </Stack>
             <ReviewsSearch
               onChange={handleSearchChange}
