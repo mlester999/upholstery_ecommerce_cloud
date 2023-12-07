@@ -63,17 +63,17 @@ function App() {
         <Route path="/portal/sellers">
           <Route index element={<Sellers />} />
           <Route path="view/:sellerId" element={<ViewSeller />} />
-          <Route path="add" element={<AddNewSeller />} />
+          {/* <Route path="add" element={<AddNewSeller />} /> */}
         </Route>
         <Route path="/portal/shops">
           <Route index element={<Shops />} />
           <Route path="view/:shopId" element={<ViewShop />} />
-          <Route path="add" element={<AddNewShop />} />
+          {/* <Route path="add" element={<AddNewShop />} /> */}
         </Route>
         <Route path="/portal/customers">
           <Route index element={<Customers />} />
           <Route path="view/:customerId" element={<ViewCustomer />} />
-          <Route path="add" element={<AddNewCustomer />} />
+          {/* <Route path="add" element={<AddNewCustomer />} /> */}
         </Route>
         <Route path="/portal/categories">
           <Route index element={<Categories />} />
@@ -83,12 +83,12 @@ function App() {
         <Route path="/portal/products">
           <Route index element={<Products />} />
           <Route path="view/:productId" element={<ViewProduct />} />
-          <Route path="add" element={<AddNewProduct />} />
+          {/* <Route path="add" element={<AddNewProduct />} /> */}
         </Route>
         <Route path="/portal/orders">
           <Route index element={<Orders />} />
           <Route path="view/:orderId" element={<ViewOrder />} />
-          <Route path="add" element={<AddNewOrder />} />
+          {/* <Route path="add" element={<AddNewOrder />} /> */}
         </Route>
         <Route path="/portal/discount-vouchers">
           <Route index element={<Vouchers />} />
@@ -117,7 +117,7 @@ function App() {
         <Route path="/portal/reviews">
           <Route index element={<Reviews />} />
           <Route path="view/:reviewId" element={<ViewReview />} />
-          <Route path="add" element={<AddNewReview />} />
+          {/* <Route path="add" element={<AddNewReview />} /> */}
         </Route>
         <Route path="/portal/return-refunds">
           <Route index element={<ReturnRefunds />} />
