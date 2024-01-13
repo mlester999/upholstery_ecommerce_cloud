@@ -108,7 +108,7 @@ const Orders = () => {
                 <Typography variant='h4'>Orders</Typography>
               </Stack>
 
-              <Button
+{/*               <Button
                 component={Link}
                 to='/portal/orders/add'
                 startIcon={
@@ -122,7 +122,7 @@ const Orders = () => {
                 }}
               >
                 Add New Order
-              </Button>
+              </Button> */}
             </Stack>
             <OrdersSearch
               onChange={handleSearchChange}

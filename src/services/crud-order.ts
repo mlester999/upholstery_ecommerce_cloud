@@ -14,6 +14,7 @@ interface CreateOrder {
 
 interface UpdateOrder {
   id?: number;
+  admin_id?: number;
   order_id?: string;
   customer_id?: string;
   seller_id?: string;
@@ -27,7 +28,7 @@ interface UpdateOrder {
 export const crudOrder = createApi({
   reducerPath: 'crudOrder',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/',
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Orders'],

@@ -106,6 +106,50 @@ const ViewSellerWithdrawalFields = (props) => {
           }}
         >
           <Typography fontWeight={500} color="text.primary" variant="body1">
+            Commission Fee (1%):
+          </Typography>
+
+          <Typography color="text.secondary" variant="body1">
+            ₱
+            {sellerWithdrawal?.commission_fee.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+            })}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingY: "5.5px",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "row",
+            height: "max",
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color="text.primary" variant="body1">
+            Total Withdrawal:
+          </Typography>
+
+          <Typography color="text.secondary" variant="body1">
+            ₱
+            {sellerWithdrawal?.total_withdrawal.toLocaleString("en-US", {
+              minimumFractionDigits: 2,
+            })}
+          </Typography>
+        </Box>
+
+        <Box
+          sx={{
+            paddingY: "5.5px",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "row",
+            height: "max",
+            gap: 1,
+          }}
+        >
+          <Typography fontWeight={500} color="text.primary" variant="body1">
             Withdrawal Status:
           </Typography>
 

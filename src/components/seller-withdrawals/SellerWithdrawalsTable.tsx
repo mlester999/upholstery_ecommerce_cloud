@@ -66,6 +66,22 @@ const SellerWithdrawalsTable = (props) => {
                     whiteSpace: "nowrap",
                   }}
                 >
+                  Commission Fee (1%)
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
+                  Total Withdrawal
+                </TableCell>
+
+                <TableCell
+                  sx={{
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   Withdrawal Status
                 </TableCell>
 
@@ -153,6 +169,31 @@ const SellerWithdrawalsTable = (props) => {
                       {sellerWithdrawal.amount.toLocaleString("en-US", {
                         minimumFractionDigits: 2,
                       })}
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      ₱
+                      {sellerWithdrawal.commission_fee.toLocaleString("en-US", {
+                        minimumFractionDigits: 2,
+                      })}
+                    </TableCell>
+
+                    <TableCell
+                      sx={{
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      ₱
+                      {sellerWithdrawal.total_withdrawal.toLocaleString(
+                        "en-US",
+                        {
+                          minimumFractionDigits: 2,
+                        }
+                      )}
                     </TableCell>
 
                     <TableCell

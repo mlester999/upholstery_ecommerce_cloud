@@ -25,10 +25,11 @@ import { useGetShopsQuery } from "../../services/crud-shop";
 import CloudArrowUpIcon from "@heroicons/react/24/solid/CloudArrowUpIcon";
 import { useGetCustomersQuery } from "../../services/crud-customer";
 import { useUpdateOrderMutation } from "../../services/crud-order";
-import SkeletonEditOrderFields from "./SkeletonEditorderFields";
+import SkeletonEditOrderFields from "./SkeletonEditOrderFields";
 
 const EditOrderFields = (props) => {
   const {
+    adminId,
     orderId,
     orderCustomer,
     orderShops,
@@ -98,7 +99,7 @@ const EditOrderFields = (props) => {
             orderId
           );
 
-          updateOrder(updatedValues)
+          updateOrder({ ...updatedValues, admin_id: adminId })
             .unwrap()
             .then((payload) => {
               navigate("/portal/orders");

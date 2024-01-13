@@ -25,7 +25,7 @@ interface UpdateProduct {
 export const crudProduct = createApi({
   reducerPath: 'crudProduct',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/',
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['Products'],
@@ -54,6 +54,15 @@ export const crudProduct = createApi({
           details.image_file,
           details.image_file.name
         );
+
+        if(details.video_file) {
+          formData.append(
+            'video_file',
+            details.video_file,
+            details.video_file.name
+          );
+        }
+
         formData.append('details', JSON.stringify(details));
 
         return {
@@ -75,6 +84,14 @@ export const crudProduct = createApi({
             'image_file',
             details.image_file,
             details.image_file.name
+          );
+        }
+
+        if(details?.video_file) {
+          formData.append(
+            'video_file',
+            details.video_file,
+            details.video_file.name
           );
         }
         formData.append('details', JSON.stringify(details));

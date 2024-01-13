@@ -4,17 +4,19 @@ import {
   Stack,
   Typography,
   Unstable_Grid2 as Grid,
-} from '@mui/material';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import NotFound from '../../../components/NotFound';
-import EditOrderFields from '../../../components/orders/EditOrderFields';
-import ViewOrderFields from '../../../components/orders/ViewOrderFields';
-import PortalLayout from '../../../layouts/PortalLayout';
-import { useGetOrderQuery } from '../../../services/crud-order';
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import NotFound from "../../../components/NotFound";
+import EditOrderFields from "../../../components/orders/EditOrderFields";
+import ViewOrderFields from "../../../components/orders/ViewOrderFields";
+import PortalLayout from "../../../layouts/PortalLayout";
+import { useGetOrderQuery } from "../../../services/crud-order";
+import { useGetUserQuery } from "../../../services/authentication";
 
 const ViewOrder = () => {
   const { orderId } = useParams();
+  const { data: user } = useGetUserQuery();
   const {
     data: order,
     isLoading,
@@ -22,7 +24,7 @@ const ViewOrder = () => {
     isError,
   } = useGetOrderQuery(orderId);
 
-  const [customer, setCustomer] = useState('');
+  const [customer, setCustomer] = useState("");
   const [shops, setShops] = useState([]);
   const [products, setProducts] = useState([]);
   const [status, setStatus] = useState([]);
@@ -74,16 +76,16 @@ const ViewOrder = () => {
   return (
     <PortalLayout>
       <Box
-        component='main'
+        component="main"
         sx={{
           flexGrow: 1,
           py: 8,
         }}
       >
-        <Container maxWidth='lg'>
+        <Container maxWidth="lg">
           <Stack spacing={3}>
             <div>
-              <Typography variant='h4'>Order Details</Typography>
+              <Typography variant="h4">Order Details</Typography>
             </div>
             <div>
               <Grid container spacing={3}>
@@ -92,6 +94,7 @@ const ViewOrder = () => {
                 </Grid>
                 <Grid xs={12} lg={6}>
                   <EditOrderFields
+                    adminId={user?.id}
                     orderId={order.id}
                     orderCustomer={customer}
                     orderShops={shops}

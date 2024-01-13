@@ -108,7 +108,7 @@ const Shops = () => {
                 <Typography variant='h4'>Shops</Typography>
               </Stack>
 
-              <Button
+{/*               <Button
                 component={Link}
                 to='/portal/shops/add'
                 startIcon={
@@ -122,7 +122,7 @@ const Shops = () => {
                 }}
               >
                 Add New Shop
-              </Button>
+              </Button> */}
             </Stack>
             <ShopsSearch
               onChange={handleSearchChange}

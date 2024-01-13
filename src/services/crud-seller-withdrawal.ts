@@ -5,7 +5,7 @@ import { SellerWithdrawal } from '../models/SellerWithdrawal';
 export const crudSellerWithdrawal = createApi({
   reducerPath: 'crudSellerWithdrawal',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'http://localhost:4000/',
+    baseUrl: import.meta.env.VITE_API_URL,
     credentials: 'include',
   }),
   tagTypes: ['SellerWithdrawal', 'ERROR'],
